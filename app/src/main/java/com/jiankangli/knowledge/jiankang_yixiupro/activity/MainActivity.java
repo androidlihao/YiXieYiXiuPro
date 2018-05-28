@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addMiddleTitle(this, "医械医械+Pro");
+        addMiddleTitle(this, "医械医修+Pro");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
