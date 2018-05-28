@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.jiankangli.knowledge.jiankang_yixiupro.activity.MainActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:background="#04b7ff"
+        android:minHeight="?attr/actionBarSize"
+         >
+        <RelativeLayout
+            android:id="@+id/rl_head_id"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginRight="@dimen/px_50"
+            android:layout_gravity="right"
+            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/iv_touxiang_id"
+                android:layout_width="@dimen/px_120"
+                android:layout_height="@dimen/px_120"
+                android:src="@mipmap/home_touxiang"
+                />
+            <ImageView
+                android:id="@+id/iv_online_statu_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/online"
+                android:layout_alignBottom="@+id/iv_touxiang_id"
+                android:layout_alignRight="@+id/iv_touxiang_id"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>>
+    <com.youth.banner.Banner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_500" />
+</LinearLayout>
