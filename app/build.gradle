@@ -47,4 +47,5 @@ dependencies {
 // Android组件库，里面定义了例如RxAppCompatActivity、RxFragment之类的Android组件
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
     compile 'com.youth.banner:banner:1.4.10'  //最新版本
+    compile 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
 }

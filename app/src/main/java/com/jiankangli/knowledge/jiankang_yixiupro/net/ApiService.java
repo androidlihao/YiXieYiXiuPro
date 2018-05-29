@@ -3,6 +3,8 @@ package com.jiankangli.knowledge.jiankang_yixiupro.net;
 
 
 
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
+
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -27,4 +29,8 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("engineer/resetPassWord.do")
      Observable<String> resetPsd(@Field("jsonString")String jsonString);
+
+     @FormUrlEncoded
+     @POST("engineer/changeEngineerStatus.do")
+     Observable<Status> changeStatu(@Field("jsonString")String jsonString);
 }

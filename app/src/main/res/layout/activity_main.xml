@@ -34,6 +34,7 @@
                 android:layout_alignBottom="@+id/iv_touxiang_id"
                 android:layout_alignRight="@+id/iv_touxiang_id"/>
         </RelativeLayout>
+
     </android.support.v7.widget.Toolbar>>
     <com.youth.banner.Banner
         xmlns:app="http://schemas.android.com/apk/res-auto"

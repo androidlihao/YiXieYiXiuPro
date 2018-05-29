@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.trello.rxlifecycle2.components.RxActivity;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public abstract class BaseActivity extends RxAppCompatActivity {
@@ -118,4 +120,5 @@ public abstract class BaseActivity extends RxAppCompatActivity {
              }
         }
     }
+
 }
