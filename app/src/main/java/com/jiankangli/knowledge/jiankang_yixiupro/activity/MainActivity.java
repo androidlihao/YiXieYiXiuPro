@@ -130,14 +130,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 changeStatus("1");
                 break;
             case R.id.tv_person:
+                Intent intent=new Intent(this,PersonalActivity.class);
+                startActivity(intent);
                 break;
         }
     }
 
-    private void changeStatus(String statu) {
+    private void changeStatus(final String statu) {
         try {
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("userId", SharePreferenceUtils.get(getApplicationContext(),"userId",-1+""));
+            jsonObject.put("status",statu);
             String string=JsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class)
                     .changeStatu(string)
@@ -151,7 +154,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                         @Override
                         public void onNext(Status status) {
-
+                            switch (status.data.status){
+                                case "1":
+                                    ivOnlineStatuId.setImageResource(R.mipmap.online);
+                                    break;
+                                case "2":
+                                    ivOnlineStatuId.setImageResource(R.mipmap.busy);
+                                    break;
+                            }
+                            SharePreferenceUtils.put(getApplicationContext(),"status",status.data.status);
+                            popWindow.dissmiss();
                         }
 
                         @Override

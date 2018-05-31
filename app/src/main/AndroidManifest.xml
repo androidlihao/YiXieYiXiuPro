@@ -27,7 +27,10 @@
         <activity
             android:name=".activity.ForgetActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.ChangPsdActivity"
+        <activity
+            android:name=".activity.ChangPsdActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.PersonalActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
