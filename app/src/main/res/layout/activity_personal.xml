@@ -5,8 +5,63 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:theme="@style/AppTheme.NoActionBar"
+    android:background="#f1f1f1"
     tools:context="com.jiankangli.knowledge.jiankang_yixiupro.activity.PersonalActivity">
     <include
         layout="@layout/toolbar"
         />
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@mipmap/home_touxiang"
+        app:civ_border_width="2dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/px_200"
+        app:civ_border_color="@color/colorWhite"
+        />
+    <TextView
+        android:id="@+id/tv_personName_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/px_57"
+        android:text="医修+"
+        android:layout_marginTop="@dimen/px_50"
+        android:textColor="#3597d6"/>
+    <TextView
+        android:id="@+id/tv_numberPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/px_57"
+        android:text="13755794643"
+        android:layout_marginTop="@dimen/px_30"
+        android:textColor="#3597d6"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RV_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px_30"
+        android:layout_marginRight="@dimen/px_30"
+        android:layout_marginTop="@dimen/px_50"
+        android:background="@color/colorWhite"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/tv_Exitlogin_id"
+            android:layout_width="@dimen/px_740"
+            android:layout_height="@dimen/px_120"
+            android:background="@drawable/submit_seleter"
+            android:layout_marginTop="@dimen/px_30"
+            android:gravity="center"
+            android:text="退出登录"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/px_48" />
+    </LinearLayout>
 </LinearLayout>

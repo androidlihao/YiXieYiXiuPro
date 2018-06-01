@@ -1,6 +1,8 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.utils;
 
 
+import android.os.Environment;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -144,6 +146,20 @@ public class RegexUtil {
     public static boolean isAccountNumber(String s) {
         Matcher m = ACCOUNT_NUMBER_PATTERN.matcher(s);
         return m.matches();
+    }
+    /**
+     * 判断是否有内存卡
+     *
+     * @return
+     */
+    public static boolean hasSdcard() {
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }
