@@ -49,4 +49,6 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.10'  //最新版本
     compile 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    compile 'pub.devrel:easypermissions:0.1.9'
+
 }

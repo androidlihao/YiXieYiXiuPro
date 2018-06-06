@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    >
+    <Button
+        android:id="@+id/tv_takephoto_id"
+        android:layout_width="@dimen/px_1000"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/px_35"
+        android:text="相机"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:background="@color/colorWhite"
+        />
+    <Button
+        android:id="@+id/tv_gallery_id"
+        android:layout_width="@dimen/px_1000"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/px_35"
+        android:layout_marginTop="@dimen/px_5"
+        android:text="相册"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:background="@color/colorWhite"
+        />
+    <Button
+        android:id="@+id/tv_cancel_id"
+        android:layout_width="@dimen/px_1000"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/px_35"
+        android:text="取消"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:background="@color/colorWhite"
+        android:layout_marginTop="@dimen/px_20"
+        />
+</LinearLayout>

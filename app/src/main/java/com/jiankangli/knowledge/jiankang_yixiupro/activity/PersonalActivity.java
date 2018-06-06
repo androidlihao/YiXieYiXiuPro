@@ -1,36 +1,28 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
+import android.Manifest;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+
 import android.widget.TextView;
 
+import com.example.zhouwei.library.CustomPopWindow;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.AutoGetPermission;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.PhotoUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 
-import java.io.File;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import pub.devrel.easypermissions.EasyPermissions;
 
-import static com.jiankangli.knowledge.jiankang_yixiupro.utils.AutoGetPermission.STORAGE_PERMISSIONS_REQUEST_CODE;
-import static com.jiankangli.knowledge.jiankang_yixiupro.utils.AutoGetPermission.CAMERA_PERMISSIONS_REQUEST_CODE;
 
-public class PersonalActivity extends BaseActivity {
+public class PersonalActivity extends BaseActivity implements View.OnClickListener,EasyPermissions.PermissionCallbacks{
 
     @BindView(R.id.toolbar_id)
     Toolbar toolbarId;
@@ -44,16 +36,8 @@ public class PersonalActivity extends BaseActivity {
     RecyclerView RVId;
     @BindView(R.id.tv_Exitlogin_id)
     TextView tvExitloginId;
-
-    private static final int CODE_RESULT_REQUEST = 8;
-    private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
-    private Uri cropImageUri;
-    //创建文件的路径名
-    public File fileUri = new File(Environment.getExternalStorageDirectory().getPath() + "/photo.jpg");
-    public static final int CODE_GALLERY_REQUEST = 6;
-    public static final int CODE_CAMERA_REQUEST = 7;
-    public static Uri imageUri;
-
+    private CustomPopWindow photoPopWindow;
+    final int RC_CAMERA_CODE=998;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,116 +49,79 @@ public class PersonalActivity extends BaseActivity {
         return R.layout.activity_personal;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View view=View.inflate(this,R.layout.takephoto,null);
+        photoPopWindow = new CustomPopWindow.PopupWindowBuilder(PersonalActivity.this)
+                .setView(view)
+                .setFocusable(true)
+                .setOutsideTouchable(false)
+                .setAnimationStyle(R.animator.scale_with_alpha)
+                .create();
+        view.findViewById(R.id.tv_cancel_id).setOnClickListener(this);
+        view.findViewById(R.id.tv_gallery_id).setOnClickListener(this);
+        view.findViewById(R.id.tv_takephoto_id).setOnClickListener(this);
+
+    }
+
     @OnClick({R.id.profile_image, R.id.tv_Exitlogin_id})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.profile_image:
-                AutoGetPermission.autoObtainStoragePermission(PersonalActivity.this);//获取相机权限并打开相机
-                //弹出弹窗
+                //弹出弹窗,选择状态
+                photoPopWindow.showAtLocation(profileImage, Gravity.BOTTOM, 0, 100);
                 break;
             case R.id.tv_Exitlogin_id:
+
                 //清除sp的值
                 break;
         }
     }
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            //调用系统相机申请拍照权限回调
-            case CAMERA_PERMISSIONS_REQUEST_CODE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (hasSdcard()) {
-                        //创建原图的存储路径
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                            imageUri = FileProvider.getUriForFile(this, "com.headphoto.filePhone", fileUri);//通过FileProvider创建一个content类型的Uri
-                        }else{
-                            imageUri = Uri.fromFile(fileUri);
-                        }
-                        PhotoUtils.takePicture(this,imageUri,CODE_CAMERA_REQUEST);//开始执行拍照过程
-                    } else {
-                        ToastUtils.showToast(this, "设备没有SD卡！");
-                    }
-                } else {
-                    ToastUtils.showToast(this, "请允许打开相机！！");
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_cancel_id:
+                photoPopWindow.dissmiss();
+                break;
+            case R.id.tv_takephoto_id:
+                String[] perms={Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE};
+                if (EasyPermissions.hasPermissions(this,perms)){
+                      //直接开始拍照、
+
+                }else{
+                    //申请拍照需要的权限
+                    EasyPermissions.requestPermissions(this,"拍照需要摄像头权限",RC_CAMERA_CODE,perms);
                 }
                 break;
-            }
-            //调用系统相册申请Sdcard权限回调
-            case STORAGE_PERMISSIONS_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    PhotoUtils.openPic(this,CODE_GALLERY_REQUEST);
-                } else {
-                    ToastUtils.showToast(this, "请允许打操作SDCard！！");
-                }
+            case R.id.tv_gallery_id:
+
                 break;
-            default:
         }
     }
-
-    private static final int OUTPUT_X = 480;
-    private static final int OUTPUT_Y = 480;
+    //权限获取成功
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.i("TAG", "onActivityResult: "+resultCode);
-        if (resultCode==RESULT_OK) {
-            switch (requestCode) {
-                //拍照完成回调
-                case CODE_CAMERA_REQUEST:
-                    Log.i("TAG", "onActivityResult: ");
-                    cropImageUri = Uri.fromFile(fileCropUri);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                        imageUri = FileProvider.getUriForFile(this, "com.headphoto.filePhone", fileUri);//通过FileProvider创建一个content类型的Uri
-                    }else{
-                        imageUri = Uri.fromFile(fileUri);
-                    }
-                    Log.i("TAG", "onActivityResult: "+imageUri);
-                    PhotoUtils.cropImageUri(PersonalActivity.this, imageUri, cropImageUri,
-                            1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
-                    break;
-                //访问相册完成回调
-                case CODE_GALLERY_REQUEST:
-                    Log.i("TAG", "GALLERY: ");
-                    if (hasSdcard()) {
-                        cropImageUri = Uri.fromFile(fileCropUri);
-                        Uri newUri;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            newUri = FileProvider.getUriForFile(this,"com.zz.fileprovider",new File(data.getData().getPath()));
-                        }else{
-                            newUri = Uri.parse(PhotoUtils.getPath(this, data.getData()));
-                        }
-                        Log.i("TAG", "onActivityResult: "+newUri);
-                       // PhotoUtils.cropImageUri(this, newUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
-                    } else {
-                        ToastUtils.showToast(this, "设备没有SD卡！");
-                    }
-                    break;
-                case CODE_RESULT_REQUEST:
-                    Log.i("TAG", "onActivityResult: "+cropImageUri);
-                    Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, this);
-                    if (bitmap != null) {
-                        showImages(bitmap);//最后的结果
-                    }
-                    break;
-                default:
-            }
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        switch (requestCode){
+            case RC_CAMERA_CODE:
+                //执行拍照
+                break;
         }
     }
+    //权限获取失败
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        switch (requestCode){
+            case RC_CAMERA_CODE:
+                ToastUtils.showToast(getApplicationContext(),"拍照权限获取失败");
+                break;
+        }
 
-    private void showImages(Bitmap bitmap) {
-        // photo.setImageBitmap(bitmap);
-        profileImage.setImageBitmap(bitmap);
     }
-
-    /**
-     * 检查设备是否存在SDCard的工具方法
-     */
-    public static boolean hasSdcard() {
-        String state = Environment.getExternalStorageState();
-        return state.equals(Environment.MEDIA_MOUNTED);
-    }
-
 }
