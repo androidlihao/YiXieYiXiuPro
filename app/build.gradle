@@ -50,5 +50,6 @@ dependencies {
     compile 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     compile 'pub.devrel:easypermissions:0.1.9'
+    compile 'com.github.yalantis:ucrop:2.2.2'
 
 }
