@@ -15,7 +15,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.AutoCode;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.JsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.RegexUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 
@@ -150,7 +150,7 @@ public class ForgetActivity extends BaseActivity {
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("phoneNumber",numberphone);
             jsonObject.put("type","3");
-             String string = JsonUtils.Base64String(jsonObject);
+             String string = BaseJsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class).getCode(string)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

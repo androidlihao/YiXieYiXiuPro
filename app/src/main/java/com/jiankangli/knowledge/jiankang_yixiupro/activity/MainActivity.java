@@ -16,7 +16,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.JsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.youth.banner.Banner;
@@ -122,11 +122,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.tv_busy:
                 //执行更改状态，然后根据状态修改
+                ivOnlineStatuId.setImageResource(R.mipmap.busy);
+                popWindow.dissmiss();
                 changeStatus("2");
                 break;
             case R.id.tv_msg:
                 break;
             case R.id.tv_online:
+                ivOnlineStatuId.setImageResource(R.mipmap.online);
+                popWindow.dissmiss();
                 changeStatus("1");
                 break;
             case R.id.tv_person:
@@ -141,10 +145,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("userId", SharePreferenceUtils.get(getApplicationContext(),"userId",-1+""));
             jsonObject.put("status",statu);
-            String string=JsonUtils.Base64String(jsonObject);
+            String string=BaseJsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class)
                     .changeStatu(string)
                     .subscribeOn(Schedulers.io())
+                    .compose(this.<Status>bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Status>() {
                         @Override
@@ -154,16 +159,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                         @Override
                         public void onNext(Status status) {
-                            switch (status.data.status){
-                                case "1":
-                                    ivOnlineStatuId.setImageResource(R.mipmap.online);
-                                    break;
-                                case "2":
-                                    ivOnlineStatuId.setImageResource(R.mipmap.busy);
-                                    break;
-                            }
                             SharePreferenceUtils.put(getApplicationContext(),"status",status.data.status);
-                            popWindow.dissmiss();
+
                         }
 
                         @Override

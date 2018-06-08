@@ -12,7 +12,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.Login;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.JsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.RegexUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             jsonObject.put("phoneNumber",phone);
             jsonObject.put("password",psd);
             jsonObject.put("type", "1");
-            String loginData=JsonUtils.Base64String(jsonObject);
+            String loginData=BaseJsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class)
                     .sendLogin(loginData)
                     .subscribeOn(Schedulers.io())

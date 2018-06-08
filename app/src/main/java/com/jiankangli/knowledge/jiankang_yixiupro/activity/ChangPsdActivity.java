@@ -11,9 +11,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.JsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONObject;
 
@@ -62,7 +61,7 @@ public class ChangPsdActivity extends BaseActivity {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("phoneNumber", getIntent().getStringExtra("phoneNumber"));
                 jsonObject.put("passWord", newPsd);
-                String jsonString = JsonUtils.Base64String(jsonObject);
+                String jsonString = BaseJsonUtils.Base64String(jsonObject);
                 RetrofitManager.create(ApiService.class).resetPsd(jsonString)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

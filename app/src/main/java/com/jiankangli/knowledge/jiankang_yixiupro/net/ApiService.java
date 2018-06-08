@@ -5,6 +5,8 @@ package com.jiankangli.knowledge.jiankang_yixiupro.net;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 
+import java.io.File;
+
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -33,4 +35,8 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("engineer/changeEngineerStatus.do")
      Observable<Status> changeStatu(@Field("jsonString")String jsonString);
+
+     @FormUrlEncoded
+     @POST("engineer/uploadHeadPic.do")
+     Observable<String> submitHead(@Field("jsonString")String jsonString,@Field("data")File file);
 }
