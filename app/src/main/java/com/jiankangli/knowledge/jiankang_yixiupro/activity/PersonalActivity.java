@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,8 +17,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.zhouwei.library.CustomPopWindow;
+import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.RvAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.RecyclerViewOnClickListener;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PerOptions;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
@@ -29,6 +33,7 @@ import com.yalantis.ucrop.UCrop;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -62,12 +67,60 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     final int OPEN_CAMERA_CODE=112;
     final int OPEN_PHOTOALBUM_CODE=113;
     private HeadPicUtils headPicUtils;
-
-
+    Integer[] ivRess={R.mipmap.list_message_icon,R.mipmap.list_password_icon,R.mipmap.list_feedback_icon,
+    R.mipmap.list_us_icon,R.mipmap.list_message2_icon};
+    String[] titles={"消息中心","修改密码","意见反馈","关于我们","我的留言"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addMiddleTitle(this, "个人中心");
+        initRecycler();
+        //设置头像和手机号码等相关信息
+        setLoginData();
+    }
+
+    private void setLoginData() {
+        Log.i("TAG", "setLoginData: "+SharePreferenceUtils.get(this,"headPicUrl","默认头像"));
+    }
+
+    private void initRecycler() {
+        RVId.setLayoutManager(new LinearLayoutManager(this));//线性显示
+        //准备数据源
+        LinkedList<PerOptions> linkedList=new LinkedList<>();
+        for (int i=0;i<ivRess.length;i++){
+            PerOptions perOptions=new PerOptions(ivRess[i],titles[i]);
+            linkedList.add(perOptions);
+        }
+        RVId.setAdapter(new RvAdapter(this,linkedList));
+        RVId.addOnItemTouchListener(new RecyclerViewOnClickListener(this, RVId, new RecyclerViewOnClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int postion) {
+                Log.i("TAG", "onItemClick: "+postion);
+                      Intent intent;
+                switch (titles[postion]){
+                    case "消息中心"://
+
+                        break;
+                    case "修改密码":
+
+                        break;
+                    case "意见反馈":
+
+                        break;
+                    case "关于我们":
+
+                        break;
+                    case "我的留言":
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int postion) {
+
+            }
+        }));
     }
 
     @Override
