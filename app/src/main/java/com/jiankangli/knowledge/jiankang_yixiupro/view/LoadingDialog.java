@@ -28,6 +28,6 @@ public class LoadingDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_loading);
         LinearLayout linearLayout = this.findViewById(R.id.LinearLayout);
-        //linearLayout.getBackground().setAlpha(210);
+        linearLayout.getBackground().setAlpha(210);
     }
 }

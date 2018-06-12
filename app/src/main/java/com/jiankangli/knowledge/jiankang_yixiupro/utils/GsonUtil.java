@@ -45,6 +45,16 @@ public class GsonUtil {
         }
         return gsonString;
     }
+    public static JSONObject GsonJsonObject(String object,String key){
+        JSONObject jsObject = null;
+        try {
+            JSONObject jsonObject=new JSONObject(object);
+            jsObject=jsonObject.getJSONObject(key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsObject;
+    }
     public static String GsonMsg(String object){
         String msg = null;
         try {

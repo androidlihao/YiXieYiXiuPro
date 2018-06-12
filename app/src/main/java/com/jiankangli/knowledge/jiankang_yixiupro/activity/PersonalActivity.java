@@ -1,6 +1,8 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +30,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.HeadPicUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
+import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONObject;
@@ -44,6 +47,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.constant.PIC_URL;
 
 
 public class PersonalActivity extends BaseActivity implements View.OnClickListener,EasyPermissions.PermissionCallbacks{
@@ -80,7 +84,12 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setLoginData() {
-        Log.i("TAG", "setLoginData: "+SharePreferenceUtils.get(this,"headPicUrl","默认头像"));
+        Picasso.get().load
+                (PIC_URL+SharePreferenceUtils.get(
+                        this,"headPicUrl","" +
+                                "")).into(profileImage);
+        tvPersonNameId.setText(SharePreferenceUtils.get(this,"name","医修").toString());
+        tvNumberPhone.setText(SharePreferenceUtils.get(this,"phone","114").toString());
     }
 
     private void initRecycler() {
@@ -96,24 +105,26 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onItemClick(View view, int postion) {
                 Log.i("TAG", "onItemClick: "+postion);
-                      Intent intent;
+                      Intent intent = null;
+                      Class<?> cla=null;
                 switch (titles[postion]){
                     case "消息中心"://
-
                         break;
                     case "修改密码":
 
                         break;
                     case "意见反馈":
-
+                        cla=feedbackActivity.class;
                         break;
                     case "关于我们":
-
+                        cla=AboutUsActivity.class;
                         break;
                     case "我的留言":
 
                         break;
                 }
+                intent=new Intent(view.getContext(),cla);
+                startActivity(intent);
             }
 
             @Override
@@ -157,7 +168,29 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 photoPopWindow.showAtLocation(profileImage, Gravity.BOTTOM, 0, 100);
                 break;
             case R.id.tv_Exitlogin_id:
-                //清除sp的值
+                //弹出弹窗询问是否退出
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                builder.setTitle("注销").setMessage("是否退出当前账户？")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //清除sp的值
+                                //跳转到登录页面，并清空所有页面
+                                //发送广播
+                                SharePreferenceUtils.clear(PersonalActivity.this);
+                                Intent intent = new Intent("drc.xxx.yyy.baseActivity");
+                                intent.putExtra("closeAll", 1);
+                                sendBroadcast(intent);
+                                Intent intent1=new Intent(PersonalActivity.this,LoginActivity.class);
+                                startActivity(intent1);
+                            }
+                        }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+
                 break;
         }
     }

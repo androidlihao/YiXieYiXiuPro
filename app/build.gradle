@@ -52,4 +52,5 @@ dependencies {
     compile 'pub.devrel:easypermissions:0.1.9'
     compile 'com.github.yalantis:ucrop:2.2.2'
     compile 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

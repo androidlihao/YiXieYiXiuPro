@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f1f1f1"
+    tools:context="com.jiankangli.knowledge.jiankang_yixiupro.activity.AboutUsActivity">
+    <include
+        layout="@layout/toolbar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_856"
+        android:layout_marginBottom="@dimen/px_30">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/us_background" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="版本 V1.0"
+            android:textSize="18sp"
+            android:textColor="#DADADC"
+            android:textStyle="italic"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="28dp"
+            android:gravity="center"
+            android:background="#fff"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_AboutUs_id"
+        android:background="@color/colorWhite"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingBottom="@dimen/px_50"
+        android:paddingLeft="@dimen/px_80"
+        android:paddingTop="@dimen/px_50"
+        android:paddingRight="@dimen/px_80"
+        android:scrollbars="none"
+        android:text="健康力健康力建看你"
+        android:textColor="#333333" />
+</LinearLayout>

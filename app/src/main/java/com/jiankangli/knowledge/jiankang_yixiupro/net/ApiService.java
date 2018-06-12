@@ -31,12 +31,15 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("engineer/resetPassWord.do")
      Observable<String> resetPsd(@Field("jsonString")String jsonString);
-
+     //修改用户状态接口
      @FormUrlEncoded
      @POST("engineer/changeEngineerStatus.do")
      Observable<Status> changeStatu(@Field("jsonString")String jsonString);
-
+     //上传用户头像接口
      @FormUrlEncoded
      @POST("engineer/uploadHeadPic.do")
      Observable<String> submitHead(@Field("jsonString")String jsonString,@Field("data")File file);
+     //获取关于我们的介绍接口
+     @POST("common/aboutUs.do")
+     Observable<String> getContents();
 }

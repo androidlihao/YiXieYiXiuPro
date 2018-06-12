@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--***
+    复习专用
+    corners标签，用来定义圆角的，属性值
+    android:radius="dimension"      //全部的圆角半径
+    android:topLeftRadius="dimension"   //左上角的圆角半径
+    android:topRightRadius="dimension"  //右上角的圆角半径
+    android:bottomLeftRadius="dimension"    //左下角的圆角半径
+    android:bottomRightRadius="dimension" />    //右下角的圆角半径
+    solid标签
+    **-->
+      <item>
+          <shape>
+                <solid  android:color="#f1f1f1"/>
+                <stroke android:width="@dimen/px_2" android:color="#d5d5d5"/>
+              <corners android:radius="3.0dip"/>
+          </shape>
+      </item>
+</selector>
