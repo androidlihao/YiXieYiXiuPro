@@ -3,9 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.jiankangli.knowledge.jiankang_yixiupro.activity.feedbackActivity">
      <include
          layout="@layout/toolbar"/>
-
+     <com.jiankangli.knowledge.jiankang_yixiupro.view.AutoEdittext
+         android:id="@+id/et_AutoEdittext_id"
+         android:layout_width="match_parent"
+         android:layout_height="@dimen/px_500"
+         android:layout_margin="10dp"
+         app:classic_maxCount="500" />
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center_horizontal"
+         android:orientation="horizontal"
+         android:layout_marginBottom="@dimen/px_20"
+         android:layout_marginTop="@dimen/px_100">
+          <TextView
+              android:id="@+id/tv_submitFeedback_id"
+              android:layout_width="@dimen/px_740"
+              android:layout_height="@dimen/px_120"
+              android:background="@drawable/submit_seleter"
+              android:layout_marginTop="@dimen/px_30"
+              android:gravity="center"
+              android:text="提交"
+              android:textColor="#ffffff"
+              android:textSize="@dimen/px_48" />
+     </LinearLayout>
 </LinearLayout>

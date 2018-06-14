@@ -16,6 +16,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.RegexUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.view.CommonLoading;
 import com.jiankangli.knowledge.jiankang_yixiupro.view.LoadingDialog;
 
 import org.json.JSONObject;

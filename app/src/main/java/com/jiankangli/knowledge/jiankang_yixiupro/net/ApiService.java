@@ -42,4 +42,8 @@ public interface ApiService {
      //获取关于我们的介绍接口
      @POST("common/aboutUs.do")
      Observable<String> getContents();
+     //意见反馈地址
+     @FormUrlEncoded
+     @POST("common/feedback.do")
+     Observable<String> submitfeed(@Field("jsonString")String jsonString);
 }

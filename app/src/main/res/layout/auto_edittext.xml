@@ -7,35 +7,34 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     >
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/px_500"
-        android:layout_marginLeft="@dimen/px_30"
-        android:layout_marginRight="@dimen/px_30"
-        android:layout_marginTop="@dimen/px_30" >
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
         <EditText
             android:id="@+id/et_feed_back"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/px_500"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/auto_edittext_backgroup"
             android:gravity="top"
-            android:hint="请输入..."
+            android:hint="请输入意见或建议..."
             android:maxLength="500"
             android:padding="@dimen/px_30"
+            android:inputType="textMultiLine"
             android:textColor="#333333"
             android:textColorHint="#999999"
-            android:textCursorDrawable="@null"
+            android:selectAllOnFocus="true"
             android:textSize="@dimen/px_48" />
 
         <TextView
             android:id="@+id/text_size"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="bottom|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:padding="@dimen/px_30"
-            android:text="0/500"
+            android:text="500/500"
             android:textColor="#999999"
             android:textSize="@dimen/px_36" />
-    </FrameLayout>
+    </RelativeLayout>
 </LinearLayout>

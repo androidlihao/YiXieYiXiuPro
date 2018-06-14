@@ -49,7 +49,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         addMiddleTitle(this, "医械医修+");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
     }
 
     @Override

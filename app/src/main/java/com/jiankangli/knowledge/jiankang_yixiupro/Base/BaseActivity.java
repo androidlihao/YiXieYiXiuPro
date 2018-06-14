@@ -6,30 +6,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
-import com.jiankangli.knowledge.jiankang_yixiupro.activity.MainActivity;
-import com.trello.rxlifecycle2.components.RxActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.view.CommonLoading;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseActivity extends RxAppCompatActivity {
 
@@ -37,6 +36,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected Toolbar toolbar;
     private Unbinder bind;
     private ExitBaseActivity_Broad exitBaseActivity_broad;
+    public CommonLoading commonLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +48,28 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         bind = ButterKnife.bind(this);
         initStatuBar();
         initToolbar();
+        initLoading();
         //动态注册广播
         exitBaseActivity_broad = new ExitBaseActivity_Broad();
         IntentFilter intentFilter=new IntentFilter("drc.xxx.yyy.baseActivity");
         registerReceiver(exitBaseActivity_broad,intentFilter);
+    }
+
+    private void initLoading() {
+        commonLoading = new CommonLoading(this, R.style.loadingDialog);
+    }
+    public void dialogdimiss(){
+        Observable.timer(1500, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Long>bindToLifecycle())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        commonLoading.dismiss();
+                        finish();
+                    }
+                });
     }
     //让状态栏颜色和toolbar颜色一致
     private void initStatuBar() {
@@ -117,7 +135,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 
              int closeAll=intent.getIntExtra("closeAll",0);
-            Log.i("TAG", "onReceive: "+closeAll);
+             Log.i("TAG", "onReceive: "+closeAll);
              if (closeAll==1){
                  finish();//销毁baseActivity
              }
