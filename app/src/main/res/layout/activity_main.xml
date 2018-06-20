@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.jiankangli.knowledge.jiankang_yixiupro.activity.MainActivity">
     <android.support.v7.widget.Toolbar
@@ -36,9 +37,131 @@
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>>
-    <com.youth.banner.Banner
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/banner"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sw_load_msg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px_500" />
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px_700"
+                    app:image_scale_type="center_crop"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px_200"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="@dimen/px_100"
+                            android:layout_height="@dimen/px_100"
+                            android:src="@mipmap/ic_launcher"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="维修工单"
+                            android:textSize="18sp"
+                            android:gravity="center"
+                            android:padding="@dimen/px_20"
+                            />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="3px"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorgray"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="@dimen/px_100"
+                            android:layout_height="@dimen/px_100"
+                            android:src="@mipmap/ic_launcher"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="保养工单"
+                            android:textSize="18sp"
+                            android:gravity="center"
+                            android:padding="@dimen/px_20"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px_3"
+                    android:background="@color/colorgray"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px_200"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="@dimen/px_100"
+                            android:layout_height="@dimen/px_100"
+                            android:src="@mipmap/ic_launcher"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="巡检工单"
+                            android:textSize="18sp"
+                            android:gravity="center"
+                            android:padding="@dimen/px_20"
+                            />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="3px"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorgray"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="@dimen/px_100"
+                            android:layout_height="@dimen/px_100"
+                            android:src="@mipmap/ic_launcher"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="备件详情"
+                            android:textSize="18sp"
+                            android:gravity="center"
+                            android:padding="@dimen/px_20"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+                <View
+                    android:layout_marginTop="@dimen/px_15"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px_3"
+                    android:background="@color/colorgray"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_msg_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

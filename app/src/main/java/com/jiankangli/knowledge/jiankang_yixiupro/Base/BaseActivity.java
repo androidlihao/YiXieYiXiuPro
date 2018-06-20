@@ -67,7 +67,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         commonLoading.dismiss();
-                        finish();
+
                     }
                 });
     }

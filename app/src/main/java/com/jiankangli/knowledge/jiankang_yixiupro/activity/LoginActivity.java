@@ -138,7 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                        public void onNext(final String string) {
                            //手动解析
                            Log.i("TAG", "onNext: "+string);//请求网络成功
-                           Observable.timer(1500, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
+                           Observable.timer(1500, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
+                                   .subscribe(new Consumer<Long>() {
                                @Override
                                public void accept(Long aLong) throws Exception {
                                          dialog.dismiss();
@@ -146,7 +147,6 @@ public class LoginActivity extends AppCompatActivity {
                                        case "success":
                                            Login login= GsonUtil.GsonToBean(string,Login.class);
                                            //将相关数据存到手机上
-                                           SharePreferenceUtils.put(getApplicationContext(),"psw",login.getData().getPassword());
                                            SharePreferenceUtils.put(getApplicationContext(),"userId",login.getData().getUserId());
                                            SharePreferenceUtils.put(getApplicationContext(),"name",login.getData().getUserName());
                                            SharePreferenceUtils.put(getApplicationContext(),"phone",login.getData().getPhoneNumber());

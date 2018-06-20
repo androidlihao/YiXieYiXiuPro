@@ -46,4 +46,12 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("common/feedback.do")
      Observable<String> submitfeed(@Field("jsonString")String jsonString);
+     //我的留言
+     @FormUrlEncoded
+     @POST("engineer/lookMsgList.do")
+     Observable<String> getMyMsg(@Field("jsonString")String jsonString);
+     //修改密码接口
+     @FormUrlEncoded
+     @POST("engineer/updatePassWord.do")
+     Observable<String> changePsd(@Field("jsonString")String jsonString);
 }

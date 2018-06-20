@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.zhouwei.library.CustomPopWindow;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.RvAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.PersonRvAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.RecyclerViewOnClickListener;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
@@ -100,7 +100,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             PerOptions perOptions=new PerOptions(ivRess[i],titles[i]);
             linkedList.add(perOptions);
         }
-        RVId.setAdapter(new RvAdapter(this,linkedList));
+        RVId.setAdapter(new PersonRvAdapter(this,linkedList));
         RVId.addOnItemTouchListener(new RecyclerViewOnClickListener(this, RVId, new RecyclerViewOnClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {
@@ -109,9 +109,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                       Class<?> cla=null;
                 switch (titles[postion]){
                     case "消息中心"://
+                        cla=MessageCenterActivity.class;
                         break;
                     case "修改密码":
-
+                        cla=ChangePsd2Activity.class;
                         break;
                     case "意见反馈":
                         cla=feedbackActivity.class;
@@ -120,7 +121,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                         cla=AboutUsActivity.class;
                         break;
                     case "我的留言":
-
+                        cla=MMBActivity.class;
                         break;
                 }
                 intent=new Intent(view.getContext(),cla);
@@ -275,10 +276,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 case UCrop.REQUEST_CROP:
                     //显示出来，并提交服务器
                     Uri Cropuri=UCrop.getOutput(data);
-                    Log.i("TAG", "onActivityResult: "+Cropuri);
                     Bitmap bitmap=BitmapFactory.decodeFile(Cropuri.getPath());
                     profileImage.setImageBitmap(bitmap);
                     File file=new File(Cropuri.getPath());
+                    Log.i("TAG", "Cropuri: "+Cropuri.getPath());
                     //提交服务器
                     submithead(file);
                     break;

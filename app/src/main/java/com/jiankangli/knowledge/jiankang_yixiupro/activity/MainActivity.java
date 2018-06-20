@@ -17,11 +17,17 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.ImageLoader;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
+import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,6 +35,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.constant.PIC_URL;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
@@ -49,6 +57,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         addMiddleTitle(this, "医械医修+");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+    }
+
+    private void initViewData() {
+        Picasso.get().load
+                (PIC_URL+SharePreferenceUtils.get(
+                        this,"headPicUrl","" +
+                                "")).error(R.mipmap.home_touxiang).into(ivTouxiangId);
+        String statu= (String) SharePreferenceUtils.get(this,"status","");
+        switch (statu){
+            case "1":
+                ivOnlineStatuId.setImageResource(R.mipmap.online);
+                break;
+            case "2":
+                ivOnlineStatuId.setImageResource(R.mipmap.busy);
+                break;
+        }
+        ArrayList mList = new ArrayList<>();
+        mList.add(R.mipmap.scroll_pic1);
+        mList.add(R.mipmap.scroll_pic2);
+        mList.add(R.mipmap.scroll_pic3);
+        banner.setImages(mList)
+                .setImageLoader(new ImageLoader())
+                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                .setBannerAnimation(Transformer.Default)
+                .setDelayTime(3000)
+                .start();
     }
 
     @Override
@@ -58,8 +93,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void onResume() {
-
         super.onResume();
+        //初始化数据
+        initViewData();
     }
 
     @Override
@@ -122,21 +158,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_busy:
                 //执行更改状态，然后根据状态修改
                 ivOnlineStatuId.setImageResource(R.mipmap.busy);
-                popWindow.dissmiss();
                 changeStatus("2");
                 break;
             case R.id.tv_msg:
+                Intent intents=new Intent(this,MessageCenterActivity.class);
+                startActivity(intents);
                 break;
             case R.id.tv_online:
                 ivOnlineStatuId.setImageResource(R.mipmap.online);
-                popWindow.dissmiss();
                 changeStatus("1");
                 break;
             case R.id.tv_person:
                 Intent intent=new Intent(this,PersonalActivity.class);
                 startActivity(intent);
                 break;
+
         }
+        popWindow.dissmiss();
     }
 
     private void changeStatus(final String statu) {
@@ -159,7 +197,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         @Override
                         public void onNext(Status status) {
                             SharePreferenceUtils.put(getApplicationContext(),"status",status.data.status);
-
                         }
 
                         @Override

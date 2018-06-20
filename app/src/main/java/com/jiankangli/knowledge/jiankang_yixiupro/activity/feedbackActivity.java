@@ -75,6 +75,7 @@ public class feedbackActivity extends BaseActivity {
                                 case "success":
                                     ToastUtils.showToast(getApplicationContext(), "提交成功");
                                     dialogdimiss();
+                                    finish();
                                     break;
                                 case "error":
                                     ToastUtils.showToast(getApplicationContext(), "提交失败");
@@ -85,6 +86,7 @@ public class feedbackActivity extends BaseActivity {
                         @Override
                         public void onError(Throwable e) {
                             ToastUtils.showToast(getApplicationContext(), "服务器或网络异常");
+                            dialogdimiss();
                         }
 
                         @Override

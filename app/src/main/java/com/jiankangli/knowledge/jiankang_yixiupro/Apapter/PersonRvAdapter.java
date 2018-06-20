@@ -22,13 +22,13 @@ import butterknife.ButterKnife;
  * Created by 李浩 on 2018/6/11.
  */
 
-public class RvAdapter extends RecyclerView.Adapter<RvAdapter.PersonViewHolder> {
+public class PersonRvAdapter extends RecyclerView.Adapter<PersonRvAdapter.PersonViewHolder> {
     private final LayoutInflater myLayoutInflater;
     private Context context;
     private LinkedList<PerOptions> list;
 
     //构造函数
-    public RvAdapter(Context context, LinkedList<PerOptions> list) {
+    public PersonRvAdapter(Context context, LinkedList<PerOptions> list) {
         this.context = context;
         this.list = list;//资源
         //构建插入器
