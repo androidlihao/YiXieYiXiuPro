@@ -50,7 +50,8 @@
         <activity android:name=".activity.feedbackActivity" />
         <activity android:name=".activity.MMBActivity" />
         <activity android:name=".activity.ChangePsd2Activity" />
-        <activity android:name=".activity.MessageCenterActivity"></activity>
+        <activity android:name=".activity.MessageCenterActivity" />
+        <activity android:name=".activity.RepairOrderActivity"></activity>
     </application>
 
 </manifest>

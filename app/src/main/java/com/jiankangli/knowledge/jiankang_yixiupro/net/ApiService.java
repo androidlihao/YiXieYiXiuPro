@@ -3,6 +3,7 @@ package com.jiankangli.knowledge.jiankang_yixiupro.net;
 
 
 
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 
 import java.io.File;
@@ -54,4 +55,12 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("engineer/updatePassWord.do")
      Observable<String> changePsd(@Field("jsonString")String jsonString);
+     //获取维修最新信息
+     @FormUrlEncoded
+     @POST("engineer/getnotice.do")
+     Observable<String> getnotice(@Field("jsonString")String jsonString);
+     //获取维修工单列表信息
+     @FormUrlEncoded
+     @POST("repairWorkOrder/getList.do")
+     Observable<RepairOrder> getRepairOrder(@Field("jsonString")String jsonString);
 }
