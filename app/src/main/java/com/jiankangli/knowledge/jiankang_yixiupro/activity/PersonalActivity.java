@@ -27,12 +27,14 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.PerOptions;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.HeadPicUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -45,6 +47,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.constant.PIC_URL;
@@ -279,7 +284,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                     Bitmap bitmap=BitmapFactory.decodeFile(Cropuri.getPath());
                     profileImage.setImageBitmap(bitmap);
                     File file=new File(Cropuri.getPath());
-                    Log.i("TAG", "Cropuri: "+Cropuri.getPath());
                     //提交服务器
                     submithead(file);
                     break;
@@ -292,8 +296,11 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("userId", SharePreferenceUtils.get(this,"userId",-1+""));
             String jsonString= BaseJsonUtils.Base64String(jsonObject);
+            RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("data",file.getName()+".png",requestBody);
             RetrofitManager.create(ApiService.class)
-                    .submitHead(jsonString,file)
+                    .submitHead(jsonString,body)
                     .subscribeOn(Schedulers.io())
                     .compose(this.<String>bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -302,15 +309,28 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                         public void onSubscribe(Disposable d) {
 
                         }
-
                         @Override
                         public void onNext(String s) {
-                            Log.i("TAG", "onNext: "+s);
+                            //将头像数据存起来
+                            switch (GsonUtil.GsonCode(s)){
+                                case "success":
+                                    ToastUtils.showToast(getApplicationContext(),"头像上传成功!");
+                                    try {
+                                        SharePreferenceUtils.put(getApplicationContext(),
+                                                "headPicUrl",GsonUtil.GsonJsonObject(s,"data").get("headPicUrl"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                case "error":
+                                    ToastUtils.showToast(getApplicationContext(),GsonUtil.GsonMsg(s));
+                                    break;
+                            }
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.i("TAG", "onError: "+e);
+                            ToastUtils.showToast(getApplicationContext(),"头像上传失败,服务器或网络异常");
                         }
 
                         @Override

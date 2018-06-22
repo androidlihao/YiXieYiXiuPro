@@ -83,6 +83,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         addMiddleTitle(this, "医械医修+");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         initRecycler();
+        swLoadMsg.setOnRefreshListener(this);
+        //进入页面开始刷新
+        swLoadMsg.setRefreshing(true);
+        this.onRefresh();
     }
 
     private void initRecycler() {
@@ -104,6 +108,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 (PIC_URL + SharePreferenceUtils.get(
                         this, "headPicUrl", "" +
                                 "")).error(R.mipmap.home_touxiang).into(ivTouxiangId);
+        Log.i("TAG", "initViewData: "+PIC_URL + SharePreferenceUtils.get(
+                this, "headPicUrl", "" +
+                        ""));
         String statu = (String) SharePreferenceUtils.get(this, "status", "");
         switch (statu) {
             case "1":
@@ -123,10 +130,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 .setBannerAnimation(Transformer.Default)
                 .setDelayTime(3000)
                 .start();
-        swLoadMsg.setOnRefreshListener(this);
-        //进入页面开始刷新
-        swLoadMsg.setRefreshing(true);
-        this.onRefresh();
     }
 
     @Override
@@ -298,6 +301,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         @Override
                         public void onError(Throwable e) {
                             ToastUtils.showToast(getApplicationContext(), "服务器或网络异常!");
+                            swLoadMsg.setRefreshing(false);
 
                         }
 

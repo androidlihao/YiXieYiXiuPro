@@ -3,15 +3,18 @@ package com.jiankangli.knowledge.jiankang_yixiupro.net;
 
 
 
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 
-import java.io.File;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * Created by 李浩 on 2018/5/17.
@@ -36,10 +39,12 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("engineer/changeEngineerStatus.do")
      Observable<Status> changeStatu(@Field("jsonString")String jsonString);
+
      //上传用户头像接口
-     @FormUrlEncoded
+     @Multipart
      @POST("engineer/uploadHeadPic.do")
-     Observable<String> submitHead(@Field("jsonString")String jsonString,@Field("data")File file);
+     Observable<String> submitHead(@Part("jsonString")String jsonString, @Part MultipartBody.Part file);
+
      //获取关于我们的介绍接口
      @POST("common/aboutUs.do")
      Observable<String> getContents();
@@ -63,4 +68,8 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("repairWorkOrder/getList.do")
      Observable<RepairOrder> getRepairOrder(@Field("jsonString")String jsonString);
+     //获取消息中心列表
+     @FormUrlEncoded
+     @POST("engineer/messageList.do")
+     Observable<MsgCenter> getMsgCenter(@Field("jsonString")String jsonString);
 }

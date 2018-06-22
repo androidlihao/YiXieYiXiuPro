@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_repairadapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
@@ -17,14 +15,15 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -40,8 +39,9 @@ public class RepairOrderFragment extends BaseFragment {
 
     @BindView(R.id.ry_order_id)
     RecyclerView ryOrderId;
-    Unbinder unbinder;
+
     private List<RepairOrder.DataBean> data;
+    private Recycler_repairadapter recycler_repairadapter;
 
     public RepairOrderFragment() {
         // Required empty public constructor
@@ -58,8 +58,15 @@ public class RepairOrderFragment extends BaseFragment {
 
     @Override
     public void onResume() {
-        Log.i(TAG, "onResume: "+pos+string);
         super.onResume();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (getUserVisibleHint()){
+
+        }
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     @Override
@@ -69,20 +76,54 @@ public class RepairOrderFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("userId", SharePreferenceUtils.get(getHolding(),"userId",-1+""));
+            JSONObject jsonObject1=new JSONObject();
+            jsonObject1.put("pageNum",1);//默认为第一页
+            jsonObject.put("page",jsonObject1);
+            String electronicStatus="";
+            switch (getArguments().getString("pos")){
+                case "全部工单":
+                    electronicStatus="1";
+                    break;
+                case "等待维修":
+                    electronicStatus="2";
+                    break;
+                case "正在维修":
+                    electronicStatus="3";
+                    break;
+                case "服务确认":
+                    electronicStatus="4";
+                    break;
+                case "正在审核":
+                    electronicStatus="5";
+                    break;
+                case "审核失败":
+                    electronicStatus="6";
+                    break;
+                case "维修完成":
+                    electronicStatus="7";
+                    break;
+            }
+            jsonObject.put("electronicStatus",electronicStatus);
+            Log.i(TAG, "initView: "+jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         //准备数据源
-        getData();
+        getData(BaseJsonUtils.Base64String(jsonObject));
         //准备适配器
-        Recycler_repairadapter recycler_repairadapter=new Recycler_repairadapter(R.layout.list_item,data);
+        recycler_repairadapter = new Recycler_repairadapter(R.layout.list_item,data);
         //填充适配器
         ryOrderId.setAdapter(recycler_repairadapter);
     }
 
     //初次获取数据
     @Override
-    protected void getData() {
-        JSONObject jsonObject=new JSONObject();
+    protected void getData(String electroicStatus) {
         RetrofitManager.create(ApiService.class)
-                .getRepairOrder(BaseJsonUtils.Base64String(jsonObject))
+                .getRepairOrder(electroicStatus)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<RepairOrder>() {
@@ -93,13 +134,23 @@ public class RepairOrderFragment extends BaseFragment {
 
                     @Override
                     public void onNext(RepairOrder repairOrder) {
+                        Log.i(TAG, "onNext: "+repairOrder.getMsg());
+                        switch (repairOrder.getCode()){
+                            case "200":
+                                data=repairOrder.getData();
+                                recycler_repairadapter.notifyDataSetChanged();//刷新适配器
+                                ToastUtils.showToast(getActivity(),"获取到"+repairOrder.getData().size()+"信息");
+                                break;
+                            case "3000":
+                                ToastUtils.showToast(getContext(),repairOrder.getMsg());
+                                break;
+                        }
                        //得到网络数据
-                        data = repairOrder.getData();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        ToastUtils.showToast(getActivity(),"网络或服务器异常");
                     }
 
                     @Override
@@ -115,18 +166,4 @@ public class RepairOrderFragment extends BaseFragment {
 
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }
