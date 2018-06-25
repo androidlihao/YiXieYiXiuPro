@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Apapter;
 
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -22,5 +23,8 @@ public class MessageCenterAdapter extends BaseQuickAdapter<MsgCenter.DataBean.Li
          helper.setText(android.R.id.text1,item.getContent());
     }
 
-
+    @Override
+    public void setOnLoadMoreListener(RequestLoadMoreListener requestLoadMoreListener, RecyclerView recyclerView) {
+        super.setOnLoadMoreListener(requestLoadMoreListener, recyclerView);
+    }
 }
