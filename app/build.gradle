@@ -55,5 +55,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'//RecyclerView万能适配器
+    compile 'com.wuxiaolong.pullloadmorerecyclerview:library:1.1.2'
 
 }

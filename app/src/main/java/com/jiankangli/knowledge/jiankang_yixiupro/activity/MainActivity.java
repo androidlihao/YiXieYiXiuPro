@@ -323,6 +323,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 cla=RepairOrderActivity.class;
                 break;
             case R.id.view_upkeep_id:
+                cla=UpkeepActivity.class;
                 break;
             case R.id.view_polling_id:
                 break;

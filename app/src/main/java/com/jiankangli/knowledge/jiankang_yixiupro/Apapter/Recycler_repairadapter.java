@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Apapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class Recycler_repairadapter extends BaseQuickAdapter<RepairOrder.DataBean,BaseViewHolder>{
 
+
     public Recycler_repairadapter(int layoutResId, @Nullable List<RepairOrder.DataBean> data) {
         super(layoutResId, data);
     }
@@ -24,9 +26,34 @@ public class Recycler_repairadapter extends BaseQuickAdapter<RepairOrder.DataBea
         helper.setText(R.id.tv_hosptionName,item.getHospitalName());
         helper.setText(R.id.tv_times,item.getReportTime());
         helper.setText(R.id.tv_sn,item.getDeviceNo());
-        switch (item.getOrderStatus()){
-            case 0:
+        String statu="";
+        if (item.getListStatus()==null){
+            return;
+        }
+        switch (item.getListStatus()){
+            case "1":
+                statu="全部";
+                break;
+            case 2+"":
+                statu="等待维修";
+                break;
+            case 3+"":
+                statu="正在维修";
+                break;
+            case 4+"":
+                statu="服务确认";
+                break;
+            case 5+"":
+                statu="正在审核";
+                break;
+            case 6+"":
+                statu="审核失败";
+                break;
+            case 7+"":
+                statu="维修完成";
                 break;
         }
+        Log.i(TAG, "convert: "+statu);
+        helper.setText(R.id.tv_state,statu);
     }
 }

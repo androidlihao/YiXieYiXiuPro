@@ -51,7 +51,8 @@
         <activity android:name=".activity.MMBActivity" />
         <activity android:name=".activity.ChangePsd2Activity" />
         <activity android:name=".activity.MessageCenterActivity" />
-        <activity android:name=".activity.RepairOrderActivity"></activity>
+        <activity android:name=".activity.RepairOrderActivity" />
+        <activity android:name=".activity.UpkeepActivity"></activity>
     </application>
 
 </manifest>

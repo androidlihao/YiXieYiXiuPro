@@ -67,7 +67,7 @@ public interface ApiService {
      //获取维修工单列表信息
      @FormUrlEncoded
      @POST("repairWorkOrder/getList.do")
-     Observable<RepairOrder> getRepairOrder(@Field("jsonString")String jsonString);
+     Observable<String> getRepairOrder(@Field("jsonString")String jsonString);
      //获取消息中心列表
      @FormUrlEncoded
      @POST("engineer/messageList.do")

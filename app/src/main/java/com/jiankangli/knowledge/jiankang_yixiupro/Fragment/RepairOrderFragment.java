@@ -4,10 +4,9 @@ package com.jiankangli.knowledge.jiankang_yixiupro.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_repairadapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
@@ -15,12 +14,15 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
+import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,44 +31,29 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * A simple {@link Fragment} subclass.
  */
+@SuppressLint("ValidFragment")
 public class RepairOrderFragment extends BaseFragment {
 
 
-    @BindView(R.id.ry_order_id)
-    RecyclerView ryOrderId;
+    @BindView(R.id.pullLoadMoreRecyclerView)
+    PullLoadMoreRecyclerView pullLoadMoreRecyclerView;
+    public List data=new LinkedList<>();
+    public Recycler_repairadapter adapter;
+    public int currentPage=0;//默认为1
+    public final static int REFRESH_CODE=1;
+    public final static int LOADMORE_CODE=2;
+    public JSONObject jsonObject;
 
-    private List<RepairOrder.DataBean> data;
-    private Recycler_repairadapter recycler_repairadapter;
-
-    public RepairOrderFragment() {
-        // Required empty public constructor
-    }
     String string;
     int pos;
+
     @SuppressLint("ValidFragment")
     public RepairOrderFragment(String string, int pos) {
-        // Required empty public constructor
-        Log.i(TAG, "RepairOrderFragment: " + pos + string);
-        this.pos=pos;
-        this.string=string;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (getUserVisibleHint()){
-
-        }
-        super.setUserVisibleHint(isVisibleToUser);
+        this.pos = pos;
+        this.string = string;
     }
 
     @Override
@@ -76,94 +63,103 @@ public class RepairOrderFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("userId", SharePreferenceUtils.get(getHolding(),"userId",-1+""));
-            JSONObject jsonObject1=new JSONObject();
-            jsonObject1.put("pageNum",1);//默认为第一页
-            jsonObject.put("page",jsonObject1);
-            String electronicStatus="";
-            switch (getArguments().getString("pos")){
-                case "全部工单":
-                    electronicStatus="1";
-                    break;
-                case "等待维修":
-                    electronicStatus="2";
-                    break;
-                case "正在维修":
-                    electronicStatus="3";
-                    break;
-                case "服务确认":
-                    electronicStatus="4";
-                    break;
-                case "正在审核":
-                    electronicStatus="5";
-                    break;
-                case "审核失败":
-                    electronicStatus="6";
-                    break;
-                case "维修完成":
-                    electronicStatus="7";
-                    break;
-            }
-            jsonObject.put("electronicStatus",electronicStatus);
-            Log.i(TAG, "initView: "+jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //准备数据源
-        getData(BaseJsonUtils.Base64String(jsonObject));
+        pullLoadMoreRecyclerView.setLinearLayout();
         //准备适配器
-        recycler_repairadapter = new Recycler_repairadapter(R.layout.list_item,data);
+        adapter = new Recycler_repairadapter(R.layout.list_item, data);
         //填充适配器
-        ryOrderId.setAdapter(recycler_repairadapter);
+        pullLoadMoreRecyclerView.setAdapter(adapter);
+
+        pullLoadMoreRecyclerView.setOnPullLoadMoreListener(this);
+
+        pullLoadMoreRecyclerView.setFooterViewText("加载中..");
+
+        pullLoadMoreRecyclerView.refresh();
     }
 
     //初次获取数据
     @Override
-    protected void getData(String electroicStatus) {
+    protected void getData(final int code,JSONObject jsonObject) {
         RetrofitManager.create(ApiService.class)
-                .getRepairOrder(electroicStatus)
+                .getRepairOrder(BaseJsonUtils.Base64String(jsonObject))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<RepairOrder>() {
+                .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(RepairOrder repairOrder) {
-                        Log.i(TAG, "onNext: "+repairOrder.getMsg());
+                    public void onNext(String string) {
+                        RepairOrder repairOrder=GsonUtil.GsonToBean(string,RepairOrder.class);
+                        List<RepairOrder.DataBean> list = repairOrder.getData();
                         switch (repairOrder.getCode()){
                             case "200":
-                                data=repairOrder.getData();
-                                recycler_repairadapter.notifyDataSetChanged();//刷新适配器
-                                ToastUtils.showToast(getActivity(),"获取到"+repairOrder.getData().size()+"信息");
+                                switch (code){
+                                    case REFRESH_CODE:
+                                        data.addAll(0,list);
+                                        break;
+                                    case LOADMORE_CODE:
+                                        data.addAll(list);
+                                        if (list.size()==0||list.isEmpty()||list==null){
+                                            ToastUtils.showToast(getContext(),"没有更多数据");
+                                        }
+                                        break;
+                                }
                                 break;
                             case "3000":
-                                ToastUtils.showToast(getContext(),repairOrder.getMsg());
+                                ToastUtils.showToast(getContext(), repairOrder.getMsg());
                                 break;
                         }
-                       //得到网络数据
+                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.showToast(getActivity(),"网络或服务器异常");
+                        ToastUtils.showToast(getActivity(), "网络或服务器异常");
                     }
 
                     @Override
                     public void onComplete() {
-
+                       pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
                     }
                 });
     }
+    //请求服务器的js数据
+    @Override
+    protected void JsonStrings(int code) {
+        currentPage++;
+        jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userId", SharePreferenceUtils.get(getHolding(), "userId", -1 + ""));
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("pageNum", currentPage);//默认为第一页
+            jsonObject.put("page", jsonObject1);
+            int electronicStatus = getArguments().getInt("pos");
+            jsonObject.put("electronicStatus", 1+electronicStatus+"");
+            getData(code,jsonObject);//执行请求操作
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     //更新数据源
+
     @Override
-    protected void updateListData() {
+    public void onRefresh() {
+       //刷新
+        JsonStrings(REFRESH_CODE);
+    }
+
+    @Override
+    public void onLoadMore() {
+      //下拉加载
+        JsonStrings(LOADMORE_CODE);
 
     }
 
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+    }
 }
