@@ -4,8 +4,11 @@ package com.jiankangli.knowledge.jiankang_yixiupro.net;
 
 
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgDetils;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 
 
 import io.reactivex.Observable;
@@ -72,4 +75,16 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("engineer/messageList.do")
      Observable<MsgCenter> getMsgCenter(@Field("jsonString")String jsonString);
+     //获取保养工单列表信息
+     @FormUrlEncoded
+     @POST("maintainOrder/getMaintainOrderList.do")
+     Observable<UpkeepOrder> getUpkeepOrder(@Field("jsonString")String jsonString);
+     //获取巡检列表工单信息
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/getInspectionWorkOrderList.do")
+     Observable<PollingOrder> getPollingOrder(@Field("jsonString")String jsonString);
+     //消息详情地址
+     @FormUrlEncoded
+     @POST("engineer/messageInfo.do")
+     Observable<MsgDetils> getMsgDetils(@Field("jsonString")String jsonString);
 }

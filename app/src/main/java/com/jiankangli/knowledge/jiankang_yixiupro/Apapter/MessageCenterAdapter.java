@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class MessageCenterAdapter extends BaseQuickAdapter<MsgCenter.DataBean.Li
 
     @Override
     protected void convert(BaseViewHolder helper, MsgCenter.DataBean.ListBean item) {
-         helper.setText(android.R.id.text1,item.getContent());
+         helper.setText(R.id.tv_msg_id,item.getContent());
     }
 
     @Override

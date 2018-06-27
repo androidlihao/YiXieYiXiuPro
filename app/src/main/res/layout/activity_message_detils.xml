@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.jiankangli.knowledge.jiankang_yixiupro.activity.MessageDetilsActivity">
+    <include
+        layout="@layout/toolbar"/>
+    <TextView
+        android:id="@+id/tv_msg_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px_30"
+        android:layout_marginRight="@dimen/px_30"
+        android:layout_marginTop="@dimen/px_40"
+        android:textColor="#333333"
+        android:textSize="@dimen/px_48" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/px_4"
+        android:layout_marginLeft="@dimen/px_30"
+        android:layout_marginRight="@dimen/px_30"
+        android:layout_marginTop="@dimen/px_40"
+        android:background="#f1f1f1" />
+
+    <TextView
+        android:id="@+id/tv_msg_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/px_30"
+        android:layout_marginTop="@dimen/px_36"
+        android:textColor="#999999"
+        android:textSize="@dimen/px_36" />
+</LinearLayout>

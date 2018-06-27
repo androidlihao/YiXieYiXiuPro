@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.RepairOrderApapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.OrderFragmentPageApapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 
@@ -38,7 +38,7 @@ public class RepairOrderActivity extends BaseActivity {
     String[] titles={"全部工单","等待维修","正在维修","服务确认","正在审核","审核失败","维修完成"};
     private void initview() {
        //准备适配器
-        RepairOrderApapter adapter=new RepairOrderApapter(getSupportFragmentManager(),titles);
+        OrderFragmentPageApapter adapter=new OrderFragmentPageApapter(getSupportFragmentManager(),titles,"维修");
         viewpagerId.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewpagerId);
     }

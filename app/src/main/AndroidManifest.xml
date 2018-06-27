@@ -52,7 +52,9 @@
         <activity android:name=".activity.ChangePsd2Activity" />
         <activity android:name=".activity.MessageCenterActivity" />
         <activity android:name=".activity.RepairOrderActivity" />
-        <activity android:name=".activity.UpkeepActivity"></activity>
+        <activity android:name=".activity.UpkeepActivity" />
+        <activity android:name=".activity.PollingActivity" />
+        <activity android:name=".activity.MessageDetilsActivity"></activity>
     </application>
 
 </manifest>

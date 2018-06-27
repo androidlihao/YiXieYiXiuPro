@@ -14,8 +14,8 @@ import java.util.List;
  * Created by 李浩 on 2018/6/26.
  */
 
-public class Recycler_UpKeepAdapter extends BaseQuickAdapter<UpkeepOrder.DataBean,BaseViewHolder>{
-    public Recycler_UpKeepAdapter(int layoutResId, @Nullable List<UpkeepOrder.DataBean> data) {
+public class Recycler_PollingAdapter extends BaseQuickAdapter<UpkeepOrder.DataBean,BaseViewHolder>{
+    public Recycler_PollingAdapter(int layoutResId, @Nullable List<UpkeepOrder.DataBean> data) {
         super(layoutResId, data);
     }
 
@@ -32,11 +32,11 @@ public class Recycler_UpKeepAdapter extends BaseQuickAdapter<UpkeepOrder.DataBea
                 statu="全部";
                 break;
             case 2:
-                statu="等待保养";
+                statu="等待巡检";
                 ImageID=R.mipmap.service1;
                 break;
             case 3:
-                statu="正在保养";
+                statu="正在巡检";
                 ImageID=R.mipmap.service2;
                 break;
             case 4:
@@ -52,7 +52,7 @@ public class Recycler_UpKeepAdapter extends BaseQuickAdapter<UpkeepOrder.DataBea
                 ImageID=R.mipmap.service5;
                 break;
             case 7:
-                statu="保养完成";
+                statu="巡检完成";
                 ImageID=R.mipmap.service6;
                 break;
         }

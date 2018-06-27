@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,7 +63,7 @@ public class MessageCenterActivity extends BaseActivity implements
 
     private void initAdapter() {
         //准备适配器
-        adapter = new MessageCenterAdapter(android.R.layout.simple_list_item_1,Datalist);
+        adapter = new MessageCenterAdapter(R.layout.simple_list_item,Datalist);
         //填充适配器
         adapter.bindToRecyclerView(rcId);
         adapter.setOnItemClickListener(this);
@@ -181,7 +182,10 @@ public class MessageCenterActivity extends BaseActivity implements
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        MsgCenter.DataBean.ListBean item= (MsgCenter.DataBean.ListBean) adapter.getData().get(position);
+        Intent intent=new Intent(this,MessageDetilsActivity.class);
+        intent.putExtra("id",item.getId());
+        startActivity(intent);
     }
 
 }

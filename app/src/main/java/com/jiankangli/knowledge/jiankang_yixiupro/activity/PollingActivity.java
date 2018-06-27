@@ -15,7 +15,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class UpkeepActivity extends BaseActivity {
+public class PollingActivity extends BaseActivity {
 
     @BindView(R.id.tv_entering_id)
     TextView tvEnteringId;
@@ -31,7 +31,7 @@ public class UpkeepActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addMiddleTitle(this, "保养列表");
+        addMiddleTitle(this, "巡检列表");
         initview();
     }
 
@@ -40,11 +40,12 @@ public class UpkeepActivity extends BaseActivity {
         return R.layout.activity_upkeep;
     }
 
-    String[] titles = {"全部工单", "等待保养", "正在保养", "服务确认", "正在审核", "审核失败", "保养完成"};
+    String[] titles = {"全部", "等待巡检", "正在巡检", "服务确认", "正在审核", "审核失败", "巡检完成"};
+
     private void initview() {
         tvEnteringId.setText("录入报告");
         //准备适配器
-        OrderFragmentPageApapter adapter = new OrderFragmentPageApapter(getSupportFragmentManager(), titles,"保养");
+        OrderFragmentPageApapter adapter = new OrderFragmentPageApapter(getSupportFragmentManager(), titles,"巡检");
         viewpagerId.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewpagerId);
     }

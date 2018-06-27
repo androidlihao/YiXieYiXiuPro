@@ -90,8 +90,7 @@ public class HeadPicUtils {
         // 如果不开启，用户不能拖动选框，只能缩放图片
         options.setFreeStyleCropEnabled(true);
 
-        Uri desUri=Uri.fromFile(new File(path,System.currentTimeMillis()+".png"));
-
+        Uri desUri=Uri.fromFile(new File(path,"CropHeadPicture"+".png"));//剪切后的图片存储地址
         Log.i("TAG", "desUri: "+desUri);
         Log.i("TAG", "uri: "+uri);
         // 设置源uri及目标uri

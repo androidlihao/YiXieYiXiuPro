@@ -281,8 +281,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                         @Override
                         public void onNext(String s) {
-                            Log.i("TAG", "onNext: " + s);
-                            Log.i("TAG", "onNext: " + Thread.currentThread().getName());
                             switch (GsonUtil.GsonCode(s)) {
                                 case "success":
                                     TextScroll textScroll = GsonUtil.GsonToBean(s, TextScroll.class);
@@ -326,6 +324,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 cla=UpkeepActivity.class;
                 break;
             case R.id.view_polling_id:
+                cla=PollingActivity.class;
                 break;
             case R.id.view_part_id:
                 break;

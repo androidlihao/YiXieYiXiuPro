@@ -65,7 +65,7 @@ public class UpkeepOrder {
          * serviceConfirmStatus : 1
          * listStatus : 2
          */
-
+        private int bookTime;
         private int id;
         private String hospitalName;
         private int orderStatus;
@@ -76,6 +76,14 @@ public class UpkeepOrder {
         private int auditStatus;
         private int serviceConfirmStatus;
         private int listStatus;
+
+        public int getBookTime() {
+            return bookTime;
+        }
+
+        public void setBookTime(int bookTime) {
+            this.bookTime = bookTime;
+        }
 
         public int getId() {
             return id;

@@ -27,6 +27,7 @@ public class Recycler_repairadapter extends BaseQuickAdapter<RepairOrder.DataBea
         helper.setText(R.id.tv_times,item.getReportTime());
         helper.setText(R.id.tv_sn,item.getDeviceNo());
         String statu="";
+        int ImageID = R.mipmap.joblist_awm;
         if (item.getListStatus()==null){
             return;
         }
@@ -36,24 +37,31 @@ public class Recycler_repairadapter extends BaseQuickAdapter<RepairOrder.DataBea
                 break;
             case 2+"":
                 statu="等待维修";
+                ImageID=R.mipmap.service1;
                 break;
             case 3+"":
                 statu="正在维修";
+                ImageID=R.mipmap.service2;
                 break;
             case 4+"":
                 statu="服务确认";
+                ImageID=R.mipmap.service3;
                 break;
             case 5+"":
                 statu="正在审核";
+                ImageID=R.mipmap.service4;
                 break;
             case 6+"":
                 statu="审核失败";
+                ImageID=R.mipmap.service5;
                 break;
             case 7+"":
                 statu="维修完成";
+                ImageID=R.mipmap.service6;
                 break;
         }
         Log.i(TAG, "convert: "+statu);
         helper.setText(R.id.tv_state,statu);
+        helper.setImageResource(R.id.iv_state,ImageID);
     }
 }
