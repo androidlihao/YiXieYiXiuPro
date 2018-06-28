@@ -87,4 +87,16 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("engineer/messageInfo.do")
      Observable<MsgDetils> getMsgDetils(@Field("jsonString")String jsonString);
+     //清空留言列表接口
+     @FormUrlEncoded
+     @POST("engineer/deleteMsgList.do")
+     Observable<String> ClearMMBList(@Field("jsonString")String jsonString);
+     //获得在线聊天信息接口
+     @FormUrlEncoded
+     @POST("engineer/lookOnLineMsg.do")
+     Observable<String> getOnlineMsg(@Field("jsonString")String jsonString);
+     //提交留言接口
+     @FormUrlEncoded
+     @POST("engineer/sendOnLineMsg.do")
+     Observable<String> SubmitMMB(@Field("jsonString")String jsonString);
 }

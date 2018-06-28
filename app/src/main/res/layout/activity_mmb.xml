@@ -5,21 +5,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.jiankangli.knowledge.jiankang_yixiupro.activity.MMBActivity">
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include
-            layout="@layout/toolbar"/>
-        <TextView
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:background="#04b7ff"
+        android:minHeight="?attr/actionBarSize"
+        >
+        <RelativeLayout
+            android:id="@+id/rl_head_id"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="清空"
-            android:layout_marginTop="25dp"
-            android:textColor="@color/colorWhite"
-            android:gravity="center_vertical"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/px_35"/>
-    </RelativeLayout>
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginRight="@dimen/px_50"
+            android:layout_gravity="right"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tv_clear_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清空留言"
+                android:textColor="@color/colorWhite"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>>
 
     <com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView
         android:id="@+id/rvMMB"

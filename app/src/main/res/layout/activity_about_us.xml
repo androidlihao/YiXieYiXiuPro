@@ -40,6 +40,5 @@
         android:paddingTop="@dimen/px_50"
         android:paddingRight="@dimen/px_80"
         android:scrollbars="none"
-        android:text="健康力健康力建看你"
         android:textColor="#333333" />
 </LinearLayout>

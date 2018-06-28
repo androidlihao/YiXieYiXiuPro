@@ -54,7 +54,9 @@
         <activity android:name=".activity.RepairOrderActivity" />
         <activity android:name=".activity.UpkeepActivity" />
         <activity android:name=".activity.PollingActivity" />
-        <activity android:name=".activity.MessageDetilsActivity"></activity>
+        <activity android:name=".activity.MessageDetilsActivity" />
+        <activity android:name=".activity.MmbOnlineActivity"></activity>
+        <activity android:name=".activity.WriteMMBActivity"></activity>
     </application>
 
 </manifest>
