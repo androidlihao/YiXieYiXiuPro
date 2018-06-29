@@ -33,7 +33,7 @@ public class WriteMMBActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addMiddleTitle(this, "我的留言板");
+        addMiddleTitle(this, "我的留言");
     }
 
     @Override
