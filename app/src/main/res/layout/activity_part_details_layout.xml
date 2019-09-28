@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:background="#04b7ff"
+        android:minHeight="?attr/actionBarSize"
+        >
+    </android.support.v7.widget.Toolbar>>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_id"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rc_order_details_id"
+                android:paddingLeft="@dimen/px_50"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px_30"
+                android:background="@color/colorgray" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rc_part_details_id"
+                android:paddingLeft="@dimen/px_50"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px_30"
+                android:background="@color/colorgray" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/px_50"
+                android:paddingTop="@dimen/px_80"
+                android:paddingBottom="@dimen/px_80"
+                android:text="故障图片展示"
+                android:textColor="#333"
+                android:textSize="20dp" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rc_img_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingLeft="@dimen/px_50"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/px_50"
+                android:paddingTop="@dimen/px_50"
+                android:paddingBottom="@dimen/px_50"
+                android:text="故障描述"
+                android:textColor="#333"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_fault_des_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_50"
+
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px_50"
+                android:background="@color/colorgray"
+                />
+            <FrameLayout
+                android:id="@+id/fl_content_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/px_30"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -65,7 +65,6 @@ public class ChangPsdActivity extends BaseActivity {
                 RetrofitManager.create(ApiService.class).resetPsd(jsonString)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.<String>bindToLifecycle())
                         .subscribe(new Observer<String>() {
                             @Override
                             public void onSubscribe(Disposable d) {

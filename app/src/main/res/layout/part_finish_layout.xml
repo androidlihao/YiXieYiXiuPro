@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/px_50"
+        android:text="备件返回状态"
+        android:textColor="#333333"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/tv_partfinish_status_id"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_200"
+        android:layout_marginLeft="@dimen/px_50"
+        android:layout_marginRight="@dimen/px_50"
+        android:gravity="left|top" />
+
+</LinearLayout>

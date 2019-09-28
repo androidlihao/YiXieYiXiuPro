@@ -18,7 +18,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 
 import org.json.JSONObject;
@@ -119,7 +119,7 @@ public class MessageCenterActivity extends BaseActivity implements
         try {
             currentPage++;
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("userId", SharePreferenceUtils.get(this,"userId",-1+""))  ;
+            jsonObject.put("userId", SPUtils.get(this,"userId",-1+""))  ;
             jsonObject.put("pageNum",currentPage+"");
             jsonObject.put("pageSize","10");
             RetrofitManager.create(ApiService.class)

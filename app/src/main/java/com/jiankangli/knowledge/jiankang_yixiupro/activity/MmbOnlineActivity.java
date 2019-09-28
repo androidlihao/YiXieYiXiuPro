@@ -3,7 +3,6 @@ package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_MmbOnlineAdapter;
@@ -14,7 +13,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -67,7 +66,7 @@ public class MmbOnlineActivity extends BaseActivity
         //创建数据源
         datalist = new LinkedList();
         //创建适配器
-        String userId= ((String) SharePreferenceUtils.get(getApplicationContext(),"userId",-1+""));
+        String userId= ((String) SPUtils.get(getApplicationContext(),"userId",-1+""));
         adapter = new Recycler_MmbOnlineAdapter(datalist,this,userId);
         //绑定适配器
         pullLoadMoreRecyclerView.setAdapter(adapter);
@@ -113,7 +112,7 @@ public class MmbOnlineActivity extends BaseActivity
     private void getData(final int code) {
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("userId", SharePreferenceUtils.get(this,"userId",-1+""));
+            jsonObject.put("userId", SPUtils.get(this,"userId",-1+""));
             jsonObject.put("id",id);
             jsonObject.put("orderNo", orderNo);
             jsonObject.put("pageNum", currentPage);
@@ -125,7 +124,6 @@ public class MmbOnlineActivity extends BaseActivity
                 .getOnlineMsg(BaseJsonUtils.Base64String(jsonObject))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<String>bindToLifecycle())
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(Disposable d) {

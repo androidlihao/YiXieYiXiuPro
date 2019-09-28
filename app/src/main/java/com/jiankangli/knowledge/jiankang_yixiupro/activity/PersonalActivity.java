@@ -29,7 +29,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.HeadPicUtils;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
@@ -52,7 +52,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.constant.PIC_URL;
+import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants.PIC_URL;
 
 
 public class PersonalActivity extends BaseActivity implements View.OnClickListener,EasyPermissions.PermissionCallbacks{
@@ -90,11 +90,11 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
 
     private void setLoginData() {
         Picasso.get().load
-                (PIC_URL+SharePreferenceUtils.get(
+                (PIC_URL+ SPUtils.get(
                         this,"headPicUrl","" +
-                                "")).into(profileImage);
-        tvPersonNameId.setText(SharePreferenceUtils.get(this,"name","医修").toString());
-        tvNumberPhone.setText(SharePreferenceUtils.get(this,"phone","114").toString());
+                                "")).error(R.mipmap.home_touxiang).into(profileImage);
+        tvPersonNameId.setText(SPUtils.get(this,"name","医修").toString());
+        tvNumberPhone.setText(SPUtils.get(this,"phone","114").toString());
     }
 
     private void initRecycler() {
@@ -183,7 +183,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                                 //清除sp的值
                                 //跳转到登录页面，并清空所有页面
                                 //发送广播
-                                SharePreferenceUtils.clear(PersonalActivity.this);
+                                SPUtils.clear(PersonalActivity.this);
                                 Intent intent = new Intent("drc.xxx.yyy.baseActivity");
                                 intent.putExtra("closeAll", 1);
                                 sendBroadcast(intent);
@@ -294,7 +294,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     private void submithead(File file) {
         try{
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("userId", SharePreferenceUtils.get(this,"userId",-1+""));
+            jsonObject.put("userId", SPUtils.get(this,"userId",-1+""));
             String jsonString= BaseJsonUtils.Base64String(jsonObject);
             RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
             MultipartBody.Part body =
@@ -302,7 +302,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             RetrofitManager.create(ApiService.class)
                     .submitHead(jsonString,body)
                     .subscribeOn(Schedulers.io())
-                    .compose(this.<String>bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<String>() {
                         @Override
@@ -316,7 +315,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                                 case "success":
                                     ToastUtils.showToast(getApplicationContext(),"头像上传成功!");
                                     try {
-                                        SharePreferenceUtils.put(getApplicationContext(),
+                                        SPUtils.put(getApplicationContext(),
                                                 "headPicUrl",GsonUtil.GsonJsonObject(s,"data").get("headPicUrl"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();

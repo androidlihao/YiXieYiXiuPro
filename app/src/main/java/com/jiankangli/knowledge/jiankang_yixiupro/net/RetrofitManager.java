@@ -1,6 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.net;
 
-import com.jiankangli.knowledge.jiankang_yixiupro.Constant.constant;
+import com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * Created by lw on 2017-04-01.
+ * Created by lh on 2017-04-01.
  */
 
 public class RetrofitManager {
@@ -32,7 +32,7 @@ public class RetrofitManager {
      */
     public static <T> T create(Class<T> clazz) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(constant.REQUEST_BASE_URL)
+                .baseUrl(Constants.REQUEST_BASE_URL)
                 .client(getOkHttpClient())
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -55,6 +55,10 @@ public class RetrofitManager {
                             .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                             .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                            //添加打印BaseActivity
+                            .addInterceptor(new LogInterceptor())
+                            //设置出现错误进行重新连接。
+                            .retryOnConnectionFailure(true)
                             .build();
                 }
             }

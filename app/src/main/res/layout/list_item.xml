@@ -26,8 +26,7 @@
             android:layout_marginRight="@dimen/px_30"
             android:layout_marginTop="@dimen/px_34"
             android:lineSpacingExtra="@dimen/px_21"
-            android:text="SN: 2001456132126"
-            android:textColor="#999999"
+            android:textColor="#333333"
             android:textSize="@dimen/px_42" />
         <TextView
             android:id="@+id/tv_times"
@@ -38,7 +37,6 @@
             android:layout_marginLeft="@dimen/px_30"
             android:layout_marginRight="@dimen/px_30"
             android:lineSpacingExtra="@dimen/px_21"
-            android:text="2018-01-23"
             android:textColor="#999999"
             android:textSize="@dimen/px_42" />
 

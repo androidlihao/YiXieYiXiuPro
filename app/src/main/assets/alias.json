@@ -1,0 +1,159 @@
+﻿{
+  "aliasBean": [
+    {
+      "key": "id",
+      "value": "工单id"
+    },
+    {
+      "key": "workNumber",
+      "value": "工号"
+    },
+    {
+      "key": "orderNo",
+      "value": "派工单号"
+    },
+    {
+      "key": "hospitalName",
+      "value": "客户名称"
+    },
+    {
+      "key": "projectCode",
+      "value": "项目编号"
+    },
+    {
+      "key": "contractNo",
+      "value": "合同编号"
+    },
+    {
+      "key": "deviceModel",
+      "value": "设备型号"
+    },
+    {
+      "key": "sectionName",
+      "value": "使用科室"
+    },
+    {
+      "key": "devicePhone",
+      "value": "联系电话"
+    },
+    {
+      "key": "deviceName",
+      "value": "设备名称"
+    },
+    {
+      "key": "deviceBrand",
+      "value": "设备品牌"
+    },
+    {
+      "key": "deviceNo",
+      "value": "设备序号"
+    },
+    {
+      "key": "repairName",
+      "value": "报修人"
+    },
+    {
+      "key": "temporaryNum",
+      "value": "临时电话"
+    },
+    {
+      "key": "keepTime",
+      "value": "报修时间"
+    },
+    {
+      "key": "bookTime",
+      "value": "预约时间"
+    },
+    {
+      "key": "address",
+      "value": "地址"
+    },
+    {
+      "key": "servicerName",
+      "value": "业务人员"
+    },
+    {
+      "key": "contractStatus",
+      "value": "合同状态"
+    },
+    {
+      "key": "repairType",
+      "value": "服务类型"
+    },
+    {
+      "key": "remark",
+      "value": "故障描述"
+    },
+    {
+      "key": "factoryNo",
+      "value": "SN码"
+    },
+    {
+      "key": "deviceType",
+      "value": "设备类型"
+    },
+    {
+      "key": "deviceTypeCode",
+      "value": "设备类型码"
+    },
+    {
+      "key": "sbwz",
+      "value": "设备位置"
+    },
+    {
+      "key": "accessoryName",
+      "value": "备件名称"
+    },
+    {
+      "key": "accessoryNo",
+      "value": "备件编号"
+    },
+    {
+      "key": "serialNum",
+      "value": "序列号"
+    },
+    {
+      "key": "number",
+      "value": "数量"
+    },
+    {
+      "key": "foreignAid",
+      "value": "是否需要外援"
+    },
+    {
+      "key": "commodityLink",
+      "value": "商品链接"
+    },{
+      "key": "supplier",
+      "value": "备选供应商"
+    },
+    {
+      "key": "needTime",
+      "value": "需求日期"
+    },
+    {
+      "key": "arrivalTime",
+      "value": "期望备件到达时间"
+    },
+    {
+      "key": "unitPrice",
+      "value": "单价"
+    },
+    {
+      "key": "returnNumber",
+      "value": "归还运单号"
+    },
+    {
+      "key": "remark",
+      "value": "备注"
+    },
+    {
+      "key": "name",
+      "value": "客户名称"
+    },
+    {
+      "key": "accRemark",
+      "value": "备注"
+    }
+  ]
+}

@@ -41,7 +41,7 @@
         android:id="@+id/sw_load_msg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
@@ -167,14 +167,16 @@
                     android:paddingTop="@dimen/px_15"
                     android:paddingBottom="@dimen/px_15"
                     android:paddingLeft="@dimen/px_50"
-                    android:text="我的消息"
-                    android:textSize="20sp"
-                    android:textStyle="bold"/>
+                    android:text="待办事项"
+                    android:textColor="#04b7ff"
+                    android:textSize="@dimen/px_60"
+                    />
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_msg_id"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

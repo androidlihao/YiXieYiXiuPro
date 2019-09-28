@@ -114,7 +114,6 @@ public class ForgetActivity extends BaseActivity {
 
             }
         })
-                .compose(this.<Long>bindToLifecycle())//管理Rxjava的生命周期
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(Disposable d) {

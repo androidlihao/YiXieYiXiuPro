@@ -2,7 +2,6 @@ package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
@@ -10,7 +9,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 
 import org.json.JSONException;
 
@@ -19,6 +18,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import me.yokeyword.fragmentation.ExtraTransaction;
+import me.yokeyword.fragmentation.SupportActivityDelegate;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public class AboutUsActivity extends BaseActivity {
 
@@ -40,7 +42,7 @@ public class AboutUsActivity extends BaseActivity {
     }
 
     private void getDatas() {
-        String AboutUs=SharePreferenceUtils.get(this,"aboutUs","").toString();
+        String AboutUs= SPUtils.get(this,"aboutUs","").toString();
         if (AboutUs.trim().isEmpty()){
             RetrofitManager.create(ApiService.class)
                     .getContents()
@@ -59,9 +61,8 @@ public class AboutUsActivity extends BaseActivity {
                                     //展示出来
                                     try {
                                         String aboutContent=GsonUtil.GsonJsonObject(s,"data").get("content").toString();
-                                        Log.i("TAG", "onNext: "+aboutContent);
                                         setData(aboutContent);
-                                        SharePreferenceUtils.put(getApplicationContext(),"aboutUs",aboutContent);
+                                        SPUtils.put(getApplicationContext(),"aboutUs",aboutContent);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -92,6 +93,7 @@ public class AboutUsActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_about_us;
     }
+
 
 
 }

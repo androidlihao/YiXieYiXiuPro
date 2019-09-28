@@ -51,12 +51,27 @@
         <activity android:name=".activity.MMBActivity" />
         <activity android:name=".activity.ChangePsd2Activity" />
         <activity android:name=".activity.MessageCenterActivity" />
-        <activity android:name=".activity.RepairOrderActivity" />
+        <activity android:name=".activity.RepairOrderActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".activity.UpkeepActivity" />
         <activity android:name=".activity.PollingActivity" />
         <activity android:name=".activity.MessageDetilsActivity" />
         <activity android:name=".activity.MmbOnlineActivity"></activity>
         <activity android:name=".activity.WriteMMBActivity"></activity>
+        <activity android:name=".activity.checkErrorActivity"></activity>
+        <activity android:name=".activity.applySparePartActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity android:name=".activity.OrderDetailsActivity"></activity>
+        <activity android:name=".activity.PartDetailsActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity android:name=".activity.SparePartsActivity"></activity>
+        <activity android:name=".activity.signActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".activity.ServiceOrderActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity android:name=".activity.saveOrderActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity android:name=".activity.fixRecordActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     </application>
 
 </manifest>

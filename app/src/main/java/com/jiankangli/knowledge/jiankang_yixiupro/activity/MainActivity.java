@@ -27,7 +27,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ImageLoader;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
@@ -47,7 +47,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.constant.PIC_URL;
+import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants.PIC_URL;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -105,13 +105,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void initViewData() {
         Picasso.get().load
-                (PIC_URL + SharePreferenceUtils.get(
+                (PIC_URL + SPUtils.get(
                         this, "headPicUrl", "" +
                                 "")).error(R.mipmap.home_touxiang).into(ivTouxiangId);
-        Log.i("TAG", "initViewData: "+PIC_URL + SharePreferenceUtils.get(
+        Log.i("TAG", "initViewData: "+PIC_URL + SPUtils.get(
                 this, "headPicUrl", "" +
                         ""));
-        String statu = (String) SharePreferenceUtils.get(this, "status", "");
+        String statu = (String) SPUtils.get(this, "status", "");
         switch (statu) {
             case "1":
                 ivOnlineStatuId.setImageResource(R.mipmap.online);
@@ -226,13 +226,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void changeStatus(final String statu) {
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", SharePreferenceUtils.get(getApplicationContext(), "userId", -1 + ""));
+            jsonObject.put("userId", SPUtils.get(getApplicationContext(), "userId", -1 + ""));
             jsonObject.put("status", statu);
             String string = BaseJsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class)
                     .changeStatu(string)
                     .subscribeOn(Schedulers.io())
-                    .compose(this.<Status>bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Status>() {
                         @Override
@@ -242,7 +241,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                         @Override
                         public void onNext(Status status) {
-                            SharePreferenceUtils.put(getApplicationContext(), "status", status.data.status);
+                            SPUtils.put(getApplicationContext(), "status", status.data.status);
                         }
 
                         @Override
@@ -266,11 +265,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         //开始获取数据更新
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", SharePreferenceUtils.get(this, "userId", ""));
+            jsonObject.put("userId", SPUtils.get(this, "userId", ""));
             String string = BaseJsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class)
                     .getnotice(string)
-                    .compose(this.<String>bindToLifecycle())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<String>() {
@@ -288,7 +286,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                                     list.clear();
                                     list.add(textScroll);
                                     newMsgAdapters.notifyDataSetChanged();//更新数据源
-                                    ToastUtils.showToast(getApplicationContext(),"刷新成功");
+//                                    ToastUtils.showToast(getApplicationContext(),"刷新成功");
                                     break;
                                 case "error":
                                     ToastUtils.showToast(getApplicationContext(), GsonUtil.GsonMsg(s));
@@ -327,6 +325,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 cla=PollingActivity.class;
                 break;
             case R.id.view_part_id:
+                cla=SparePartsActivity.class;
                 break;
         }
         Intent intent=new Intent(this,cla);

@@ -44,7 +44,6 @@ public class MessageDetilsActivity extends BaseActivity {
                      .getMsgDetils(BaseJsonUtils.Base64String(jsonObject))
                      .subscribeOn(Schedulers.io())
                      .observeOn(AndroidSchedulers.mainThread())
-                     .compose(this.<MsgDetils>bindToLifecycle())
                      .subscribe(new Observer<MsgDetils>() {
                          @Override
                          public void onSubscribe(Disposable d) {

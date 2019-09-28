@@ -9,21 +9,17 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.view.AutoEdittext;
 
 import org.json.JSONObject;
 
-import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class feedbackActivity extends BaseActivity {
@@ -53,16 +49,15 @@ public class feedbackActivity extends BaseActivity {
         }
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", SharePreferenceUtils.get(this, "userId", ""));
-            jsonObject.put("userName", SharePreferenceUtils.get(this, "userName", ""));
-            jsonObject.put("hospitialName", SharePreferenceUtils.get(this, "hospitialName", ""));
-            jsonObject.put("phoneNumber", SharePreferenceUtils.get(this, "phoneNumber", ""));
+            jsonObject.put("userId", SPUtils.get(this, "userId", ""));
+            jsonObject.put("userName", SPUtils.get(this, "userName", ""));
+            jsonObject.put("hospitialName", SPUtils.get(this, "hospitialName", ""));
+            jsonObject.put("phoneNumber", SPUtils.get(this, "phoneNumber", ""));
             jsonObject.put("content", content);
             RetrofitManager.create(ApiService.class)
                     .submitfeed(BaseJsonUtils.Base64String(jsonObject))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<String>bindToLifecycle())
                     .subscribe(new Observer<String>() {
                         @Override
                         public void onSubscribe(Disposable d) {

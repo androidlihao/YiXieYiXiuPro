@@ -10,7 +10,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 
 import org.json.JSONObject;
@@ -67,7 +67,7 @@ public class ChangePsd2Activity extends BaseActivity {
     private void change() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SharePreferenceUtils.get(this,"userId", ""));
+            jsonObject.put("userId", SPUtils.get(this,"userId", ""));
             jsonObject.put("oldPassWord",psd );
             jsonObject.put("newPassWord",newPsd);
             String jsonString = BaseJsonUtils.Base64String(jsonObject);
@@ -75,7 +75,6 @@ public class ChangePsd2Activity extends BaseActivity {
                     .changePsd(jsonString)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<String>bindToLifecycle())
                     .subscribe(new Observer<String>() {
                         @Override
                         public void onSubscribe(Disposable d) {

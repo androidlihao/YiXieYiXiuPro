@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="@dimen/px_600"
+        android:layout_height="@dimen/px_600"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:background="@drawable/dialog_backgroup">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px_200"
+            android:textSize="@dimen/px_80"
+            android:text="故障类型"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/px_50"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_200"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <CheckBox
+                android:id="@+id/cb_software_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="软件"
+                android:layout_gravity="center"
+                />
+            <CheckBox
+                android:id="@+id/cb_hardware_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="硬件"
+                />
+        </LinearLayout>>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/btn_sure_id"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/px_100"
+                android:layout_gravity="center"
+                android:background="@drawable/submit_seleter"
+                android:gravity="center"
+                android:text="确定 "
+                android:textColor="#ffffff"
+                android:padding="@dimen/px_10"
+                android:textSize="@dimen/px_48" />
+        </FrameLayout>>
+    </LinearLayout>>
+
+
+</FrameLayout>

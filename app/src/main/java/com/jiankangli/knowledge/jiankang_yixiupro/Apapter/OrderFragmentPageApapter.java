@@ -7,9 +7,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
-import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.PollingFragment;
-import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.RepairOrderFragment;
-import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.UpKeepOrderFragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.polling.PollingOrderFragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.repair_order.RepairOrderFragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.spare_parts.SparePartsFragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.up_keep_oreder.UpKeepOrderFragment;
 
 
 /**
@@ -36,9 +37,10 @@ public class OrderFragmentPageApapter extends FragmentPagerAdapter{
                 fragment=new UpKeepOrderFragment();
                 break;
             case "巡检":
-                fragment=new PollingFragment();
+                fragment=new PollingOrderFragment();
                 break;
             case "备件":
+                fragment=new SparePartsFragment();
                 break;
         }
         Bundle bundle=new Bundle();
@@ -49,7 +51,8 @@ public class OrderFragmentPageApapter extends FragmentPagerAdapter{
 
     public OrderFragmentPageApapter(FragmentManager fm, String[] titles,String type){
         super(fm);
-        this.titles=titles;//标题
+        //标题
+        this.titles=titles;
         this.type=type;
     }
 

@@ -1,0 +1,24 @@
+﻿{
+  "displayBean": [
+    "workNumber",
+    "orderNo",
+    "hospitalName",
+    "projectCode",
+    "contractNo",
+    "deviceBrand",
+    "deviceName",
+    "deviceModel",
+    "deviceNo",
+    "sectionName",
+    "devicePhone",
+    "deviceNo",
+    "repairName",
+    "temporaryNum",
+    "keepTime",
+    "bookTime",
+    "address",
+    "servicerName",
+    "contractStatus",
+    "repairType"
+  ]
+}

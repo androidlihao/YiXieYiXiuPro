@@ -10,7 +10,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.view.AutoEdittext;
 
@@ -50,16 +50,15 @@ public class WriteMMBActivity extends BaseActivity {
         }
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", SharePreferenceUtils.get(this, "userId", ""));
-            jsonObject.put("name", SharePreferenceUtils.get(this, "name", ""));
+            jsonObject.put("userId", SPUtils.get(this, "userId", ""));
+            jsonObject.put("name", SPUtils.get(this, "name", ""));
             jsonObject.put("chatId", getIntent().getIntExtra("ChatId",-1));
-            jsonObject.put("headPicUrl", SharePreferenceUtils.get(this, "headPicUrl", ""));
+            jsonObject.put("headPicUrl", SPUtils.get(this, "headPicUrl", ""));
             jsonObject.put("content", content);
             RetrofitManager.create(ApiService.class)
                     .SubmitMMB(BaseJsonUtils.Base64String(jsonObject))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<String>bindToLifecycle())
                     .subscribe(new Observer<String>() {
                         @Override
                         public void onSubscribe(Disposable d) {

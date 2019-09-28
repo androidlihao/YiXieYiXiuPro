@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_300"
+        android:background="@color/colorgray" >
+        <Button
+            android:id="@+id/btn_workOrder_details_id"
+            android:layout_width="@dimen/px_440"
+            android:layout_height="@dimen/px_120"
+            android:background="@drawable/submit_seleter_2"
+            android:gravity="center"
+            android:text="工单详情"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/px_48" />
+    </RelativeLayout>
+</FrameLayout>

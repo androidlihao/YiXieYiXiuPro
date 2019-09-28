@@ -17,7 +17,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SharePreferenceUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -34,6 +34,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 我的留言
+ */
 public class MMBActivity extends BaseActivity implements
         PullLoadMoreRecyclerView.PullLoadMoreListener, BaseQuickAdapter.OnItemClickListener {
 
@@ -88,7 +91,7 @@ public class MMBActivity extends BaseActivity implements
     private void loadData(final int code) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SharePreferenceUtils.get(this, "userId", ""));
+            jsonObject.put("userId", SPUtils.get(this, "userId", ""));
             jsonObject.put("chatId", "23");
             jsonObject.put("pageNum", currentPage);
             jsonObject.put("pageSize", "10");
@@ -99,7 +102,6 @@ public class MMBActivity extends BaseActivity implements
                     .getMyMsg(string)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<String>bindToLifecycle())
                     .subscribe(new Observer<String>(){
                         @Override
                         public void onSubscribe(Disposable d) {
@@ -118,7 +120,7 @@ public class MMBActivity extends BaseActivity implements
                                     switch (code) {
                                         case REFRESH_CODE:
                                             datalist.addAll(0, mineMsg.getData().getList());
-                                            ToastUtils.showToast(getApplicationContext(), "刷新成功");
+//                                            ToastUtils.showToast(getApplicationContext(), "刷新成功");
                                             break;
                                         case LOADMORD_CODE:
                                             if (mineMsg.getData().getList().size() == 0) {
@@ -177,7 +179,7 @@ public class MMBActivity extends BaseActivity implements
                         //执行清空操作
                         JSONObject jsonObject=new JSONObject();
                         try {
-                            jsonObject.put("userId",SharePreferenceUtils.get(getApplicationContext(),"userId","")) ;
+                            jsonObject.put("userId", SPUtils.get(getApplicationContext(),"userId","")) ;
                             jsonObject.put("min",datalist.get(datalist.size()-1).getId());
                         }catch (Exception e){
                             e.printStackTrace();
@@ -198,7 +200,7 @@ public class MMBActivity extends BaseActivity implements
                 .ClearMMBList(BaseJsonUtils.Base64String(jsonObject))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<String>bindToLifecycle()).subscribe(new Observer<String>() {
+                .subscribe(new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
                  commonLoading.show();

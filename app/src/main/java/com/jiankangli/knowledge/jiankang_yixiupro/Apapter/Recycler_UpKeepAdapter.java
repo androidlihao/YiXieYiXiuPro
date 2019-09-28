@@ -1,6 +1,5 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Apapter;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -8,23 +7,23 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 
-import java.util.List;
-
 /**
  * Created by 李浩 on 2018/6/26.
  */
 
-public class Recycler_UpKeepAdapter extends BaseQuickAdapter<UpkeepOrder.DataBean,BaseViewHolder>{
-    public Recycler_UpKeepAdapter(int layoutResId, @Nullable List<UpkeepOrder.DataBean> data) {
-        super(layoutResId, data);
+public class Recycler_UpKeepAdapter extends BaseQuickAdapter<UpkeepOrder,BaseViewHolder>{
+
+
+    public Recycler_UpKeepAdapter(int layoutResId) {
+        super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, UpkeepOrder.DataBean item) {
+    protected void convert(BaseViewHolder helper, UpkeepOrder item) {
         helper.setText(R.id.tv_hosptionName,item.getHospitalName());
         helper.setText(R.id.tv_times,item.getReportTime());
-        helper.setText(R.id.tv_sn,item.getDeviceNo());
-        helper.setText(R.id.tv_ET,item.getBookTime());
+        helper.setText(R.id.tv_sn,"SN:"+item.getFactoryNo());
+        helper.setText(R.id.tv_ET,"预计保养时间:"+item.getBookTime());
         String statu="";
         int ImageID = R.mipmap.joblist_awm;
         switch (item.getListStatus()){

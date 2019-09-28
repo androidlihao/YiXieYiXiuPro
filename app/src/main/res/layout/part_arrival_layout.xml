@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/ll_content_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="备件返回状态"
+            android:padding="@dimen/px_50"
+            android:textColor="#333333"
+            android:textSize="20dp"/>
+        <EditText
+            android:id="@+id/et_part_status_id"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_200"
+            android:layout_marginLeft="@dimen/px_50"
+            android:layout_marginRight="@dimen/px_50"
+            android:gravity="left|top"
+            android:hint="请输入备件状态"
+            android:background="@null"/>
+        <TextView
+            android:id="@+id/tv_part_status_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="500"
+            android:gravity="right"
+            android:paddingRight="@dimen/px_50"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_300"
+        android:background="@color/colorgray" >
+        <Button
+            android:id="@+id/btn_repair_arrval_id"
+            android:layout_width="@dimen/px_440"
+            android:layout_height="@dimen/px_120"
+            android:background="@drawable/submit_seleter"
+            android:gravity="center"
+            android:text="备件到货"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/px_48" />
+    </RelativeLayout>
+
+</LinearLayout>

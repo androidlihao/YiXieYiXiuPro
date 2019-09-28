@@ -1,0 +1,24 @@
+﻿{
+  "displayBean": [
+    "workNumber",
+    "orderNo",
+    "name",
+    "deviceName",
+    "deviceModel",
+    "deviceNo"
+  ],
+  "PartdisplayBean": [
+    "accessoryName",
+    "accessoryNo",
+    "serialNum",
+    "number",
+    "foreignAid",
+    "commodityLink",
+    "supplier",
+    "needTime",
+    "arrivalTime",
+    "unitPrice",
+    "returnNumber",
+    "accRemark"
+  ]
+}
