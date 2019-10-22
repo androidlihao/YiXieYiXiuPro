@@ -9,7 +9,9 @@ import java.util.List;
  */
 public class displayBean {
 
+
     private List<String> displayBean;
+    private List<String> upKeepdisplayBean;
 
     public List<String> getDisplayBean() {
         return displayBean;
@@ -17,5 +19,13 @@ public class displayBean {
 
     public void setDisplayBean(List<String> displayBean) {
         this.displayBean = displayBean;
+    }
+
+    public List<String> getUpKeepdisplayBean() {
+        return upKeepdisplayBean;
+    }
+
+    public void setUpKeepdisplayBean(List<String> upKeepdisplayBean) {
+        this.upKeepdisplayBean = upKeepdisplayBean;
     }
 }

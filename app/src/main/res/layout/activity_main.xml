@@ -41,10 +41,11 @@
         android:id="@+id/sw_load_msg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -149,7 +150,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="备件详情"
+                            android:text="备件"
                             android:textSize="18sp"
                             android:gravity="center"
                             android:padding="@dimen/px_20"
@@ -171,12 +172,17 @@
                     android:textColor="#04b7ff"
                     android:textSize="@dimen/px_60"
                     />
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_msg_id"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"></android.support.v7.widget.RecyclerView>
+                    android:descendantFocusability="blocksDescendants">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_msg_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
+                </RelativeLayout>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

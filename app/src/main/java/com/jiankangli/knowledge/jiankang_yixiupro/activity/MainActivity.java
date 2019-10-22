@@ -20,12 +20,14 @@ import com.example.zhouwei.library.CustomPopWindow;
 import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.newMsgAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
+import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
+import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.TextScroll;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ImageLoader;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
@@ -49,7 +51,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants.PIC_URL;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
 
     @BindView(R.id.iv_online_statu_id)
     ImageView ivOnlineStatuId;
@@ -74,7 +76,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @BindView(R.id.view_part_id)
     LinearLayout viewPartId;
     private CustomPopWindow popWindow;
-    private List<TextScroll> list;
     private newMsgAdapter newMsgAdapters;
 
     @Override
@@ -84,17 +85,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         initRecycler();
         swLoadMsg.setOnRefreshListener(this);
-        //进入页面开始刷新
-        swLoadMsg.setRefreshing(true);
-        this.onRefresh();
+        onRefresh();
     }
 
     private void initRecycler() {
-        rvMsgId.setLayoutManager(new LinearLayoutManager(this));//设置布局管理器
-        //准备数据源
-        list = new ArrayList<>();
-        newMsgAdapters = new newMsgAdapter(android.R.layout.simple_list_item_1, list);
+        rvMsgId.setLayoutManager(new LinearLayoutManager(this));
+        newMsgAdapters = new newMsgAdapter(R.layout.item_push_msg_layout);
         rvMsgId.setAdapter(newMsgAdapters);
+        newMsgAdapters.setOnLoadMoreListener(this, rvMsgId);
         newMsgAdapters.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -108,7 +106,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 (PIC_URL + SPUtils.get(
                         this, "headPicUrl", "" +
                                 "")).error(R.mipmap.home_touxiang).into(ivTouxiangId);
-        Log.i("TAG", "initViewData: "+PIC_URL + SPUtils.get(
+        Log.i("TAG", "initViewData: " + PIC_URL + SPUtils.get(
                 this, "headPicUrl", "" +
                         ""));
         String statu = (String) SPUtils.get(this, "status", "");
@@ -262,53 +260,65 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onRefresh() {
-        //开始获取数据更新
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", SPUtils.get(this, "userId", ""));
-            String string = BaseJsonUtils.Base64String(jsonObject);
-            RetrofitManager.create(ApiService.class)
-                    .getnotice(string)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<String>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        pageNum = 1;
+        getPushMessage();
+    }
 
-                        }
+    @Override
+    public void onLoadMoreRequested() {
+        pageNum++;
+        getPushMessage();
+    }
 
-                        @Override
-                        public void onNext(String s) {
-                            switch (GsonUtil.GsonCode(s)) {
-                                case "success":
-                                    TextScroll textScroll = GsonUtil.GsonToBean(s, TextScroll.class);
-                                    //得到网络数据，开始修改数据源
-                                    list.clear();
-                                    list.add(textScroll);
-                                    newMsgAdapters.notifyDataSetChanged();//更新数据源
-//                                    ToastUtils.showToast(getApplicationContext(),"刷新成功");
-                                    break;
-                                case "error":
-                                    ToastUtils.showToast(getApplicationContext(), GsonUtil.GsonMsg(s));
-                                    break;
+    private void getPushMessage() {
+        RetrofitManager.create(ApiService.class)
+                .messagePush(getJson())
+                .compose(RxSchedulers.<BaseEntity<List<messagePushBean>>>io2main())
+                .subscribe(new RxSubscriber<BaseEntity<List<messagePushBean>>>() {
+                    @Override
+                    public void _onNext(BaseEntity<List<messagePushBean>> listBaseEntity) {
+                        if (listBaseEntity.isSuccess()) {
+                            List<messagePushBean> data = listBaseEntity.data;
+                            if (data != null) {
+                                if (pageNum == 1) {
+                                    //刷新的情况
+                                    newMsgAdapters.setNewData(data);
+                                } else {
+                                    newMsgAdapters.addData(data);
+                                }
+
                             }
+                        } else {
+                            ToastUtils.showToast(getApplicationContext(), listBaseEntity.msg);
                         }
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            ToastUtils.showToast(getApplicationContext(), "服务器或网络异常!");
+                    @Override
+                    public void _onError(Throwable e, String msg) {
+                        ToastUtils.showToast(getApplicationContext(), msg);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (swLoadMsg.isRefreshing()) {
                             swLoadMsg.setRefreshing(false);
+                        }
+                        int i = newMsgAdapters.getData().size() % 20;
+                        if (i != 0 && newMsgAdapters.getData().size() != 0) {
+                            if (newMsgAdapters.isLoading()) {
+                                //加载结束,没有更多数据
+                                newMsgAdapters.loadMoreEnd();
+                            }
+                        } else {
+                            //有更多的数据
+                            if (newMsgAdapters.isLoading()) {
+                                newMsgAdapters.loadMoreComplete();
+                            }
 
                         }
-
-                        @Override
-                        public void onComplete() {
-                            swLoadMsg.setRefreshing(false);
-                        }
-                    });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                        super.onComplete();
+                    }
+                });
     }
 
     @OnClick({R.id.view_repaid_id, R.id.view_upkeep_id, R.id.view_polling_id, R.id.view_part_id})
@@ -316,19 +326,43 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         Class cla = null;
         switch (view.getId()) {
             case R.id.view_repaid_id:
-                cla=RepairOrderActivity.class;
+                cla = RepairOrderActivity.class;
                 break;
             case R.id.view_upkeep_id:
-                cla=UpkeepActivity.class;
+                cla = UpkeepActivity.class;
                 break;
             case R.id.view_polling_id:
-                cla=PollingActivity.class;
+                cla = PollingActivity.class;
                 break;
             case R.id.view_part_id:
-                cla=SparePartsActivity.class;
+                cla = SparePartsActivity.class;
                 break;
         }
-        Intent intent=new Intent(this,cla);
+        Intent intent = new Intent(this, cla);
         startActivity(intent);
     }
+
+    //页码数
+    private int pageNum = 1;
+
+    /**
+     * 获取工单详情Json数据
+     *
+     * @return
+     */
+    private String getJson() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("pageNum", pageNum);
+            jsonObject1.put("pageTotal", 20);
+            jsonObject.put("page", jsonObject1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String js = BaseJsonUtils.Base64String(jsonObject);
+        return js;
+    }
+
 }

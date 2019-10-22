@@ -1,10 +1,12 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by 李浩 on 2018/6/26.
  */
 
-public class UpkeepOrder {
+public class UpkeepOrder implements Serializable {
 
     /**
      * id : 1216

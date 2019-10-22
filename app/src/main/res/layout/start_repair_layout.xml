@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+    android:layout_height="@dimen/px_300"
+    android:background="@color/colorgray" >
     <Button
         android:id="@+id/btn_start_repair_id"
         android:layout_width="@dimen/px_740"
         android:layout_height="@dimen/px_120"
         android:background="@drawable/submit_seleter"
         android:gravity="center"
+        android:layout_centerInParent="true"
         android:text="开始维修"
         android:textColor="#ffffff"
         android:textSize="@dimen/px_48" />
 </RelativeLayout>
+</FrameLayout>

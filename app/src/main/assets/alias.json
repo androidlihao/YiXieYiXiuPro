@@ -37,6 +37,10 @@
       "value": "联系电话"
     },
     {
+      "key": "phoneNumber",
+      "value": "联系电话"
+    },
+    {
       "key": "deviceName",
       "value": "设备名称"
     },
@@ -69,6 +73,10 @@
       "value": "地址"
     },
     {
+      "key": "hospitaAddress",
+      "value": "医院地址"
+    },
+    {
       "key": "servicerName",
       "value": "业务人员"
     },
@@ -86,7 +94,7 @@
     },
     {
       "key": "factoryNo",
-      "value": "SN码"
+      "value": "序列号"
     },
     {
       "key": "deviceType",

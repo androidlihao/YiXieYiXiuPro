@@ -6,12 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -19,13 +17,16 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.RecordAadpter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.XJ_BY_RecordAadpter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.fixRecordBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderRecordBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
@@ -54,9 +55,9 @@ import io.reactivex.functions.Consumer;
 /**
  * @author lihao
  * @date 2019-09-28 15:37
- * @description :维修服务记录
+ * @description :保养服务记录
  */
-public class fixRecordActivity extends BaseActivity implements View.OnClickListener {
+public class upKeepRecordActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.tv_save_id)
     TextView tvSaveId;
     @BindView(R.id.rl_head_id)
@@ -65,12 +66,8 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
     Toolbar toolbarId;
     @BindView(R.id.tv_workNumber_id)
     TextView tvWorkNumberId;
-    @BindView(R.id.tv_orderNo_id)
-    TextView tvOrderNoId;
     @BindView(R.id.tv_accessoryName_id)
     TextView tvAccessoryNameId;
-    @BindView(R.id.tv_faultType_id)
-    TextView tvFaultTypeId;
     @BindView(R.id.tv_fix_time)
     TextView tvFixTime;
     @BindView(R.id.tv_arrivalTime_id)
@@ -82,9 +79,9 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
     @BindView(R.id.root)
     LinearLayout root;
     int position;
-    private LinkedList<fixRecordBean.ServiceRecordMapArrayBean> serviceRecodeVosBeans;
-    private RecordAadpter recordAadpter;
-    private RepairOrder order;
+    private LinkedList<maintainOrderRecordBean.ServiceRecordMapArrayBean> serviceRecodeVosBeans;
+    private XJ_BY_RecordAadpter recordAadpter;
+    private UpkeepOrder order;
     private TimePickerView rqTime;
     private TimePickerView sjTime;
     private TimePickerView arrivalTime;
@@ -98,14 +95,14 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected int getLayoutId() {
-        return R.layout.new_fix_record_activity;
+        return R.layout.new_upkeep_record_activity;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        addMiddleTitle(this, "添加服务记录");
+        addMiddleTitle(this, "添加保养记录");
         ButterKnife.bind(this);
         initRecordList();
         initDialog();
@@ -174,7 +171,7 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
                 arrivalTime.show(view);
                 break;
             case R.id.btn_addServiceRecode_id:
-                recordAadpter.addData(new fixRecordBean.ServiceRecordMapArrayBean());
+                recordAadpter.addData(new maintainOrderRecordBean.ServiceRecordMapArrayBean());
                 rcServiceRecodeId.scrollToPosition(recordAadpter.getData().size());
                 break;
         }
@@ -192,12 +189,12 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
             jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
             jsonObject.put("arrivalTime", arrivalTime);
             JSONArray jsonArray = new JSONArray();
-            List<fixRecordBean.ServiceRecordMapArrayBean> data = recordAadpter.getData();
+            List<maintainOrderRecordBean.ServiceRecordMapArrayBean> data = recordAadpter.getData();
             for (int i = 0; i < data.size(); i++) {
-                fixRecordBean.ServiceRecordMapArrayBean serviceRecodeVosBean = data.get(i);
-                String serviceTime = serviceRecodeVosBean.getServiceTime();
-                String startTime = serviceRecodeVosBean.getStartTime();
-                String endTime = serviceRecodeVosBean.getEndTime();
+                maintainOrderRecordBean.ServiceRecordMapArrayBean serviceRecordMapArrayBean = data.get(i);
+                String serviceTime = serviceRecordMapArrayBean.getServiceTime();
+                String startTime = serviceRecordMapArrayBean.getStartTime();
+                String endTime = serviceRecordMapArrayBean.getEndTime();
                 if (TextUtils.isEmpty(serviceTime)) {
                     ToastUtil.showShortSafe("请选择第" + (i + 1) + "条记录的服务日期", this);
                     return;
@@ -225,7 +222,6 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
                 jsonObject1.put("startTime", startTime);
                 jsonObject1.put("endTime", endTime);
                 jsonObject1.put("roadTime", roadTime);
-                jsonObject1.put("equipmentStatus", data.get(i).getEquipmentStatus());
                 jsonArray.put(jsonObject1);
             }
             jsonObject.put("serviceRecodeVos", jsonArray);
@@ -272,7 +268,7 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
     private void initRecordList() {
         rcServiceRecodeId.setLayoutManager(new LinearLayoutManager(this));
         serviceRecodeVosBeans = new LinkedList<>();
-        recordAadpter = new RecordAadpter(R.layout.fix_record_item, serviceRecodeVosBeans);
+        recordAadpter = new XJ_BY_RecordAadpter(R.layout.fix_record_item, serviceRecodeVosBeans);
         rcServiceRecodeId.setAdapter(recordAadpter);
         rcServiceRecodeId.setNestedScrollingEnabled(false);
         recordAadpter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -290,7 +286,7 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
                         sjTime.show(view);
                         break;
                     case R.id.btn_delete_id:
-                        DialogUtil.showPositiveDialog(fixRecordActivity.this, "提示", "确认删除?", new DialogInterface.OnClickListener() {
+                        DialogUtil.showPositiveDialog(upKeepRecordActivity.this, "提示", "确认删除?", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 adapter.remove(position);
@@ -303,39 +299,27 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void getData() throws JSONException {
-        order = (RepairOrder) getIntent().getSerializableExtra("order");
+        order = (UpkeepOrder) getIntent().getSerializableExtra("order");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", order.getId());
         jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
         RetrofitManager.create(ApiService.class)
-                .getServiceRecodeList(BaseJsonUtils.Base64String(jsonObject))
-                .compose(RxSchedulers.<BaseEntity<fixRecordBean>>io2main())
-                .subscribe(new RxSubscriber<BaseEntity<fixRecordBean>>() {
+                .getmaintainServiceRecordList(BaseJsonUtils.Base64String(jsonObject))
+                .compose(RxSchedulers.<BaseEntity<maintainOrderRecordBean>>io2main())
+                .subscribe(new RxSubscriber<BaseEntity<maintainOrderRecordBean>>() {
                     @Override
-                    public void _onNext(BaseEntity<fixRecordBean> fixRecordBeanBaseEntity) {
+                    public void _onNext(BaseEntity<maintainOrderRecordBean> fixRecordBeanBaseEntity) {
                         if (fixRecordBeanBaseEntity.isSuccess()) {
                             tvWorkNumberId.setText(SPUtil.getInstance(getApplicationContext()).getString("workNumber"));
-                            fixRecordBean fixRecordBean = fixRecordBeanBaseEntity.data;
-                            tvOrderNoId.setText(TextUtils.isEmpty(fixRecordBean.getOrderNo()) ? "" : fixRecordBean.getOrderNo());
-                            tvAccessoryNameId.setText(TextUtils.isEmpty(fixRecordBean.getAccessoryName()) ? "" : fixRecordBean.getAccessoryName());
-                            switch (fixRecordBeanBaseEntity.data.getFaultType()) {
-                                case 1:
-                                    tvFaultTypeId.setText("软件");
-                                    break;
-                                case 2:
-                                    tvFaultTypeId.setText("硬件");
-                                    break;
-                                case 3:
-                                    tvFaultTypeId.setText("软件和硬件");
-                                    break;
+                            maintainOrderRecordBean data = fixRecordBeanBaseEntity.data;
+                            tvAccessoryNameId.setText(TextUtils.isEmpty(data.getAccessoryName()) ? "" : data.getAccessoryName());
+                            tvArrivalTimeId.setText(TextUtils.isEmpty(data.getArrivalTime()) ? "" : data.getArrivalTime());
+                            List<maintainOrderRecordBean.ServiceRecordMapArrayBean> serviceRecordMapArray = fixRecordBeanBaseEntity.data.getServiceRecordMapArray();
+                            if (serviceRecordMapArray == null || serviceRecordMapArray.size() == 0) {
+                                serviceRecordMapArray = new LinkedList<>();
+                                serviceRecordMapArray.add(new maintainOrderRecordBean.ServiceRecordMapArrayBean());
                             }
-                            tvArrivalTimeId.setText(TextUtils.isEmpty(fixRecordBean.getArrivalTime()) ? "" : fixRecordBean.getArrivalTime());
-                            List<fixRecordBean.ServiceRecordMapArrayBean> serviceRecodeVos = fixRecordBeanBaseEntity.data.getServiceRecordMapArray();
-                            if (serviceRecodeVos == null || serviceRecodeVos.size() == 0) {
-                                serviceRecodeVos = new LinkedList<>();
-                                serviceRecodeVos.add(new fixRecordBean.ServiceRecordMapArrayBean());
-                            }
-                            recordAadpter.setNewData(serviceRecodeVos);
+                            recordAadpter.setNewData(serviceRecordMapArray);
                         }
                     }
 

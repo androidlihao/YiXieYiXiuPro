@@ -48,6 +48,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.permissions.Permission;
 import com.luck.picture.lib.permissions.RxPermissions;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -308,6 +309,7 @@ public class applySparePartActivity extends BaseActivity {
                             String accRemark = etAccRemarkId.getText().toString();
                             String applyName = (String) SPUtils.get(getApplicationContext(), "name","");
                             String operatorId= (String) SPUtils.get(getApplicationContext(), "userId", -1 + "");
+                            String remark = etRemarkId.getText().toString();
                             JsonObject jsonObject = new JsonObject();
                             jsonObject.addProperty("orderNo",OrderNo);
                             jsonObject.addProperty("accessoryName",accessoryName);
@@ -323,8 +325,9 @@ public class applySparePartActivity extends BaseActivity {
                             jsonObject.addProperty("returnNumber",returnNumber);
                             jsonObject.addProperty("operatorId",operatorId);
                             jsonObject.addProperty("accRemark",accRemark);
+                            jsonObject.addProperty("remark",remark);
                             jsonObject.addProperty("applyName",applyName);
-                            jsonObject.addProperty("accessoryPicVos",jsonElements.toString());
+                            jsonObject.add("accessoryPicVos", jsonElements);
                             addSparePart(jsonObject);
                         }
                         super.onComplete();
@@ -334,34 +337,38 @@ public class applySparePartActivity extends BaseActivity {
     }
 
     private void addSparePart(JsonObject jsonObject) {
-        RetrofitManager.create(ApiService.class)
-                .addSparePart(Base64.encodeToString(jsonObject.toString().getBytes(), Base64.NO_WRAP))
-                .compose(RxSchedulers.<BaseEntity>io2main())
-                .subscribe(new RxSubscriber<BaseEntity>() {
-                    @Override
-                    public void _onNext(BaseEntity baseEntity) {
-                        ToastUtil.showShortSafe(baseEntity.msg,getApplicationContext());
-                        if (baseEntity.isSuccess()){
-                            try {
-                                Thread.sleep(2000);
-                                finish();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+        try {
+            RetrofitManager.create(ApiService.class)
+                    .addSparePart(BaseJsonUtils.Base64String(new JSONObject(jsonObject.toString())))
+                    .compose(RxSchedulers.<BaseEntity>io2main())
+                    .subscribe(new RxSubscriber<BaseEntity>() {
+                        @Override
+                        public void _onNext(BaseEntity baseEntity) {
+                            ToastUtil.showShortSafe(baseEntity.msg,getApplicationContext());
+                            if (baseEntity.isSuccess()){
+                                try {
+                                    Thread.sleep(2000);
+                                    finish();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void _onError(Throwable e, String msg) {
-                        ToastUtil.showShortSafe(msg,getApplicationContext());
-                    }
+                        @Override
+                        public void _onError(Throwable e, String msg) {
+                            ToastUtil.showShortSafe(msg,getApplicationContext());
+                        }
 
-                    @Override
-                    public void onComplete() {
-                        commonLoading.dismiss();
-                        super.onComplete();
-                    }
-                });
+                        @Override
+                        public void onComplete() {
+                            commonLoading.dismiss();
+                            super.onComplete();
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_typeString_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px_50"
+        android:layout_marginBottom="@dimen/px_30"
+        android:layout_marginTop="@dimen/px_30"
+        android:padding="@dimen/px_10"
+        android:text="维修"
+        android:textSize="@dimen/px_50"
+        android:textColor="#333333"
+        android:background="#FFEB3B"/>
+    <TextView
+        android:id="@+id/tv_content_id"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_200"
+        android:layout_marginLeft="@dimen/px_50"
+        android:layout_marginBottom="@dimen/px_30"
+        android:padding="@dimen/px_10"
+        android:text="维修"
+        android:textSize="@dimen/px_50"
+        android:textColor="#333333"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_20"
+        android:background="#F6F4F4"/>
+</LinearLayout>

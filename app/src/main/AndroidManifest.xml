@@ -42,6 +42,7 @@
         <activity android:name=".activity.ForgetActivity" />
         <activity android:name=".activity.ChangPsdActivity" />
         <activity android:name=".activity.PersonalActivity" />
+        <activity android:name=".activity.OrderPdfActivity" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -72,6 +73,10 @@
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <activity android:name=".activity.fixRecordActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity android:name=".activity.serviceConfirmPageEchoActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity android:name=".activity.UpkeepOrderDetailsActivity"/>
+        <activity android:name=".activity.upKeepRecordActivity"/>
     </application>
 
 </manifest>

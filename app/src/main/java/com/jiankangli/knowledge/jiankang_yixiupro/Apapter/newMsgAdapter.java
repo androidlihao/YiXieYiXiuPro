@@ -1,28 +1,26 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Apapter;
 
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.TextScroll;
+import com.jiankangli.knowledge.jiankang_yixiupro.R;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
 
-import java.util.List;
 
 /**
  * Created by 李浩 on 2018/6/21.
  */
 
-public class newMsgAdapter extends BaseQuickAdapter<TextScroll,BaseViewHolder>{
-    public newMsgAdapter(int layoutResId, @Nullable List<TextScroll> data) {
-        super(layoutResId, data);
+public class newMsgAdapter extends BaseQuickAdapter<messagePushBean,BaseViewHolder>{
+
+    public newMsgAdapter(int layoutResId) {
+        super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, TextScroll item) {
-        Log.i(TAG, "convert: "+item.getData().getContent());
-         helper.setText(android.R.id.text1,item.getData().getContent());
+    protected void convert(BaseViewHolder helper, messagePushBean item) {
+        helper.setText(R.id.tv_typeString_id,item.getTypeString());
+        helper.setText(R.id.tv_content_id,item.getContent());
     }
-
 
 }

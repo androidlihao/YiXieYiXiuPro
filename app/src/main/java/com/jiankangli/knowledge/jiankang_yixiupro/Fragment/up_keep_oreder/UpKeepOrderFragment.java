@@ -2,6 +2,7 @@ package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.up_keep_oreder;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
@@ -10,6 +11,9 @@ import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_UpKeepAdapter
 import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_repairadapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
+import com.jiankangli.knowledge.jiankang_yixiupro.activity.OrderDetailsActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.activity.UpkeepOrderDetailsActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.activity.serviceConfirmPageEchoActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
@@ -57,10 +61,20 @@ public class UpKeepOrderFragment extends BaseFragment<UpkeepOrderPresenter> impl
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                RepairOrder.DataBean dataBean = (RepairOrder.DataBean) adapter.getData().get(position);
-//                //然后执行跳转逻辑
-//                Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
-//                startActivity(intent);
+                UpkeepOrder upkeepOrder = (UpkeepOrder) adapter.getData().get(position);
+                //然后执行跳转逻辑
+                switch (upkeepOrder.getListStatus()) {
+                    case 4:
+                        Intent intent1 = new Intent(getActivity(), serviceConfirmPageEchoActivity.class);
+                        intent1.putExtra("order", upkeepOrder);
+                        startActivity(intent1);
+                        break;
+                    default:
+                        Intent intent = new Intent(getActivity(), UpkeepOrderDetailsActivity.class);
+                        intent.putExtra("order", upkeepOrder);
+                        startActivity(intent);
+                        break;
+                }
             }
         });
     }
@@ -103,10 +117,8 @@ public class UpKeepOrderFragment extends BaseFragment<UpkeepOrderPresenter> impl
     public void setNewData(List<UpkeepOrder> upkeepOrders) {
         List data = adapter.getData();
         if (currentPage==1){
-//            ToastUtil.showShortSafe("刷新成功",mView.getContext());
             adapter.setNewData(upkeepOrders);
         }else if (currentPage!=1&&upkeepOrders.size()!=0){
-//            ToastUtil.showShortSafe("加载成功",mView.getContext());
             data.addAll(upkeepOrders);
             adapter.setNewData(data);
         }else {

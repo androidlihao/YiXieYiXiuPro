@@ -8,6 +8,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.ElectronOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgDetils;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.OdrerDetailsBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PdfBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
 
@@ -16,7 +17,12 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.SpareParts;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.fixRecordBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderRecordBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.serviceConfirmBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.sparePartBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.workEvaluationBean;
 
 
 import java.util.List;
@@ -126,6 +132,12 @@ public interface ApiService {
      @POST("repairWorkOrder/getRepairWorkOrderBaseInfo.do")
      Observable<BaseEntity<OdrerDetailsBean>> getRepairWorkOrderBaseInfo(@Field("jsonString")String jsonString);
      /**
+      * 获取保养工单基础信息
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/getBaseOrderInfo.do")
+     Observable<BaseEntity<maintainOrderBean>> getmaintainOrderInfo(@Field("jsonString")String jsonString);
+     /**
       * 获取备件信息
       */
      @FormUrlEncoded
@@ -143,7 +155,12 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("repairWorkOrder/updateWorkOrder.do")
      Observable<BaseEntity> updateWorkOrder(@Field("jsonString")String jsonString);
-
+     /**
+      * 开始保养
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/startMaintinOrder.do")
+     Observable<BaseEntity> startMaintinOrder(@Field("jsonString")String jsonString);
      /**
       * 维修-单个工单回显
       */
@@ -186,11 +203,62 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("repairWorkOrder/getServiceRecodeList.do")
      Observable<BaseEntity<fixRecordBean>> getServiceRecodeList(@Field("jsonString")String jsonString);
-
+     /**
+      * 保养/巡检服务记录信息回显
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/getServiceRecordList.do")
+     Observable<BaseEntity<maintainOrderRecordBean>> getmaintainServiceRecordList(@Field("jsonString")String jsonString);
      /**
       * 获取审核失败原因
       */
      @FormUrlEncoded
      @POST("work/getFailureCause.do")
      Observable<BaseEntity> getFailureCause(@Field("jsonString")String jsonString);
+
+     /**
+      * 服务确认回显数据
+      */
+     @FormUrlEncoded
+     @POST("repairWorkOrder/serviceConfirmPageEcho.do")
+     Observable<BaseEntity<serviceConfirmBean>> serviceConfirmPageEcho(@Field("jsonString")String jsonString);
+
+     /**
+      * 查询工单评价状态
+      * @param jsonString
+      * @return
+      */
+     @FormUrlEncoded
+     @POST("work/queryWorkEvaluation.do")
+     Observable<BaseEntity<workEvaluationBean>> queryWorkEvaluation(@Field("jsonString")String jsonString);
+
+     /**
+      * 短信提醒
+      * @param jsonString
+      * @return
+      */
+     @FormUrlEncoded
+     @POST("phone/sendMessage.do")
+     Observable<BaseEntity> sendMessage(@Field("jsonString")String jsonString);
+
+     /**
+      * 服务确认
+      */
+     @FormUrlEncoded
+     @POST("repairWorkOrder/serviceConfirm.do")
+     Observable<BaseEntity<List<OdrerDetailsBean>>> serviceConfirm(@Field("jsonString")String jsonString);
+
+     /**
+      * 获取推送的消息
+      */
+     @FormUrlEncoded
+     @POST("electronicMessage/messagePush.do")
+     Observable<BaseEntity<List<messagePushBean>>> messagePush(@Field("jsonString")String jsonString);
+
+     /**
+      * 获取PDF文件
+      */
+     @FormUrlEncoded
+     @POST("pdf/getWorkOrderPdf.do")
+     Observable<BaseEntity<PdfBean>> getWorkOrderPdf(@Field("jsonString")String jsonString);
 }

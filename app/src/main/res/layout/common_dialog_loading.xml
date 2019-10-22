@@ -12,4 +12,11 @@
         android:background="#00000000"
         app:indicator="BallBeat"
         app:indicator_color="#1390ea" />
+    <TextView
+        android:id="@+id/tv_msg_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/load_id"
+        android:layout_centerHorizontal="true"
+        android:textColor="#1390ea"/>
 </RelativeLayout>

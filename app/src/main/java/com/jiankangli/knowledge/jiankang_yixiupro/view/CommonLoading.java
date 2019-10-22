@@ -9,15 +9,14 @@ import android.widget.TextView;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 
-import butterknife.ButterKnife;
+import butterknife.BindView;
 
 /**
  * Created by 李浩 on 2018/6/13.
  */
 
-public class CommonLoading extends Dialog{
+public class CommonLoading extends Dialog {
 
-    private TextView tv_msg;
 
     public CommonLoading(@NonNull Context context) {
         super(context);
@@ -35,11 +34,7 @@ public class CommonLoading extends Dialog{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_dialog_loading);
-        initView();//
+
     }
 
-
-    private void initView() {
-        tv_msg = findViewById(R.id.tv_msg);
-    }
 }

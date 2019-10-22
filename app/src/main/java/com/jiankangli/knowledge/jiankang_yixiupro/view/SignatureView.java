@@ -146,7 +146,13 @@ public class SignatureView extends View {
         }
         FileUtil.createOrExistsFile(file);
         if (file.exists()) {
-            Bitmap bitmap = Bitmap.createBitmap(mBitmap, (int) mSmallX, (int) mSmallY, (int) signAreaWidth, (int) signAreaHeight, new Matrix(), true);
+            Bitmap bitmap = null;
+            try {
+                bitmap = Bitmap.createBitmap(mBitmap, (int) mSmallX, (int) mSmallY, (int) signAreaWidth, (int) signAreaHeight, new Matrix(), true);
+            }catch (Exception e){
+                e.printStackTrace();
+                ToastUtil.showShortSafe("签名有误，请重新签字",getContext());
+            }
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(file);
