@@ -3,6 +3,7 @@ package com.jiankangli.knowledge.jiankang_yixiupro.net;
 
 
 
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.BannerBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.ElectronOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;
@@ -141,19 +142,28 @@ public interface ApiService {
      @POST("maintainOrder/getBaseOrderInfo.do")
      Observable<BaseEntity<maintainOrderBean>> getmaintainOrderInfo(@Field("jsonString")String jsonString);
      /**
-      *
+      *获取巡检工单基础信息
       */
      @FormUrlEncoded
      @POST("inspectionWorkOrder/getBaseOrderInfo.do")
      Observable<BaseEntity<inspectionBaseInfoBean>> getinspectionOrderInfo(@Field("jsonString")String jsonString);
-
+     /**
+      * 获取轮播图列表
+      */
+     @POST("banner/list.do")
+     Observable<BaseEntity<List<BannerBean>>> getBannerList();
      /**
       * 保养-根据id获取电子工单信息
       */
      @FormUrlEncoded
      @POST("maintainOrder/getSingleMaintainOrder.do")
      Observable<BaseEntity<SingleMaintainOrderBean>> getSingleMaintainOrder(@Field("jsonString")String jsonString);
-
+     /**
+      * 巡检-根据电子工单id获取信息
+      */
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/getSingleInspectionOrder.do")
+     Observable<BaseEntity<SingleMaintainOrderBean>> getSingleInspectionOrder(@Field("jsonString")String jsonString);
      /**
       * 获取保养/巡检模版列表
       */
@@ -319,7 +329,12 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("maintainOrder/saveMaintainOrder.do")
      Observable<BaseEntity> saveMaintainOrder(@Field("jsonString")String jsonString);
-
+     /**
+      * 录入巡检报告
+      */
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/saveInspectionOrder.do")
+     Observable<BaseEntity> saveInspectionOrder(@Field("jsonString")String jsonString);
      /**
       * 生成维修工单
       */

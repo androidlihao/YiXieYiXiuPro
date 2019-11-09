@@ -19,9 +19,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zhouwei.library.CustomPopWindow;
 import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.newMsgAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.BannerBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
@@ -47,6 +49,7 @@ import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants.PIC_URL;
@@ -119,6 +122,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
         }
         ArrayList mList = new ArrayList<>();
+        //获取图片路径
+//        RetrofitManager.create(ApiService.class)
+//                .getBannerList()
+//                .compose(RxSchedulers.<BaseEntity<List<BannerBean>>>io2main())
+//                .subscribe(new Consumer<BaseEntity<List<BannerBean>>>() {
+//                    @Override
+//                    public void accept(BaseEntity<List<BannerBean>> listBaseEntity) throws Exception {
+//                        ArrayList mList = new ArrayList<>();
+//                        for (BannerBean datum : listBaseEntity.data) {
+//                            mList.add(Constants.PIC_URL+datum.getBannerPath());
+//                        }
+//                        banner.setImages(mList)
+//                                .setImageLoader(new ImageLoader())
+//                                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+//                                .setBannerAnimation(Transformer.Default)
+//                                .setDelayTime(3000)
+//                                .start();
+//                    }
+//                });
         mList.add(R.mipmap.scroll_pic1);
         mList.add(R.mipmap.scroll_pic2);
         mList.add(R.mipmap.scroll_pic3);

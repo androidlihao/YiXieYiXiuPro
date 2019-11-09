@@ -87,6 +87,8 @@
         <activity android:name=".activity.upKeepRecordActivity"/>
         <activity android:name=".activity.enterReportActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:name=".activity.enterPollingReportActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
     </application>
 
 </manifest>

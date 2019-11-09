@@ -257,7 +257,7 @@ public class PollingOrderDetailsActivity extends BaseActivity implements View.On
                 break;
             case R.id.btn_Enter_the_repair_order_id:
                 //填写报告
-                Intent intent = new Intent(this, enterReportActivity.class);
+                Intent intent = new Intent(this, enterPollingReportActivity.class);
                 //如果为审核失败的话，那么修改完报告，再次审核
                 if (order.getListStatus()==6) {
                     intent.putExtra("isFrist",false);
