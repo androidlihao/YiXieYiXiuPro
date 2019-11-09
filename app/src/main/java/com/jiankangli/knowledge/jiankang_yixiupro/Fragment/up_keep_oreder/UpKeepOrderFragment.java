@@ -13,6 +13,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.OrderDetailsActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.UpkeepOrderDetailsActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.activity.UpkeepServiceConfirmPageEchoActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.serviceConfirmPageEchoActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
@@ -65,7 +66,8 @@ public class UpKeepOrderFragment extends BaseFragment<UpkeepOrderPresenter> impl
                 //然后执行跳转逻辑
                 switch (upkeepOrder.getListStatus()) {
                     case 4:
-                        Intent intent1 = new Intent(getActivity(), serviceConfirmPageEchoActivity.class);
+                        //调整到服务确认页面
+                        Intent intent1 = new Intent(getActivity(), UpkeepServiceConfirmPageEchoActivity.class);
                         intent1.putExtra("order", upkeepOrder);
                         startActivity(intent1);
                         break;

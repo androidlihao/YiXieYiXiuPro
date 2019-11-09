@@ -16,8 +16,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.OdrerDetailsBean;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.serviceConfirmBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.workEvaluationBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
@@ -30,7 +30,6 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -41,9 +40,9 @@ import io.reactivex.functions.Consumer;
 /**
  * @author lihao
  * @date 2019-09-29 21:35
- * @description :维修服务确认
+ * @description :巡检工单服务确认
  * */
-public class serviceConfirmPageEchoActivity extends BaseActivity {
+public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
     @BindView(R.id.toolbar_id)
     Toolbar toolbarId;
     @BindView(R.id.tv_workOrder_details_id)
@@ -64,7 +63,7 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
     Button btnSubmitId;
     @BindView(R.id.tv_queryCode_id)
     TextView tvQueryCodeId;
-    private RepairOrder order;
+    private PollingOrder order;
 
     @Override
     protected int getLayoutId() {
@@ -75,7 +74,7 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addMiddleTitle(this, "服务确认");
-        order = (RepairOrder) getIntent().getSerializableExtra("order");
+        order = (PollingOrder) getIntent().getSerializableExtra("order");
         tvWorkOrderDetailsId.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         getData();
     }
@@ -127,18 +126,18 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
             jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
             jsonObject.put("temporaryNum", etKhPhoneId.getText().toString());
             jsonObject.put("queryCode", tvQueryCodeId.getText().toString());
-            jsonObject.put("id", order.getId());
+            jsonObject.put("workOrderId", order.getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String js = BaseJsonUtils.Base64String(jsonObject);
         commonLoading.show();
         RetrofitManager.create(ApiService.class)
-                .serviceConfirm(js)
-                .compose(RxSchedulers.<BaseEntity<List<OdrerDetailsBean>>>io2main())
-                .subscribe(new RxSubscriber<BaseEntity<List<OdrerDetailsBean>>>() {
+                .inspectionWorkOrderserviceConfirm(js)
+                .compose(RxSchedulers.<BaseEntity>io2main())
+                .subscribe(new RxSubscriber<BaseEntity>() {
                     @Override
-                    public void _onNext(BaseEntity<List<OdrerDetailsBean>> odrerDetailsBeanBaseEntity) {
+                    public void _onNext(BaseEntity odrerDetailsBeanBaseEntity) {
                         if (odrerDetailsBeanBaseEntity.isSuccess()) {
                             ToastUtil.showShortSafe("提交成功", getApplicationContext());
                             order.setListStatus(5);
@@ -147,7 +146,7 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
                                     .subscribe(new Consumer<String>() {
                                         @Override
                                         public void accept(String s) throws Exception {
-                                            Intent intent = new Intent(serviceConfirmPageEchoActivity.this, OrderDetailsActivity.class);
+                                            Intent intent = new Intent(inspectionServiceConfirmPageEchoActivity.this, UpkeepOrderDetailsActivity.class);
                                             intent.putExtra("order", order);
                                             startActivity(intent);
                                             finish();
@@ -254,7 +253,7 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
      */
     private void getData() {
         RetrofitManager.create(ApiService.class)
-                .serviceConfirmPageEcho(getJson())
+                .inspectionserviceConfirmPageEcho(getJson())
                 .compose(RxSchedulers.<BaseEntity<serviceConfirmBean>>io2main())
                 .subscribe(new RxSubscriber<BaseEntity<serviceConfirmBean>>() {
                     @Override
@@ -285,7 +284,7 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
-            jsonObject.put("id", order.getId());
+            jsonObject.put("workOrderId", order.getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -13,10 +13,13 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.SingleMaintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SpareParts;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.TemplateListBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.fixRecordBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.inspectionBaseInfoBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderRecordBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
@@ -138,6 +141,26 @@ public interface ApiService {
      @POST("maintainOrder/getBaseOrderInfo.do")
      Observable<BaseEntity<maintainOrderBean>> getmaintainOrderInfo(@Field("jsonString")String jsonString);
      /**
+      *
+      */
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/getBaseOrderInfo.do")
+     Observable<BaseEntity<inspectionBaseInfoBean>> getinspectionOrderInfo(@Field("jsonString")String jsonString);
+
+     /**
+      * 保养-根据id获取电子工单信息
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/getSingleMaintainOrder.do")
+     Observable<BaseEntity<SingleMaintainOrderBean>> getSingleMaintainOrder(@Field("jsonString")String jsonString);
+
+     /**
+      * 获取保养/巡检模版列表
+      */
+     @FormUrlEncoded
+     @POST("template/getTemplateList.do ")
+     Observable<BaseEntity<List<TemplateListBean>>> getTemplateList(@Field("jsonString")String jsonString);
+     /**
       * 获取备件信息
       */
      @FormUrlEncoded
@@ -161,6 +184,12 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("maintainOrder/startMaintinOrder.do")
      Observable<BaseEntity> startMaintinOrder(@Field("jsonString")String jsonString);
+     /**
+      * 开始巡检
+      */
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/startInspection.do")
+     Observable<BaseEntity> startInspection(@Field("jsonString")String jsonString);
      /**
       * 维修-单个工单回显
       */
@@ -217,12 +246,41 @@ public interface ApiService {
      Observable<BaseEntity> getFailureCause(@Field("jsonString")String jsonString);
 
      /**
-      * 服务确认回显数据
+      * 维修服务确认回显数据
       */
      @FormUrlEncoded
      @POST("repairWorkOrder/serviceConfirmPageEcho.do")
      Observable<BaseEntity<serviceConfirmBean>> serviceConfirmPageEcho(@Field("jsonString")String jsonString);
-
+     /**
+      * 保养服务确认回显
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/serviceConfirmPageEcho.do")
+     Observable<BaseEntity<serviceConfirmBean>> maintainOrderserviceConfirmPageEcho(@Field("jsonString")String jsonString);
+     /**
+      * 巡检服务确认回显
+      */
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/serviceConfirmPageEcho.do")
+     Observable<BaseEntity<serviceConfirmBean>> inspectionserviceConfirmPageEcho(@Field("jsonString")String jsonString);
+     /**
+      * 维修服务确认
+      */
+     @FormUrlEncoded
+     @POST("repairWorkOrder/serviceConfirm.do")
+     Observable<BaseEntity<List<OdrerDetailsBean>>> serviceConfirm(@Field("jsonString")String jsonString);
+     /**
+      * 保养服务确认
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/serviceConfirm.do")
+     Observable<BaseEntity> maintainOrderserviceConfirm(@Field("jsonString")String jsonString);
+     /**
+      * 巡检服务确认
+      */
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/serviceConfirm.do")
+     Observable<BaseEntity> inspectionWorkOrderserviceConfirm(@Field("jsonString")String jsonString);
      /**
       * 查询工单评价状态
       * @param jsonString
@@ -242,13 +300,6 @@ public interface ApiService {
      Observable<BaseEntity> sendMessage(@Field("jsonString")String jsonString);
 
      /**
-      * 服务确认
-      */
-     @FormUrlEncoded
-     @POST("repairWorkOrder/serviceConfirm.do")
-     Observable<BaseEntity<List<OdrerDetailsBean>>> serviceConfirm(@Field("jsonString")String jsonString);
-
-     /**
       * 获取推送的消息
       */
      @FormUrlEncoded
@@ -261,4 +312,18 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("pdf/getWorkOrderPdf.do")
      Observable<BaseEntity<PdfBean>> getWorkOrderPdf(@Field("jsonString")String jsonString);
+
+     /**
+      * 录入保养报告
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/saveMaintainOrder.do")
+     Observable<BaseEntity> saveMaintainOrder(@Field("jsonString")String jsonString);
+
+     /**
+      * 生成维修工单
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/orderConversion.do")
+     Observable<BaseEntity> orderConversion(@Field("jsonString")String jsonString);
 }

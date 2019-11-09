@@ -62,6 +62,12 @@ public class TimeUtil {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
     }
     /**
+     * 时间格式化，精准到分
+     */
+    public static String getTimeFormatParseMinute(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date);
+    }
+    /**
      * 时间格式化
      *
      * @param date

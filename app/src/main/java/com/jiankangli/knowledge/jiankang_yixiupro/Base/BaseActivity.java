@@ -144,6 +144,11 @@ public abstract class BaseActivity extends SupportActivity {
         textView.setText(title);
     }
 
+    /**
+     * 获取标题
+     * @return
+     */
+
     protected abstract int getLayoutId();
 
     @Override

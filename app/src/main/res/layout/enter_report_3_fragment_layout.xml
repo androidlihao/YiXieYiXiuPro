@@ -1,42 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#F8F3F3">
-    <include
-        layout="@layout/toolbar"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="工程师服务记录"
-        android:textColor="#3597d6"
-        android:textStyle="bold"
-        android:paddingLeft="@dimen/px_50"
-        android:paddingTop="@dimen/px_30"
-        android:paddingBottom="@dimen/px_30"
-        android:background="#ffffff"
-        android:textSize="@dimen/px_50"/>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/px_30"
-        android:background="#ffffff">
-        <CheckBox
-            android:id="@+id/cb_isNormal_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="服务结束，设备正常工作"
-            android:layoutDirection="rtl"
-            android:paddingLeft="@dimen/px_50"
-            android:paddingTop="@dimen/px_30"
-            android:paddingBottom="@dimen/px_30"
-            android:textSize="@dimen/px_50"
-            android:layout_marginTop="@dimen/px_1"
-            />
-    </FrameLayout>>
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -164,6 +130,46 @@
                 />
         </LinearLayout>>
     </LinearLayout>>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="问题处理"
+        android:textColor="#3597d6"
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/px_50"
+        android:paddingTop="@dimen/px_30"
+        android:paddingBottom="@dimen/px_30"
+        android:background="#ffffff"
+        android:textSize="@dimen/px_50"
+        android:layout_marginBottom="@dimen/px_1"/>
+    <LinearLayout
+        android:id="@+id/ll_content_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:layout_marginBottom="@dimen/px_30"
+        >
+        <EditText
+            android:id="@+id/et_part_status_id"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_300"
+            android:layout_marginRight="@dimen/px_50"
+            android:gravity="left|top"
+            android:paddingLeft="@dimen/px_50"
+            android:paddingBottom="@dimen/px_50"
+            android:textSize="@dimen/px_50"
+            android:hint="请输入"
+            android:background="@null"/>
+        <TextView
+            android:id="@+id/tv_part_status_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0/500"
+            android:gravity="right"
+            android:paddingRight="@dimen/px_50"
+            />
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -208,15 +214,45 @@
             android:layout_margin="@dimen/px_50"
             />
     </FrameLayout>>
-    <Button
-        android:id="@+id/btn_save_order_id"
-        android:layout_width="@dimen/px_440"
-        android:layout_height="@dimen/px_120"
-        android:background="@drawable/submit_seleter"
-        android:gravity="center"
-        android:text="保存工单"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/px_80"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/px_48" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_300"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/px_200"
+        android:gravity="center">
+        <RelativeLayout
+            android:id="@+id/rl_save_id"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/px_300"
+            >
+            <Button
+                android:id="@+id/btn_save_id"
+                android:layout_width="@dimen/px_440"
+                android:layout_height="@dimen/px_120"
+                android:background="@drawable/submit_seleter_2"
+                android:gravity="center"
+                android:text="保存"
+                android:layout_centerInParent="true"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/px_48" />
+        </RelativeLayout>>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/px_300"
+            >
+            <Button
+                android:id="@+id/btn_next_id"
+                android:layout_width="@dimen/px_440"
+                android:layout_height="@dimen/px_120"
+                android:background="@drawable/submit_seleter"
+                android:gravity="center"
+                android:text="提交报告"
+                android:layout_centerInParent="true"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/px_48" />
+        </RelativeLayout>>
+
+    </LinearLayout>
 </LinearLayout>

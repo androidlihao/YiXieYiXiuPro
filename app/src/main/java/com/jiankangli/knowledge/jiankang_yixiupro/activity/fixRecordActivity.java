@@ -124,7 +124,7 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
         rqTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                recordAadpter.getData().get(pos).setServiceTime(TimeUtil.getTimeFormatParse(date));
+                recordAadpter.getData().get(pos).setServiceTime(TimeUtil.getTimeFormat(date));
                 ((TextView) v).setText(TimeUtil.getTimeFormat(date));
             }
             //默认设置为年月日时分秒
@@ -136,7 +136,7 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
         sjTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                String format = new SimpleDateFormat("HH:mm:ss").format(date);
+                String format = new SimpleDateFormat("HH:mm").format(date);
                 ((TextView) v).setText(format);
                 switch (v.getId()) {
                     case R.id.tv_startTime_id:
@@ -149,17 +149,17 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
             }
             //默认设置为年月日时分秒
         }).setLabel("年", "月", "日", "时", "分", "秒")
-                .setType(new boolean[]{false, false, false, true, true, true})
+                .setType(new boolean[]{false, false, false, true, true, false})
                 .isCyclic(true)
                 .build();
         arrivalTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                ((TextView) v).setText(TimeUtil.getTimeFormatParse(date));
+                ((TextView) v).setText(TimeUtil.getTimeFormatParseMinute(date));
             }
             //默认设置为年月日时分秒
         }).setLabel("年", "月", "日", "时", "分", "秒")
-                .setType(new boolean[]{true, true, true, true, true, true})
+                .setType(new boolean[]{true, true, true, true, true, false})
                 .isCyclic(true)
                 .build();
     }
@@ -236,8 +236,8 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {
-                            ToastUtil.showShortSafe(baseEntity.msg, getApplicationContext());
                             if (baseEntity.isSuccess()) {
+                                ToastUtil.showShortSafe("保存成功", getApplicationContext());
                                 Observable.just(baseEntity.msg)
                                         .delay(2000, TimeUnit.MILLISECONDS)
                                         .subscribe(new Consumer<String>() {
@@ -246,6 +246,8 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
                                                 finish();
                                             }
                                         });
+                            }else {
+                                ToastUtil.showShortSafe(baseEntity.msg,getApplicationContext());
                             }
                         }
 

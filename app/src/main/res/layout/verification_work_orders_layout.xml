@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px_300"
+    android:orientation="horizontal"
+    android:background="@color/colorgray"
+    android:gravity="center">
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="@dimen/px_300"
+        >
+        <Button
+            android:id="@+id/btn_create_order_id"
+            android:layout_width="@dimen/px_440"
+            android:layout_height="@dimen/px_120"
+            android:background="@drawable/submit_seleter_2"
+            android:gravity="center"
+            android:text="生成维修工单"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/px_48" />
+    </RelativeLayout>>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="@dimen/px_300"
+        >
+        <Button
+            android:id="@+id/btn_workOrder_details_id"
+            android:layout_width="@dimen/px_440"
+            android:layout_height="@dimen/px_120"
+            android:background="@drawable/submit_seleter"
+            android:gravity="center"
+            android:text="报告详情"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/px_48" />
+    </RelativeLayout>>
+
+</LinearLayout>

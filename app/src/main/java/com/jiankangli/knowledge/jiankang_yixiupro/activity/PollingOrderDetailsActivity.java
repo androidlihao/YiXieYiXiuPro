@@ -17,16 +17,15 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.OrderDetailsAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_imagleAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.OdrerDetailsBean;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.displayBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.inspectionBaseInfoBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
@@ -43,7 +42,6 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,7 +53,7 @@ import butterknife.BindView;
  * Created by 锦绣前程 on 2018/9/17.
  */
 //保养工单详情页面
-public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnClickListener {
+public class PollingOrderDetailsActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.toolbar_id)
     Toolbar toolbarId;
     @BindView(R.id.rc_details_id)
@@ -66,19 +64,20 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
     RelativeLayout rlHeadId;
     @BindView(R.id.fl_content_id)
     FrameLayout flContentId;
-    private UpkeepOrder order;
+    private PollingOrder order;
     private OrderDetailsAdapter orderDetailsAdapter;
     private com.jiankangli.knowledge.jiankang_yixiupro.bean.displayBean displayBean;
     private CheckBox cbSoftwareId;
     private CheckBox cbHardwareId;
     private Button btnSureId;
+
     private Button btnStartRepairId;
     private Button btnRecordForServeId;
     private Button btnEnterTheRepairOrderId;
     private String orderNo;
     private Button btnWorkOrderDetailsId;
     private String deviceModel;
-    private String templateCode;
+//    private String templateCode;
     private Button btnCreateOrderId;
 
     @Override
@@ -89,7 +88,7 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        order = (UpkeepOrder) getIntent().getSerializableExtra("order");
+        order = (PollingOrder) getIntent().getSerializableExtra("order");
         initView();
         changeUI();
         initData();
@@ -100,18 +99,18 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
         flContentId.removeAllViews();
         switch (order.getListStatus()) {
             case 2:
-                addMiddleTitle(this, "等待保养");
+                addMiddleTitle(this, "等待巡检");
                 View inflate = LayoutInflater.from(this).inflate(R.layout.start_repair_layout, null);
                 btnStartRepairId = inflate.findViewById(R.id.btn_start_repair_id);
-                btnStartRepairId.setText("开始保养");
+                btnStartRepairId.setText("开始巡检");
                 flContentId.addView(inflate);
                 tvEnteringId.setVisibility(View.GONE);
                 break;
             case 3:
-                addMiddleTitle(this, "正在保养");
+                addMiddleTitle(this, "正在巡检");
                 View view = LayoutInflater.from(this).inflate(R.layout.repairint_layout, null);
                 btnRecordForServeId = (Button) view.findViewById(R.id.btn_record_for_serve_id);
-                btnRecordForServeId.setText("保养记录");
+                btnRecordForServeId.setText("巡检记录");
                 btnEnterTheRepairOrderId = (Button) view.findViewById(R.id.btn_Enter_the_repair_order_id);
                 btnEnterTheRepairOrderId.setText("填写报告");
                 flContentId.addView(view);
@@ -134,12 +133,12 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
                 btnRecordForServeId = (Button) view2.findViewById(R.id.btn_record_for_serve_id);
                 btnEnterTheRepairOrderId = (Button) view2.findViewById(R.id.btn_Enter_the_repair_order_id);
                 btnEnterTheRepairOrderId.setText("修改报告");
-                btnRecordForServeId.setText("修改保养记录");
+                btnRecordForServeId.setText("修改巡检记录");
                 flContentId.addView(view2);
                 tvEnteringId.setText("失败原因");
                 break;
             case 7:
-                addMiddleTitle(this, "保养完成");
+                addMiddleTitle(this, "巡检完成");
                 View view3 = LayoutInflater.from(this).inflate(R.layout.verification_work_orders_layout, null);
                 btnWorkOrderDetailsId = (Button) view3.findViewById(R.id.btn_workOrder_details_id);
                 btnCreateOrderId = view3.findViewById(R.id.btn_create_order_id);
@@ -190,15 +189,15 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
         JsonReader jsonReader = new JsonReader(new InputStreamReader(is));
         displayBean = new Gson().fromJson(jsonReader, displayBean.class);
         RetrofitManager.create(ApiService.class)
-                .getmaintainOrderInfo(getJson())
-                .compose(RxSchedulers.<BaseEntity<maintainOrderBean>>io2main())
-                .subscribe(new RxSubscriber<BaseEntity<maintainOrderBean>>() {
+                .getinspectionOrderInfo(getJson())
+                .compose(RxSchedulers.<BaseEntity<inspectionBaseInfoBean>>io2main())
+                .subscribe(new RxSubscriber<BaseEntity<inspectionBaseInfoBean>>() {
                     @Override
-                    public void _onNext(BaseEntity<maintainOrderBean> baseEntity) {
+                    public void _onNext(BaseEntity<inspectionBaseInfoBean> baseEntity) {
                         if (baseEntity.isSuccess()) {
                             orderNo = baseEntity.data.getOrderNo();
                             deviceModel = baseEntity.data.getDeviceModel();
-                            templateCode = baseEntity.data.getTemplateCode();
+//                            templateCode = baseEntity.data.getTemplateCode();
                             Map<String, Object> map = MapBeanUtil.object2Map(baseEntity.data);
                             List<HashMap<String, String>> list = new LinkedList<>();
                             for (String key : displayBean.getUpKeepdisplayBean()) {
@@ -247,7 +246,7 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
                 startActivity(intent5);
                 break;
             case R.id.btn_start_repair_id:
-                //开始保养操作
+                //开始巡检操作
                 startRepair();
                 break;
             case R.id.btn_record_for_serve_id:
@@ -267,7 +266,7 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
                     intent.putExtra("isFrist",true);
                 }
                 intent.putExtra("deviceModel",deviceModel);
-                intent.putExtra("templateCode",templateCode);
+//                intent.putExtra("templateCode",templateCode);
                 intent.putExtra("order", order);
                 startActivity(intent);
                 break;
@@ -286,8 +285,8 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
             case R.id.btn_workOrder_details_id:
                 //工单详情
                 Intent intent1 = new Intent(this, OrderPdfActivity.class);
-                //2为保养
-                intent1.putExtra("pdfType", 2);
+                //3为巡检
+                intent1.putExtra("pdfType", 3);
                 intent1.putExtra("workOrderId", order.getId());
                 startActivity(intent1);
                 break;
@@ -297,12 +296,11 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
     }
 
     /**
-     * 开始保养
+     * 开始巡检
      */
     private void startRepair() {
-
         RetrofitManager.create(ApiService.class)
-                .startMaintinOrder(getJson())
+                .startInspection(getJson())
                 .compose(RxSchedulers.<BaseEntity>io2main())
                 .subscribe(new RxSubscriber<BaseEntity>() {
                     @Override

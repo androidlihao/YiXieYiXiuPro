@@ -1,10 +1,12 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by 李浩 on 2018/6/27.
  */
 
-public class PollingOrder {
+public class PollingOrder implements Serializable {
 
     /**
      * id : 1218

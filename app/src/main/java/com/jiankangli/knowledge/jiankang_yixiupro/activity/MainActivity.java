@@ -300,7 +300,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                     @Override
                     public void onComplete() {
-                        if (swLoadMsg.isRefreshing()) {
+                        if (swLoadMsg!=null&&swLoadMsg.isRefreshing()) {
                             swLoadMsg.setRefreshing(false);
                         }
                         int i = newMsgAdapters.getData().size() % 20;

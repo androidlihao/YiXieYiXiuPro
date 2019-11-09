@@ -55,7 +55,7 @@ import io.reactivex.functions.Consumer;
 /**
  * @author lihao
  * @date 2019-09-28 15:37
- * @description :保养服务记录
+ * @description :保养-巡检服务记录
  */
 public class upKeepRecordActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.tv_save_id)
@@ -81,7 +81,7 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
     int position;
     private LinkedList<maintainOrderRecordBean.ServiceRecordMapArrayBean> serviceRecodeVosBeans;
     private XJ_BY_RecordAadpter recordAadpter;
-    private UpkeepOrder order;
+    private int orderId;
     private TimePickerView rqTime;
     private TimePickerView sjTime;
     private TimePickerView arrivalTime;
@@ -121,7 +121,7 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
         rqTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                recordAadpter.getData().get(pos).setServiceTime(TimeUtil.getTimeFormatParse(date));
+                recordAadpter.getData().get(pos).setServiceTime(TimeUtil.getTimeFormat(date));
                 ((TextView) v).setText(TimeUtil.getTimeFormat(date));
             }
             //默认设置为年月日时分秒
@@ -133,7 +133,7 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
         sjTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                String format = new SimpleDateFormat("HH:mm:ss").format(date);
+                String format = new SimpleDateFormat("HH:mm").format(date);
                 ((TextView) v).setText(format);
                 switch (v.getId()) {
                     case R.id.tv_startTime_id:
@@ -146,17 +146,17 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
             }
             //默认设置为年月日时分秒
         }).setLabel("年", "月", "日", "时", "分", "秒")
-                .setType(new boolean[]{false, false, false, true, true, true})
+                .setType(new boolean[]{false, false, false, true, true, false})
                 .isCyclic(true)
                 .build();
         arrivalTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                ((TextView) v).setText(TimeUtil.getTimeFormatParse(date));
+                ((TextView) v).setText(TimeUtil.getTimeFormatParseMinute(date));
             }
             //默认设置为年月日时分秒
         }).setLabel("年", "月", "日", "时", "分", "秒")
-                .setType(new boolean[]{true, true, true, true, true, true})
+                .setType(new boolean[]{true, true, true, true, true, false})
                 .isCyclic(true)
                 .build();
     }
@@ -185,7 +185,7 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("id", order.getId());
+            jsonObject.put("id", orderId);
             jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
             jsonObject.put("arrivalTime", arrivalTime);
             JSONArray jsonArray = new JSONArray();
@@ -232,8 +232,8 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {
-                            ToastUtil.showShortSafe(baseEntity.msg, getApplicationContext());
                             if (baseEntity.isSuccess()) {
+                                ToastUtil.showShortSafe("保存成功", getApplicationContext());
                                 Observable.just(baseEntity.msg)
                                         .delay(2000, TimeUnit.MILLISECONDS)
                                         .subscribe(new Consumer<String>() {
@@ -242,6 +242,8 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
                                                 finish();
                                             }
                                         });
+                            }else {
+                                ToastUtil.showShortSafe(baseEntity.msg,getApplicationContext());
                             }
                         }
 
@@ -299,9 +301,9 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void getData() throws JSONException {
-        order = (UpkeepOrder) getIntent().getSerializableExtra("order");
+        orderId = getIntent().getIntExtra("orderId",-1);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", order.getId());
+        jsonObject.put("id", orderId);
         jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
         RetrofitManager.create(ApiService.class)
                 .getmaintainServiceRecordList(BaseJsonUtils.Base64String(jsonObject))
