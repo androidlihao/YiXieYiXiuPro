@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/sc"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px_150"
+                    android:text="备件使用记录"
+                    android:textSize="@dimen/px_60"
+                    android:gravity="center_vertical"
+                    android:textColor="#04b7ff"
+                    android:background="@color/white"
+                    android:layout_marginLeft="@dimen/px_30"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rc_PatrRecode_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:nestedScrollingEnabled="false"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px_300"
+                     >
+                    <Button
+                        android:id="@+id/btn_addPartRecode_id"
+                        android:layout_width="@dimen/px_440"
+                        android:layout_height="@dimen/px_120"
+                        android:background="@drawable/submit_seleter"
+                        android:gravity="center"
+                        android:text="添加备件使用记录"
+                        android:layout_centerInParent="true"
+                        android:textColor="#ffffff"
+                        android:textSize="@dimen/px_48" />
+                </RelativeLayout>
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

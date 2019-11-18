@@ -1,6 +1,5 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,15 +15,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.OrderDetailsAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_imagleAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.OrderDetailsAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.OdrerDetailsBean;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.displayBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderBean;
@@ -43,7 +39,6 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

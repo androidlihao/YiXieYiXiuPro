@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.MessageCenterAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.MessageCenterAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;

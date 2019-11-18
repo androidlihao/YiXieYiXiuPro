@@ -1,6 +1,5 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,17 +15,15 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.OrderDetailsAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.OrderDetailsAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.displayBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.inspectionBaseInfoBean;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ActivityUtils;

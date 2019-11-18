@@ -17,13 +17,11 @@ import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zhouwei.library.CustomPopWindow;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.newMsgAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.newMsgAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
-import com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.BannerBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
@@ -49,7 +47,6 @@ import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants.PIC_URL;

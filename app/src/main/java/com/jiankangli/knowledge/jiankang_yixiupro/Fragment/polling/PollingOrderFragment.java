@@ -7,11 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_PollingAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.Recycler_PollingAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.PollingOrderDetailsActivity;
-import com.jiankangli.knowledge.jiankang_yixiupro.activity.UpkeepServiceConfirmPageEchoActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.inspectionServiceConfirmPageEchoActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;

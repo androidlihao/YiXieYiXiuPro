@@ -13,6 +13,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.PdfBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
 
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.RecodeWorkOrderBeasInfo;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SingleMaintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SpareParts;
@@ -341,4 +342,16 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("maintainOrder/orderConversion.do")
      Observable<BaseEntity> orderConversion(@Field("jsonString")String jsonString);
+     /**
+      * 获取维修补录回显
+      */
+     @FormUrlEncoded
+     @POST("repairWorkOrder/getRecodeWorkOrderBeasInfo.do")
+     Observable<BaseEntity<RecodeWorkOrderBeasInfo>> getRecodeWorkOrderBeasInfo(@Field("jsonString")String jsonString);
+     /**
+      * 维修-补录
+      */
+     @FormUrlEncoded
+     @POST("repairWorkOrder/recodeWorkOrder.do")
+     Observable<BaseEntity> recodeWorkOrder(@Field("jsonString")String jsonString);
 }

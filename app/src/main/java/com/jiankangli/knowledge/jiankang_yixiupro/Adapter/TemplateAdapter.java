@@ -1,10 +1,9 @@
-package com.jiankangli.knowledge.jiankang_yixiupro.Apapter;
+package com.jiankangli.knowledge.jiankang_yixiupro.Adapter;
 
 
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 

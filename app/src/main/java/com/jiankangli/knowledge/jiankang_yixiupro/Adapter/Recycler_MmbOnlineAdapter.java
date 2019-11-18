@@ -1,4 +1,4 @@
-package com.jiankangli.knowledge.jiankang_yixiupro.Apapter;
+package com.jiankangli.knowledge.jiankang_yixiupro.Adapter;
 
 
 import android.content.Context;

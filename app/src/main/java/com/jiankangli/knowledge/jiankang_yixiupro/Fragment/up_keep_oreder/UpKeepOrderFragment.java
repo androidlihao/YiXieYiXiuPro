@@ -7,15 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_UpKeepAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_repairadapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.Recycler_UpKeepAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
-import com.jiankangli.knowledge.jiankang_yixiupro.activity.OrderDetailsActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.UpkeepOrderDetailsActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.UpkeepServiceConfirmPageEchoActivity;
-import com.jiankangli.knowledge.jiankang_yixiupro.activity.serviceConfirmPageEchoActivity;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;

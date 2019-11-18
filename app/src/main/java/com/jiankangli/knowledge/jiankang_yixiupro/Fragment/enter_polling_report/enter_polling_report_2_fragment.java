@@ -9,12 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.TemplateAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.TemplateAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
-import com.jiankangli.knowledge.jiankang_yixiupro.activity.enterPollingReportActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.enterPollingReportActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SingleMaintainOrderBean;

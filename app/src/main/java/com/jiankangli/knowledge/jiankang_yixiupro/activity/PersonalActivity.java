@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.zhouwei.library.CustomPopWindow;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.PersonRvAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.PersonRvAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.RecyclerViewOnClickListener;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;

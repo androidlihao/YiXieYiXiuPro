@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_MmbOnlineAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.Recycler_MmbOnlineAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Chat;

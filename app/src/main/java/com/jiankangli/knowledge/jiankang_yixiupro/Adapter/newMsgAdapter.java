@@ -1,4 +1,4 @@
-package com.jiankangli.knowledge.jiankang_yixiupro.Apapter;
+package com.jiankangli.knowledge.jiankang_yixiupro.Adapter;
 
 
 import com.chad.library.adapter.base.BaseQuickAdapter;

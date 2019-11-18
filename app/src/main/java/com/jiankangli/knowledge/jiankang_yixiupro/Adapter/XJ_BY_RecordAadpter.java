@@ -1,16 +1,14 @@
-package com.jiankangli.knowledge.jiankang_yixiupro.Apapter;
+package com.jiankangli.knowledge.jiankang_yixiupro.Adapter;
 
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.fixRecordBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderRecordBean;
 
 import java.util.List;

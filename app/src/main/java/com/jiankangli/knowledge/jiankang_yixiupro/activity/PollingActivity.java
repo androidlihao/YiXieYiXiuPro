@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.OrderFragmentPageApapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.OrderFragmentPageApapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 

@@ -89,6 +89,10 @@
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".activity.enterPollingReportActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:name=".activity.repairBackTrackingActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:name=".activity.upkeepBackTrackingActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
     </application>
 
 </manifest>

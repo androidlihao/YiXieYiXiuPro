@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.LocalePicAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.LocalePicAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;

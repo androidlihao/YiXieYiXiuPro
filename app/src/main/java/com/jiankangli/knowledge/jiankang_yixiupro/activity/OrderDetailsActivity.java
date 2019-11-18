@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.OrderDetailsAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycler_imagleAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.OrderDetailsAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.Recycler_imagleAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;

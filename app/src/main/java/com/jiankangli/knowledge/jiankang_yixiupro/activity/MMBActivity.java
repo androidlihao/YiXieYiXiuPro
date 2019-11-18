@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.Recycle_MMBAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.Recycle_MMBAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MineMsg;

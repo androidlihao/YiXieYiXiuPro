@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jiankangli.knowledge.jiankang_yixiupro.Apapter.LocalePicAdapter;
+import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.LocalePicAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
@@ -26,14 +26,12 @@ import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.ElectronOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.SaveOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ActivityUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.DialogUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtils;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.LogUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
