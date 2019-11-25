@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,11 +8,12 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.Constant.DbConstant;
 import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.enter_polling_report.enter_polling_report_1_fragment;
-import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.enter_report.enter_report_1_fragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
@@ -20,7 +22,6 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.MaintainDataBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SingleMaintainOrderBean;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.greendao.GreenDaoContext;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
@@ -31,6 +32,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.GreenDaoUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +41,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 
+import butterknife.BindView;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -54,6 +58,8 @@ public class enterPollingReportActivity extends BaseActivity {
     public SingleMaintainOrderBean singleMaintainOrderBean;
     public PollingOrder order;
     public boolean isFrist;
+    @BindView(R.id.tv_entering_id)
+    TextView tvEnteringId;
 
     @Override
     protected int getLayoutId() {
@@ -66,6 +72,7 @@ public class enterPollingReportActivity extends BaseActivity {
         addMiddleTitle(this, "录入报告");
         isFrist = getIntent().getExtras().getBoolean("isFrist");
         order = (PollingOrder) getIntent().getExtras().getSerializable("order");
+        tvEnteringId.setVisibility(View.GONE);
         initFragment();
         ActivityUtils.getInstance().addActivity(this);
     }
@@ -118,17 +125,17 @@ public class enterPollingReportActivity extends BaseActivity {
         this.singleMaintainOrderBean = singleMaintainOrderBean;
     }
 
-    public void save(){
+    public void save() {
         //保存数据到本地数据库
         try {
-            GreenDaoUtil greenDaoUtil =GreenDaoUtil.getInstance(new GreenDaoContext(getApplicationContext(), DbConstant.NEW_BY_DB));
+            GreenDaoUtil greenDaoUtil = GreenDaoUtil.getInstance(new GreenDaoContext(getApplicationContext(), DbConstant.NEW_BY_DB));
             MaintainDataBean maintainDataBean = new MaintainDataBean();
             maintainDataBean.setId(Long.valueOf(order.getId()));
             maintainDataBean.setJsonObject(GsonUtil.GsonString(singleMaintainOrderBean));
             greenDaoUtil.getDaoSession().getMaintainDataBeanDao().insertOrReplace(maintainDataBean);
-            ToastUtil.showShortSafe("保存成功",this);
-        }catch (Exception e){
-            ToastUtil.showShortSafe("保存失败",this);
+            ToastUtil.showShortSafe("保存成功", this);
+        } catch (Exception e) {
+            ToastUtil.showShortSafe("保存失败", this);
         }
 
     }
@@ -165,6 +172,8 @@ public class enterPollingReportActivity extends BaseActivity {
         RetrofitManager.create(ApiService.class)
                 .uploadImage(body)
                 .compose(RxSchedulers.<BaseEntity<PicUrlBean>>io2main())
+                .as(AutoDispose.<BaseEntity<PicUrlBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<PicUrlBean>>() {
                     @Override
                     public void _onNext(BaseEntity<PicUrlBean> picUrlBeanBaseEntity) {
@@ -198,7 +207,7 @@ public class enterPollingReportActivity extends BaseActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
-            if (!isFrist){
+            if (!isFrist) {
                 //电子工单id
                 jsonObject.put("id", singleMaintainOrderBean.getId());
             }
@@ -233,27 +242,29 @@ public class enterPollingReportActivity extends BaseActivity {
             jsonObject.put("leaveTime", singleMaintainOrderBean.getLeaveTime());
             jsonObject.put("travelToTime", singleMaintainOrderBean.getTravelToTime());
             jsonObject.put("travelBackTime", singleMaintainOrderBean.getTravelBackTime());
-            jsonObject.put("servicingTime",singleMaintainOrderBean.getServicingTime());
+            jsonObject.put("servicingTime", singleMaintainOrderBean.getServicingTime());
             Log.i("TAG", "uploadData: ");
             //开始执行提交过程
             RetrofitManager.create(ApiService.class)
                     .saveInspectionOrder(BaseJsonUtils.Base64String(jsonObject))
                     .compose(RxSchedulers.<BaseEntity>io2main())
+                    .as(AutoDispose.<BaseEntity>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {
                             if (baseEntity.isSuccess()) {
                                 ToastUtil.showShortSafe("提交上报成功", getApplicationContext());
                                 //然后跳转到对应的服务审核界面
-                                if (isFrist){
+                                if (isFrist) {
                                     //添加，直接跳转到服务确认界面
-                                    Intent intent=new Intent(enterPollingReportActivity.this,inspectionServiceConfirmPageEchoActivity.class);
+                                    Intent intent = new Intent(enterPollingReportActivity.this, inspectionServiceConfirmPageEchoActivity.class);
                                     intent.putExtra("order", order);
                                     startActivity(intent);
                                     finish();
-                                }else {
+                                } else {
                                     //跳转到正在审核界面
-                                    Intent intent=new Intent(enterPollingReportActivity.this,PollingOrderDetailsActivity.class);
+                                    Intent intent = new Intent(enterPollingReportActivity.this, PollingOrderDetailsActivity.class);
                                     order.setListStatus(5);
                                     intent.putExtra("order", order);
                                     startActivity(intent);

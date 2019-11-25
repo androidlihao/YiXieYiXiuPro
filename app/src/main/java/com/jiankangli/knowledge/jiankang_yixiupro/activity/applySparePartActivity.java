@@ -1,15 +1,18 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.Manifest;
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -44,6 +47,8 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.permissions.Permission;
 import com.luck.picture.lib.permissions.RxPermissions;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -271,6 +276,8 @@ public class applySparePartActivity extends BaseActivity {
                         .uploadImage(body);
             }
         }).compose(RxSchedulers.<BaseEntity<PicUrlBean>>io2main())
+                .as(AutoDispose.<BaseEntity<PicUrlBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<PicUrlBean>>() {
                     @Override
                     public void _onNext(BaseEntity<PicUrlBean> picUrlBeanBaseEntity) {
@@ -338,6 +345,8 @@ public class applySparePartActivity extends BaseActivity {
             RetrofitManager.create(ApiService.class)
                     .addSparePart(BaseJsonUtils.Base64String(new JSONObject(jsonObject.toString())))
                     .compose(RxSchedulers.<BaseEntity>io2main())
+                    .as(AutoDispose.<BaseEntity>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {
@@ -367,14 +376,25 @@ public class applySparePartActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
     @Override
-    public void onBackPressedSupport() {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                closeDialog();
+                break;
+        }
+        return true;
+    }
+    private void closeDialog() {
         DialogUtil.showPositiveDialog(this, "警告", "关闭后，您填写的内容将会丢失", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
+    }
+    @Override
+    public void onBackPressedSupport() {
+        closeDialog();
     }
 }

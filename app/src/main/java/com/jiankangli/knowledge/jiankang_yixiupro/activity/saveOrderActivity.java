@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.TimeUtil;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.squareup.picasso.Picasso;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -244,6 +247,8 @@ public class saveOrderActivity extends BaseActivity implements View.OnClickListe
                             }
                         })
                         .compose(RxSchedulers.<JsonArray>io2main())
+                        .as(AutoDispose.<JsonArray>autoDisposable(
+                                AndroidLifecycleScopeProvider.from(saveOrderActivity.this, Lifecycle.Event.ON_DESTROY)))
                         .subscribe(new RxSubscriber<JsonArray>() {
                             @Override
                             public void _onNext(JsonArray jsonElements1) {
@@ -300,6 +305,8 @@ public class saveOrderActivity extends BaseActivity implements View.OnClickListe
             RetrofitManager.create(ApiService.class)
                     .entryElectronOrder(BaseJsonUtils.Base64String(new JSONObject(jsonObject.toString())))
                     .compose(RxSchedulers.<BaseEntity>io2main())
+                    .as(AutoDispose.<BaseEntity>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {

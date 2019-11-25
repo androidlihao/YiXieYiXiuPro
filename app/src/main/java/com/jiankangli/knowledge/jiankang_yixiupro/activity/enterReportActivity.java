@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.GreenDaoUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,16 +81,27 @@ public class enterReportActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    pop();
-                } else {
-                    ActivityCompat.finishAfterTransition(this);
-                }
+                closeDialog();
                 break;
         }
         return true;
     }
-
+    private void closeDialog() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            pop();
+        } else {
+            DialogUtil.showPositiveDialog(this, "警告", "关闭后，您填写的内容将会丢失", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.finishAfterTransition(enterReportActivity.this);
+                }
+            });
+        }
+    }
+    @Override
+    public void onBackPressedSupport() {
+        closeDialog();
+    }
     private void initFragment() {
         if (findFragment(enter_report_1_fragment.class) == null) {
             // 加载根Fragment
@@ -169,6 +183,8 @@ public class enterReportActivity extends BaseActivity {
         RetrofitManager.create(ApiService.class)
                 .uploadImage(body)
                 .compose(RxSchedulers.<BaseEntity<PicUrlBean>>io2main())
+                .as(AutoDispose.<BaseEntity<PicUrlBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<PicUrlBean>>() {
                     @Override
                     public void _onNext(BaseEntity<PicUrlBean> picUrlBeanBaseEntity) {
@@ -249,6 +265,8 @@ public class enterReportActivity extends BaseActivity {
             RetrofitManager.create(ApiService.class)
                     .saveMaintainOrder(BaseJsonUtils.Base64String(jsonObject))
                     .compose(RxSchedulers.<BaseEntity>io2main())
+                    .as(AutoDispose.<BaseEntity>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {

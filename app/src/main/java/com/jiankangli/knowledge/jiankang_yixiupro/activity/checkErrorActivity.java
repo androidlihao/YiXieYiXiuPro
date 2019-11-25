@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +53,8 @@ public class checkErrorActivity extends BaseActivity {
         RetrofitManager.create(ApiService.class)
                 .getFailureCause(getJson())
                 .compose(RxSchedulers.<BaseEntity>io2main())
+                .as(AutoDispose.<BaseEntity>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity>() {
                     @Override
                     public void _onNext(BaseEntity baseEntity) {

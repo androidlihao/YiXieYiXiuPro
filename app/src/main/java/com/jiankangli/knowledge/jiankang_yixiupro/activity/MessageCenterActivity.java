@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,12 +15,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.MessageCenterAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONObject;
 
@@ -126,6 +131,8 @@ public class MessageCenterActivity extends BaseActivity implements
                     .getMsgCenter(BaseJsonUtils.Base64String(jsonObject))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDispose.<MsgCenter>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new Observer<MsgCenter>() {
                         @Override
                         public void onSubscribe(Disposable d) {

@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
 import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.OrderDetailsAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
@@ -33,6 +35,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.DicUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.MapBeanUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -188,6 +192,8 @@ public class PollingOrderDetailsActivity extends BaseActivity implements View.On
         RetrofitManager.create(ApiService.class)
                 .getinspectionOrderInfo(getJson())
                 .compose(RxSchedulers.<BaseEntity<inspectionBaseInfoBean>>io2main())
+                .as(AutoDispose.<BaseEntity<inspectionBaseInfoBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<inspectionBaseInfoBean>>() {
                     @Override
                     public void _onNext(BaseEntity<inspectionBaseInfoBean> baseEntity) {
@@ -299,6 +305,8 @@ public class PollingOrderDetailsActivity extends BaseActivity implements View.On
         RetrofitManager.create(ApiService.class)
                 .startInspection(getJson())
                 .compose(RxSchedulers.<BaseEntity>io2main())
+                .as(AutoDispose.<BaseEntity>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity>() {
                     @Override
                     public void _onNext(BaseEntity baseEntity) {

@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,6 +24,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.ElectronOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
@@ -32,6 +34,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.ImageLoader;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -293,6 +297,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         RetrofitManager.create(ApiService.class)
                 .messagePush(getJson())
                 .compose(RxSchedulers.<BaseEntity<List<messagePushBean>>>io2main())
+                .as(AutoDispose.<BaseEntity<List<messagePushBean>>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<List<messagePushBean>>>() {
                     @Override
                     public void _onNext(BaseEntity<List<messagePushBean>> listBaseEntity) {

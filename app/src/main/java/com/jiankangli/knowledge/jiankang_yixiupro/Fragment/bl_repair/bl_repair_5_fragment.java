@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_repair;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +43,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.TimeUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.squareup.picasso.Picasso;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -340,6 +343,8 @@ public class bl_repair_5_fragment extends BaseFragment {
                             }
                         })
                         .compose(RxSchedulers.<JsonArray>io2main())
+                        .as(AutoDispose.<JsonArray>autoDisposable(
+                                AndroidLifecycleScopeProvider.from(getActivity(), Lifecycle.Event.ON_DESTROY)))
                         .subscribe(new RxSubscriber<JsonArray>() {
                             @Override
                             public void _onNext(JsonArray jsonElements1) {
@@ -377,6 +382,8 @@ public class bl_repair_5_fragment extends BaseFragment {
             RetrofitManager.create(ApiService.class)
                     .recodeWorkOrder(string)
                     .compose(RxSchedulers.<BaseEntity>io2main())
+                    .as(AutoDispose.<BaseEntity>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {

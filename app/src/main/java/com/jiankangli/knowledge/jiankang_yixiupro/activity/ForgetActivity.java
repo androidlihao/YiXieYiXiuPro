@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,12 +13,16 @@ import android.widget.TextView;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.AutoCode;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.RegexUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONObject;
 
@@ -153,6 +158,8 @@ public class ForgetActivity extends BaseActivity {
             RetrofitManager.create(ApiService.class).getCode(string)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDispose.<String>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new Observer<String>() {
                         @Override
                         public void onSubscribe(Disposable d) {

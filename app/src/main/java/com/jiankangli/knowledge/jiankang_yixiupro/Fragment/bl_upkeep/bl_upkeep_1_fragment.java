@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_upkeep;
 
 import android.app.Dialog;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +28,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.PersonalActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.upkeepBackTrackingActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RecodemaintainOrderBeasInfo;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.upkeepBlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
@@ -36,6 +38,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.TimeUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -212,6 +216,8 @@ public class bl_upkeep_1_fragment extends BaseFragment implements View.OnClickLi
         RetrofitManager.create(ApiService.class)
                 .getrecodeOrderInfoEcho(getJson(deviceNo))
                 .compose(RxSchedulers.<BaseEntity<RecodemaintainOrderBeasInfo>>io2main())
+                .as(AutoDispose.<BaseEntity<RecodemaintainOrderBeasInfo>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<RecodemaintainOrderBeasInfo>>() {
                     @Override
                     public void _onNext(BaseEntity<RecodemaintainOrderBeasInfo> recodeWorkOrderBeasInfoBaseEntity) {

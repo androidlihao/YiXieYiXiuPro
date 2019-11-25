@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.Manifest;
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.permissions.Permission;
 import com.luck.picture.lib.permissions.RxPermissions;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -215,6 +218,8 @@ public class CreateWxOrderActivity extends BaseActivity implements View.OnClickL
             RetrofitManager.create(ApiService.class)
                     .orderConversion(string)
                     .compose(RxSchedulers.<BaseEntity>io2main())
+                    .as(AutoDispose.<BaseEntity>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {
@@ -278,6 +283,8 @@ public class CreateWxOrderActivity extends BaseActivity implements View.OnClickL
                     }
                 })
                 .compose(RxSchedulers.<JsonArray>io2main())
+                .as(AutoDispose.<JsonArray>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<JsonArray>() {
                     @Override
                     public void _onNext(JsonArray jsonElements1) {

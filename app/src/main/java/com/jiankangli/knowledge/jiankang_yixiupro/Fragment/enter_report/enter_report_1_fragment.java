@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.enter_report;
 
+import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.enterReportActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MaintainDataBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SingleMaintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.gen.MaintainDataBeanDao;
 import com.jiankangli.knowledge.jiankang_yixiupro.greendao.GreenDaoContext;
@@ -32,6 +34,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.TimeUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import java.util.Date;
 import java.util.List;
@@ -127,6 +131,8 @@ public class enter_report_1_fragment extends BaseFragment {
                 e.onNext(list);
             }
         }).compose(RxSchedulers.<List<MaintainDataBean>>io2main())
+                .as(AutoDispose.<List<MaintainDataBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<List<MaintainDataBean>>() {
                     @Override
                     public void _onNext(List<MaintainDataBean> list) {
@@ -162,6 +168,8 @@ public class enter_report_1_fragment extends BaseFragment {
         RetrofitManager.create(ApiService.class)
                 .getSingleMaintainOrder(((enterReportActivity) getActivity()).getJson())
                 .compose(RxSchedulers.<BaseEntity<SingleMaintainOrderBean>>io2main())
+                .as(AutoDispose.<BaseEntity<SingleMaintainOrderBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<SingleMaintainOrderBean>>() {
                     @Override
                     public void _onNext(BaseEntity<SingleMaintainOrderBean> singleMaintainOrderBeanBaseEntity) {

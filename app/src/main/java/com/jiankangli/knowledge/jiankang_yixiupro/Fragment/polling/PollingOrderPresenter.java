@@ -1,16 +1,22 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.polling;
 
+import android.arch.lifecycle.Lifecycle;
+
+import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.RxPresenter;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +39,8 @@ public class PollingOrderPresenter extends RxPresenter<PollingOrderContract.View
         RetrofitManager.create(ApiService.class)
                 .getPollingOrder(getJson())
                .compose(RxSchedulers.<BaseEntity<List<PollingOrder>>>io2main())
+                .as(AutoDispose.<BaseEntity<List<PollingOrder>>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(((BaseActivity) mView.getContext()).getLifecycle(), Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<List<PollingOrder>>>() {
                     @Override
                     public void _onNext(BaseEntity<List<PollingOrder>> listBaseEntity) {

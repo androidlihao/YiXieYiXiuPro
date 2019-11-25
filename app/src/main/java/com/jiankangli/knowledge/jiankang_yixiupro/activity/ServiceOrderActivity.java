@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.Manifest;
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -41,6 +43,8 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.permissions.Permission;
 import com.luck.picture.lib.permissions.RxPermissions;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -136,6 +140,8 @@ public class ServiceOrderActivity extends BaseActivity implements View.OnClickLi
         RetrofitManager.create(ApiService.class)
                 .showElectronOrder(js)
                 .compose(RxSchedulers.<BaseEntity<ElectronOrderBean>>io2main())
+                .as(AutoDispose.<BaseEntity<ElectronOrderBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<ElectronOrderBean>>() {
                     @Override
                     public void _onNext(BaseEntity<ElectronOrderBean> electronOrderBeanBaseEntity) {
@@ -361,6 +367,10 @@ public class ServiceOrderActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onBackPressedSupport() {
+        closeDialog();
+    }
+
+    private void closeDialog() {
         if (type == 2) {
             DialogUtil.showPositiveDialog(this, "警告", "关闭后，您填写的内容将会丢失", new DialogInterface.OnClickListener() {
                 @Override
@@ -371,5 +381,15 @@ public class ServiceOrderActivity extends BaseActivity implements View.OnClickLi
         } else {
             super.onBackPressedSupport();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                closeDialog();
+                break;
+        }
+        return true;
     }
 }

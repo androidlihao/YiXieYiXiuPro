@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.OdrerDetailsBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.serviceConfirmBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.workEvaluationBean;
@@ -26,6 +28,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.RegexUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -136,6 +140,8 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
         RetrofitManager.create(ApiService.class)
                 .serviceConfirm(js)
                 .compose(RxSchedulers.<BaseEntity<List<OdrerDetailsBean>>>io2main())
+                .as(AutoDispose.<BaseEntity<List<OdrerDetailsBean>>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<List<OdrerDetailsBean>>>() {
                     @Override
                     public void _onNext(BaseEntity<List<OdrerDetailsBean>> odrerDetailsBeanBaseEntity) {
@@ -187,6 +193,8 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
         RetrofitManager.create(ApiService.class)
                 .queryWorkEvaluation(js)
                 .compose(RxSchedulers.<BaseEntity<workEvaluationBean>>io2main())
+                .as(AutoDispose.<BaseEntity<workEvaluationBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<workEvaluationBean>>() {
                     @Override
                     public void _onNext(BaseEntity<workEvaluationBean> workEvaluationBeanBaseEntity) {
@@ -236,6 +244,8 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
         RetrofitManager.create(ApiService.class)
                 .sendMessage(js)
                 .compose(RxSchedulers.<BaseEntity>io2main())
+                .as(AutoDispose.<BaseEntity>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity>() {
                     @Override
                     public void _onNext(BaseEntity baseEntity) {
@@ -256,6 +266,8 @@ public class serviceConfirmPageEchoActivity extends BaseActivity {
         RetrofitManager.create(ApiService.class)
                 .serviceConfirmPageEcho(getJson())
                 .compose(RxSchedulers.<BaseEntity<serviceConfirmBean>>io2main())
+                .as(AutoDispose.<BaseEntity<serviceConfirmBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<serviceConfirmBean>>() {
                     @Override
                     public void _onNext(BaseEntity<serviceConfirmBean> serviceConfirmBeanBaseEntity) {

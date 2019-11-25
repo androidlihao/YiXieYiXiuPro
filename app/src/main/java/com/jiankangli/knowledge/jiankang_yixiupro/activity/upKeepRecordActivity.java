@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderRecordBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
@@ -31,6 +33,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.TimeUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -225,6 +229,8 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
             RetrofitManager.create(ApiService.class)
                     .addServiceRecode(BaseJsonUtils.Base64String(jsonObject))
                     .compose(RxSchedulers.<BaseEntity>io2main())
+                    .as(AutoDispose.<BaseEntity>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {
@@ -304,6 +310,8 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
         RetrofitManager.create(ApiService.class)
                 .getmaintainServiceRecordList(BaseJsonUtils.Base64String(jsonObject))
                 .compose(RxSchedulers.<BaseEntity<maintainOrderRecordBean>>io2main())
+                .as(AutoDispose.<BaseEntity<maintainOrderRecordBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<maintainOrderRecordBean>>() {
                     @Override
                     public void _onNext(BaseEntity<maintainOrderRecordBean> fixRecordBeanBaseEntity) {

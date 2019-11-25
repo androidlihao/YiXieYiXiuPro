@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Base;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +19,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.DialogUtil;
  * @date : 2019-01-16 16:17
  * @description : fragment基类
  */
-public abstract class BaseFragment<P extends BasePresenter> extends SimpleFragment implements BaseView {
+public abstract class BaseFragment<P extends BasePresenter> extends SimpleFragment implements BaseView , LifecycleOwner {
 
 
     public P mPresenter;

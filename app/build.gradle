@@ -51,7 +51,8 @@ dependencies {
     implementation 'com.nineoldandroids:library:2.4.0'
     //异步生命周期
     // RxLifecycle基础库
-    implementation 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
+//    implementation 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:1.0.0-RC2'
 // Android组件库，里面定义了例如RxAppCompatActivity、RxFragment之类的Android组件
     implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
     implementation 'com.youth.banner:banner:1.4.10'  //最新版本

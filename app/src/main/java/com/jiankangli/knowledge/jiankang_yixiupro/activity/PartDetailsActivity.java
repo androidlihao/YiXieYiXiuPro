@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SpareParts;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.partOrderdisplayBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.sparePartBean;
@@ -41,6 +43,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.MapBeanUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -186,6 +190,8 @@ public class PartDetailsActivity extends BaseActivity implements View.OnClickLis
         RetrofitManager.create(ApiService.class)
                 .getSparePartById(getJson())
                 .compose(RxSchedulers.<BaseEntity<sparePartBean>>io2main())
+                .as(AutoDispose.<BaseEntity<sparePartBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<sparePartBean>>() {
                     @Override
                     public void _onNext(BaseEntity<sparePartBean> baseEntity) {
@@ -271,6 +277,8 @@ public class PartDetailsActivity extends BaseActivity implements View.OnClickLis
                         RetrofitManager.create(ApiService.class)
                                 .updateSparePart(Base64.encodeToString(js.toString().getBytes(), Base64.NO_WRAP))
                                 .compose(RxSchedulers.<BaseEntity>io2main())
+                                .as(AutoDispose.<BaseEntity>autoDisposable(
+                                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                                 .subscribe(new RxSubscriber<BaseEntity>() {
                                     @Override
                                     public void _onNext(BaseEntity baseEntity) {

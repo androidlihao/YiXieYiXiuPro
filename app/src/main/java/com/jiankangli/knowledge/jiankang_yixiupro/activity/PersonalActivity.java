@@ -2,6 +2,7 @@ package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,7 +24,9 @@ import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.PersonRvAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.RecyclerViewOnClickListener;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PerOptions;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
@@ -32,6 +35,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.HeadPicUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONException;
@@ -303,6 +308,8 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                     .submitHead(jsonString,body)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDispose.<String>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new Observer<String>() {
                         @Override
                         public void onSubscribe(Disposable d) {

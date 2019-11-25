@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.app.Dialog;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.OdrerDetailsBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.displayBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
@@ -35,6 +37,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.DicUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.MapBeanUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -191,6 +195,8 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         RetrofitManager.create(ApiService.class)
                 .getRepairWorkOrderBaseInfo(getJson())
                 .compose(RxSchedulers.<BaseEntity<OdrerDetailsBean>>io2main())
+                .as(AutoDispose.<BaseEntity<OdrerDetailsBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<OdrerDetailsBean>>() {
                     @Override
                     public void _onNext(BaseEntity<OdrerDetailsBean> baseEntity) {
@@ -326,6 +332,8 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             RetrofitManager.create(ApiService.class)
                     .updateWorkOrder(js)
                     .compose(RxSchedulers.<BaseEntity>io2main())
+                    .as(AutoDispose.<BaseEntity>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {

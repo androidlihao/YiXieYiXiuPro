@@ -96,20 +96,27 @@ public class repairBackTrackingActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    pop();
-                } else {
-                    DialogUtil.showPositiveDialog(this, "警告", "关闭后，您填写的内容将会丢失", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.finishAfterTransition(repairBackTrackingActivity.this);
-                        }
-                    });
-                }
+                closeDialog();
                 break;
         }
         return true;
     }
+    private void closeDialog() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            pop();
+        } else {
+            DialogUtil.showPositiveDialog(this, "警告", "关闭后，您填写的内容将会丢失", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.finishAfterTransition(repairBackTrackingActivity.this);
+                }
+            });
+        }
+    }
 
+    @Override
+    public void onBackPressedSupport() {
+        closeDialog();
+    }
 
 }

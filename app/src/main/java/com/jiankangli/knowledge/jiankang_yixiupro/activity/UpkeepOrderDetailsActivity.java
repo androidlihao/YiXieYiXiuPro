@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.displayBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderBean;
@@ -33,6 +35,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.DicUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.MapBeanUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -187,6 +191,8 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
         RetrofitManager.create(ApiService.class)
                 .getmaintainOrderInfo(getJson())
                 .compose(RxSchedulers.<BaseEntity<maintainOrderBean>>io2main())
+                .as(AutoDispose.<BaseEntity<maintainOrderBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<maintainOrderBean>>() {
                     @Override
                     public void _onNext(BaseEntity<maintainOrderBean> baseEntity) {
@@ -299,6 +305,8 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
         RetrofitManager.create(ApiService.class)
                 .startMaintinOrder(getJson())
                 .compose(RxSchedulers.<BaseEntity>io2main())
+                .as(AutoDispose.<BaseEntity>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity>() {
                     @Override
                     public void _onNext(BaseEntity baseEntity) {

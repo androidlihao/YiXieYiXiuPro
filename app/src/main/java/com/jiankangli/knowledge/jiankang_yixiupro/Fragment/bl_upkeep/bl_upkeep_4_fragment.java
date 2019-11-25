@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_upkeep;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.activity.signActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.upkeepBackTrackingActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.RecodemaintainOrderBeasInfo;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SingleMaintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
@@ -50,6 +52,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.TimeUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.squareup.picasso.Picasso;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -282,6 +286,8 @@ public class bl_upkeep_4_fragment extends BaseFragment {
         RetrofitManager.create(ApiService.class)
                 .uploadImage(body)
                 .compose(RxSchedulers.<BaseEntity<PicUrlBean>>io2main())
+                .as(AutoDispose.<BaseEntity<PicUrlBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<PicUrlBean>>() {
                     @Override
                     public void _onNext(BaseEntity<PicUrlBean> picUrlBeanBaseEntity) {
@@ -318,6 +324,8 @@ public class bl_upkeep_4_fragment extends BaseFragment {
             RetrofitManager.create(ApiService.class)
                     .recodeMaintainOrderEntry(BaseJsonUtils.Base64String(jsonObject))
                     .compose(RxSchedulers.<BaseEntity<Double>>io2main())
+                    .as(AutoDispose.<BaseEntity<Double>>autoDisposable(
+                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity<Double>>() {
                         @Override
                         public void _onNext(BaseEntity<Double> baseEntity) {

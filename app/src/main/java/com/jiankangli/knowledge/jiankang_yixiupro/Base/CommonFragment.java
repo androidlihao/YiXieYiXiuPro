@@ -2,6 +2,7 @@ package com.jiankangli.knowledge.jiankang_yixiupro.Base;
 
 import android.app.Activity;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,7 +30,7 @@ import butterknife.Unbinder;
  */
 
 public abstract class CommonFragment extends Fragment implements PullLoadMoreRecyclerView.PullLoadMoreListener,
-        BaseQuickAdapter.OnItemClickListener{
+        BaseQuickAdapter.OnItemClickListener , LifecycleOwner {
 
     @BindView(R.id.pullLoadMoreRecyclerView)
     public PullLoadMoreRecyclerView pullLoadMoreRecyclerView;

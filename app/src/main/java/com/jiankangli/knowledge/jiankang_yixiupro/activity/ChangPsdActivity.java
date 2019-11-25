@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
+import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,6 +14,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONObject;
 
@@ -65,6 +68,8 @@ public class ChangPsdActivity extends BaseActivity {
                 RetrofitManager.create(ApiService.class).resetPsd(jsonString)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .as(AutoDispose.<String>autoDisposable(
+                                AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                         .subscribe(new Observer<String>() {
                             @Override
                             public void onSubscribe(Disposable d) {

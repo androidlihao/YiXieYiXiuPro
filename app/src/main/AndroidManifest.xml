@@ -61,8 +61,10 @@
         <activity android:name=".activity.MmbOnlineActivity"></activity>
         <activity android:name=".activity.WriteMMBActivity"></activity>
         <activity android:name=".activity.checkErrorActivity"></activity>
+
         <activity android:name=".activity.applySparePartActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+
         <activity android:name=".activity.OrderDetailsActivity"></activity>
         <activity android:name=".activity.PartDetailsActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"></activity>

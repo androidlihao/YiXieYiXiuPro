@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.enter_polling_report;
 
+import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.enterPollingReportActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SingleMaintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.TemplateListBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
@@ -23,6 +25,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.LogUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -138,6 +142,8 @@ public class enter_polling_report_2_fragment extends BaseFragment {
                     }
                 })
                 .compose(RxSchedulers.<List<SingleMaintainOrderBean.WorkTemplateVosBean>>io2main())
+                .as(AutoDispose.<List<SingleMaintainOrderBean.WorkTemplateVosBean>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<List<SingleMaintainOrderBean.WorkTemplateVosBean>>() {
                     @Override
                     public void _onNext(List<SingleMaintainOrderBean.WorkTemplateVosBean> workTemplateVosBeans) {

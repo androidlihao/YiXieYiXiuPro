@@ -1,5 +1,6 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_repair;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.repairBackTrackingActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RecodeWorkOrderBeasInfo;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.blBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
@@ -23,6 +25,8 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,6 +131,8 @@ public class bl_repair_1_fragment extends BaseFragment {
         RetrofitManager.create(ApiService.class)
                 .getRecodeWorkOrderBeasInfo(getJson(deviceNo))
                 .compose(RxSchedulers.<BaseEntity<RecodeWorkOrderBeasInfo>>io2main())
+                .as(AutoDispose.<BaseEntity<RecodeWorkOrderBeasInfo>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new RxSubscriber<BaseEntity<RecodeWorkOrderBeasInfo>>() {
                     @Override
                     public void _onNext(BaseEntity<RecodeWorkOrderBeasInfo> recodeWorkOrderBeasInfoBaseEntity) {
