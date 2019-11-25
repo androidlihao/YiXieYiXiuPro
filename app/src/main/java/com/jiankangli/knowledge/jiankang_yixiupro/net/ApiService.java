@@ -23,6 +23,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.TemplateListBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.fixRecordBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.inspectionBaseInfoBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.inspectionWorkOrderBeasInfo;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.maintainOrderRecordBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
@@ -355,6 +356,13 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("maintainOrder/recodeOrderInfoEcho.do")
      Observable<BaseEntity<RecodemaintainOrderBeasInfo>> getrecodeOrderInfoEcho(@Field("jsonString")String jsonString);
+
+     /**
+      * 巡检-补录基础信息回显
+      */
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/recodeOrderInfoEcho.do")
+     Observable<BaseEntity<inspectionWorkOrderBeasInfo>> getinspectionrecodeOrderInfoEcho(@Field("jsonString")String jsonString);
      /**
       * 维修-补录
       */
@@ -367,4 +375,10 @@ public interface ApiService {
      @FormUrlEncoded
      @POST("maintainOrder/recodeMaintainOrderEntry.do")
      Observable<BaseEntity<Double>> recodeMaintainOrderEntry(@Field("jsonString")String jsonString);
+     /**
+      * 巡检-补录
+      */
+     @FormUrlEncoded
+     @POST("inspectionWorkOrder/recodeOrderEntiry.do")
+     Observable<BaseEntity<Double>> recodeinspectionWorkOrderEntry(@Field("jsonString")String jsonString);
 }

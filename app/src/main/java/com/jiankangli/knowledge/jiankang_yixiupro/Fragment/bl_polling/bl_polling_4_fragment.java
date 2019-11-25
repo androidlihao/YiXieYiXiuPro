@@ -1,4 +1,4 @@
-package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_upkeep;
+package com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_polling;
 
 import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,11 +23,13 @@ import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.TextListener;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
+import com.jiankangli.knowledge.jiankang_yixiupro.activity.inspectionServiceConfirmPageEchoActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.activity.pollingBackTrackingActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.activity.signActivity;
-import com.jiankangli.knowledge.jiankang_yixiupro.activity.upkeepBackTrackingActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.upkeepBlBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.pollingBlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
@@ -50,9 +49,7 @@ import java.io.File;
 import java.util.Date;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -62,39 +59,32 @@ import okhttp3.RequestBody;
  * @date 2019-10-22 14:46
  * @description :提交报告页面
  */
-public class bl_upkeep_4_fragment extends BaseFragment {
+public class bl_polling_4_fragment extends BaseFragment {
 
+
+    @BindView(R.id.cb_isNeed_id)
+    CheckBox cbIsNeedId;
     @BindView(R.id.tv_select_date_id)
     TextView tvSelectDateId;
     @BindView(R.id.et_go_id)
     EditText etGoId;
     @BindView(R.id.et_back_id)
     EditText etBackId;
-    @BindView(R.id.et_part_status_id)
-    EditText etPartStatusId;
-    @BindView(R.id.tv_part_status_id)
-    TextView tvPartStatusId;
-    @BindView(R.id.ll_content_id)
-    LinearLayout llContentId;
     @BindView(R.id.tv_signature_id)
     TextView tvSignatureId;
     @BindView(R.id.iv_signature_id)
     ImageView ivSignatureId;
     @BindView(R.id.btn_save_id)
     Button btnSaveId;
-    @BindView(R.id.btn_next_id)
-    Button btnNextId;
     @BindView(R.id.rl_save_id)
     RelativeLayout rlSaveId;
-    Unbinder unbinder;
-    @BindView(R.id.cb_isNeed_id)
-    CheckBox cbIsNeedId;
-
-    private upkeepBlBean blBean;
+    @BindView(R.id.btn_next_id)
+    Button btnNextId;
+    private pollingBlBean blBean;
     private TimePickerView pvTime1;
 
-    public static bl_upkeep_4_fragment newInstance() {
-        bl_upkeep_4_fragment fragment = new bl_upkeep_4_fragment();
+    public static bl_polling_4_fragment newInstance() {
+        bl_polling_4_fragment fragment = new bl_polling_4_fragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -108,7 +98,7 @@ public class bl_upkeep_4_fragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.bl_upkeep_4_fragment_layout;
+        return R.layout.bl_polling_4_fragment_layout;
     }
 
     @Override
@@ -118,11 +108,10 @@ public class bl_upkeep_4_fragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        blBean = ((upkeepBackTrackingActivity) getActivity()).blBean;
+        blBean = ((pollingBackTrackingActivity) getActivity()).blBean;
         tvSelectDateId.setText(blBean.getLeaveTime());
         etGoId.setText(blBean.getTravelToTime() + "");
         etBackId.setText(blBean.getTravelBackTime() + "");
-        etPartStatusId.setText(blBean.getProblemHandling());
         if (blBean.getOrderPicVo() != null) {
             String picUrl = blBean.getOrderPicVo().getPicUrl();
             if (picUrl.startsWith("http://")) {
@@ -136,30 +125,11 @@ public class bl_upkeep_4_fragment extends BaseFragment {
             }
         }
 
-        cbIsNeedId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //标识设备是否正常工作
-                if (isChecked) {
-                    blBean.setWhetherExamine(1);
-                } else {
-                    blBean.setWhetherExamine(0);
-                }
 
-            }
-        });
     }
 
     @Override
     protected void initListener() {
-        etPartStatusId.addTextChangedListener(new TextListener(R.id.et_part_status_id) {
-            @Override
-            public void onTextChange(int layoutId, Editable s) {
-                tvPartStatusId.setText(s.length() + "/" + 500);
-                //修改问题描述
-                blBean.setProblemHandling(s.toString());
-            }
-        });
         etGoId.addTextChangedListener(new TextListener(R.id.et_go_id) {
             @Override
             public void onTextChange(int layoutId, Editable s) {
@@ -180,6 +150,18 @@ public class bl_upkeep_4_fragment extends BaseFragment {
                 }
             }
         });
+        cbIsNeedId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //标识设备是否正常工作
+                if (isChecked) {
+                    blBean.setWhetherExamine(1);
+                } else {
+                    blBean.setWhetherExamine(0);
+                }
+
+            }
+        });
     }
 
     /**
@@ -188,7 +170,7 @@ public class bl_upkeep_4_fragment extends BaseFragment {
     private void save() {
         //设置值
         try {
-            SPUtils.put(getContext(), "bybl", GsonUtils.beanTojson(blBean));
+            SPUtils.put(getContext(), "xjbl", GsonUtils.beanTojson(blBean));
             ToastUtil.showShortSafe("保存成功", getActivity());
         } catch (Exception e) {
             ToastUtil.showShortSafe(e + "保存失败", getActivity());
@@ -203,7 +185,7 @@ public class bl_upkeep_4_fragment extends BaseFragment {
                 save();
                 break;
             case R.id.btn_next_id:
-                upkeepBlBean.OrderPicVoBean orderPicVo1 = blBean.getOrderPicVo();
+                pollingBlBean.OrderPicVoBean orderPicVo1 = blBean.getOrderPicVo();
                 boolean isSign = false;
                 if (orderPicVo1 != null) {
                     if (orderPicVo1.getType() == 5) {
@@ -230,11 +212,6 @@ public class bl_upkeep_4_fragment extends BaseFragment {
                     ToastUtil.showShortSafe("请输入差旅时间", getActivity());
                     return;
                 }
-                String trim = etPartStatusId.getText().toString().trim();
-                if (TextUtils.isEmpty(trim)) {
-                    ToastUtil.showShortSafe("请输入问题描述", getActivity());
-                    return;
-                }
                 try {
                     upload();
                 } catch (JSONException e) {
@@ -259,7 +236,7 @@ public class bl_upkeep_4_fragment extends BaseFragment {
         DialogUtil.showPositiveDialog(getContext(), "提示", "是否提交工单数据", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ((upkeepBackTrackingActivity) getActivity()).commonLoading.show();
+                ((pollingBackTrackingActivity) getActivity()).commonLoading.show();
                 if (blBean.getOrderPicVo() != null) {
                     String picUrl = blBean.getOrderPicVo().getPicUrl();
                     if (!picUrl.startsWith("http://")) {
@@ -290,7 +267,7 @@ public class bl_upkeep_4_fragment extends BaseFragment {
                 .subscribe(new RxSubscriber<BaseEntity<PicUrlBean>>() {
                     @Override
                     public void _onNext(BaseEntity<PicUrlBean> picUrlBeanBaseEntity) {
-                        upkeepBlBean.OrderPicVoBean orderPicVo = blBean.getOrderPicVo();
+                        pollingBlBean.OrderPicVoBean orderPicVo = blBean.getOrderPicVo();
                         if (picUrlBeanBaseEntity.isSuccess()) {
                             orderPicVo.setPicUrl(picUrlBeanBaseEntity.data.getUrl());
                         } else {
@@ -322,24 +299,31 @@ public class bl_upkeep_4_fragment extends BaseFragment {
             JSONObject jsonObject = new JSONObject(s);
             //开始执行提交过程
             RetrofitManager.create(ApiService.class)
-                    .recodeMaintainOrderEntry(BaseJsonUtils.Base64String(jsonObject))
+                    .recodeinspectionWorkOrderEntry(BaseJsonUtils.Base64String(jsonObject))
                     .compose(RxSchedulers.<BaseEntity<Double>>io2main())
                     .as(AutoDispose.<BaseEntity<Double>>autoDisposable(
                             AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                     .subscribe(new RxSubscriber<BaseEntity<Double>>() {
                         @Override
                         public void _onNext(BaseEntity<Double> baseEntity) {
-                            ((upkeepBackTrackingActivity) getActivity()).commonLoading.dismiss();
+                            ((pollingBackTrackingActivity) getActivity()).commonLoading.dismiss();
                             ToastUtil.showShortSafe(baseEntity.msg, getContext());
                             if (baseEntity.isSuccess()) {
+                                Double id=baseEntity.data;
+                                PollingOrder pollingOrder=new PollingOrder();
+                                pollingOrder.setId(id.intValue());
+                                pollingOrder.setOrderStatus(4);
+                                Intent intent1 = new Intent(getActivity(), inspectionServiceConfirmPageEchoActivity.class);
+                                intent1.putExtra("order", pollingOrder);
+                                startActivity(intent1);
                                 getActivity().finish();
-                                SPUtils.remove(getActivity(), "bybl");
+                                SPUtils.remove(getActivity(), "xjbl");
                             }
                         }
 
                         @Override
                         public void _onError(Throwable e, String msg) {
-                            ((upkeepBackTrackingActivity) getActivity()).commonLoading.dismiss();
+                            ((pollingBackTrackingActivity) getActivity()).commonLoading.dismiss();
                             ToastUtil.showShortSafe(msg, getContext());
                         }
                     });
@@ -354,8 +338,7 @@ public class bl_upkeep_4_fragment extends BaseFragment {
             String sign = (String) data.getExtras().get("sign");
             Picasso.get().load(new File(sign)).into(ivSignatureId);
             //修改本地数据源
-            upkeepBlBean.OrderPicVoBean orderPicVo = blBean.getOrderPicVo() == null ? new upkeepBlBean.OrderPicVoBean() : blBean.getOrderPicVo();
-//            orderPicVo.setCreateTime(TimeUtil.getCurrentTime());
+            pollingBlBean.OrderPicVoBean orderPicVo = blBean.getOrderPicVo() == null ? new pollingBlBean.OrderPicVoBean() : blBean.getOrderPicVo();
             orderPicVo.setType(5);
             orderPicVo.setPicUrl(sign);
             blBean.setOrderPicVo(orderPicVo);
@@ -381,17 +364,4 @@ public class bl_upkeep_4_fragment extends BaseFragment {
                 .build();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

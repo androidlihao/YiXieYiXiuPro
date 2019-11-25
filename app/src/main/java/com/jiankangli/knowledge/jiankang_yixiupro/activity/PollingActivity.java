@@ -1,6 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -52,5 +53,8 @@ public class PollingActivity extends BaseActivity {
 
     @OnClick(R.id.tv_entering_id)
     public void onViewClicked() {
+        //录入工单
+        Intent intent=new Intent(this,pollingBackTrackingActivity.class);
+        startActivity(intent);
     }
 }

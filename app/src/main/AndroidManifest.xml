@@ -95,6 +95,8 @@
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".activity.upkeepBackTrackingActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:name=".activity.pollingBackTrackingActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
     </application>
 
 </manifest>

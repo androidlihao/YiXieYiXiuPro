@@ -2,6 +2,7 @@ package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +26,11 @@ import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.ElectronOrderBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.SpareParts;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.Status;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
@@ -97,10 +102,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         newMsgAdapters = new newMsgAdapter(R.layout.item_push_msg_layout);
         rvMsgId.setAdapter(newMsgAdapters);
         newMsgAdapters.setOnLoadMoreListener(this, rvMsgId);
-        newMsgAdapters.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        newMsgAdapters.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //跳转
+                messagePushBean messagePushBean = newMsgAdapters.getData().get(position);
+                Intent intent = null;
+                switch (messagePushBean.getTypeString()){
+                    case "巡检":
+                        intent=new Intent(getApplication(),PollingOrderDetailsActivity.class);
+                        PollingOrder pollingOrder = new PollingOrder();
+                        pollingOrder.setListStatus(messagePushBean.getOrderStatus());
+                        pollingOrder.setId(messagePushBean.getWorkOrderId());
+                        intent.putExtra("order",pollingOrder);
+                        break;
+                    case "保养":
+                        intent=new Intent(getApplication(),UpkeepOrderDetailsActivity.class);
+                        UpkeepOrder upkeepOrder = new UpkeepOrder();
+                        upkeepOrder.setListStatus(messagePushBean.getOrderStatus());
+                        upkeepOrder.setId(messagePushBean.getWorkOrderId());
+                        intent.putExtra("order",upkeepOrder);
+                        break;
+                    case "维修":
+                        intent=new Intent(getApplication(),OrderDetailsActivity.class);
+                        RepairOrder repairOrder = new RepairOrder();
+                        repairOrder.setListStatus(messagePushBean.getOrderStatus());
+                        repairOrder.setId(messagePushBean.getWorkOrderId());
+                        intent.putExtra("order",repairOrder);
+                        break;
+                    case "备件":
+                        intent=new Intent(getApplication(),PartDetailsActivity.class);
+                        SpareParts spareParts =new SpareParts();
+                        //然后执行跳转逻辑
+                        spareParts.setId(messagePushBean.getWorkOrderId());
+                        spareParts.setAccessoryStatus(messagePushBean.getOrderStatus());
+                        intent.putExtra("part",spareParts);
+                        break;
+                }
+                startActivity(intent);
             }
         });
     }

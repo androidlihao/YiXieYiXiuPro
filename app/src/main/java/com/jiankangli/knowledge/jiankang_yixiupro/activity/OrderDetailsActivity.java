@@ -98,7 +98,6 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         initView();
         changeUI();
         initData();
-        initListtener();
         ActivityUtils.getInstance().addActivity(this);
     }
 
@@ -149,6 +148,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 break;
 
         }
+        initListtener();
     }
 
     private void initListtener() {

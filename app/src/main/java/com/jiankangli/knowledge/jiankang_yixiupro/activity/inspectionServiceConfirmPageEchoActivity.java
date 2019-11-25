@@ -152,7 +152,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
                                     .subscribe(new Consumer<String>() {
                                         @Override
                                         public void accept(String s) throws Exception {
-                                            Intent intent = new Intent(inspectionServiceConfirmPageEchoActivity.this, UpkeepOrderDetailsActivity.class);
+                                            Intent intent = new Intent(inspectionServiceConfirmPageEchoActivity.this, PollingOrderDetailsActivity.class);
                                             intent.putExtra("order", order);
                                             startActivity(intent);
                                             finish();
