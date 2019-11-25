@@ -226,7 +226,7 @@ public class enter_report_3_fragment extends BaseFragment {
         pvTime1 = new TimePickerBuilder(getActivity(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                tvSelectDateId.setText(TimeUtil.getTimeFormatParse(date));
+                tvSelectDateId.setText(TimeUtil.getTimeFormatParseMinute(date));
                 //设置离开场地时间
                 singleMaintainOrderBean.setLeaveTime(TimeUtil.getTimeFormat(date));
             }

@@ -38,6 +38,7 @@
                 android:background="@null"
                 android:hint="请输入"
                 android:singleLine="true"
+                android:inputType="number"
                 android:textSize="@dimen/px_60"/>
         </LinearLayout>
         <LinearLayout
@@ -60,6 +61,7 @@
                 android:background="@null"
                 android:hint="请输入"
                 android:singleLine="true"
+                android:inputType="number"
                 android:textSize="@dimen/px_60"/>
         </LinearLayout>>
     </LinearLayout>>

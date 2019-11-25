@@ -3,18 +3,17 @@ package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
-import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_repair.bl_repair_1_fragment;
-import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_repair.bl_repair_2_fragment;
-import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_repair.bl_repair_3_fragment;
-import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_repair.bl_repair_4_fragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_upkeep.bl_upkeep_1_fragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_upkeep.bl_upkeep_2_fragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.blBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.upkeepBlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.DialogUtil;
 
 import butterknife.BindView;
@@ -27,11 +26,12 @@ import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
  * @description :保养补录
  */
 public class upkeepBackTrackingActivity extends BaseActivity {
-    @BindView(R.id.tv_entering_id)
-    TextView tvEnteringId;
     @BindView(R.id.fl_content)
     FrameLayout flContent;
-    public blBean blBean;
+    public upkeepBlBean blBean;
+    public String templateCode;
+    @BindView(R.id.tv_entering_id)
+    TextView tvEnteringId;
 
     @Override
     protected int getLayoutId() {
@@ -41,54 +41,35 @@ public class upkeepBackTrackingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        changeTitle("录入报告");
+        addMiddleTitle(this, "录入报告");
         initFragment();
-        //得到请求参数
-        blBean = new blBean();
+        //判断是否有保存数据,如果又保存数据的存在，直接搜索
     }
 
-    public void changeTitle(String title) {
-        addMiddleTitle(this, title);
-        if (getSupportFragmentManager().getBackStackEntryCount()==8) {
-            tvEnteringId.setVisibility(View.INVISIBLE);
-        }else {
+    public void changeView() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 2) {
             tvEnteringId.setVisibility(View.VISIBLE);
+        } else {
+            tvEnteringId.setVisibility(View.GONE);
         }
     }
 
+
     private void initFragment() {
-        if (findFragment(bl_repair_1_fragment.class) == null) {
+        if (findFragment(bl_upkeep_1_fragment.class) == null) {
             // 加载根Fragment
-            loadRootFragment(R.id.fl_content, bl_repair_1_fragment.newInstance());
+            loadRootFragment(R.id.fl_content, bl_upkeep_1_fragment.newInstance());
             //全局改变Fragment的动画
             setFragmentAnimator(new DefaultHorizontalAnimator());
         }
     }
 
-    @OnClick(R.id.tv_entering_id)
-    public void onViewClicked() {
-        //下一步
-        int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
-        if (backStackEntryCount == 1){
-            //获取信息
-            bl_repair_1_fragment bl_repair_1_fragment = (bl_repair_1_fragment) getSupportFragmentManager().getFragments().get(0);
-            //判断是否有值
-            bl_repair_1_fragment.toNext();
-        }else if (backStackEntryCount==2){
-            //获取信息
-            bl_repair_2_fragment bl_repair_2_fragment = (bl_repair_2_fragment) getSupportFragmentManager().getFragments().get(1);
-            //判断是否有值
-            bl_repair_2_fragment.toNext();
-        }else if (backStackEntryCount>2&&backStackEntryCount<7){
-            bl_repair_3_fragment bl_repair_3_fragment = (bl_repair_3_fragment) getSupportFragmentManager().getFragments().get(backStackEntryCount-1);
-            //判断是否有值
-            bl_repair_3_fragment.toNext();
-        }else if (backStackEntryCount==7){
-            //获取信息
-            bl_repair_4_fragment bl_repair_4_fragment = (bl_repair_4_fragment) getSupportFragmentManager().getFragments().get(backStackEntryCount-1);
-            //判断是否有值
-            bl_repair_4_fragment.toNext();
-        }
+    public void setBlBean(upkeepBlBean blBean) {
+        this.blBean = blBean;
+    }
+
+    public void setTemplateCode(String templateCode) {
+        this.templateCode = templateCode;
     }
 
     @Override
@@ -108,5 +89,12 @@ public class upkeepBackTrackingActivity extends BaseActivity {
                 break;
         }
         return true;
+    }
+
+    @OnClick(R.id.tv_entering_id)
+    public void onViewClicked() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 2) {
+            ((bl_upkeep_2_fragment) getSupportFragmentManager().getFragments().get(1)).toNext();
+        }
     }
 }

@@ -14,6 +14,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RecodeWorkOrderBeasInfo;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.RecodemaintainOrderBeasInfo;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.RepairOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SingleMaintainOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.SpareParts;
@@ -349,9 +350,21 @@ public interface ApiService {
      @POST("repairWorkOrder/getRecodeWorkOrderBeasInfo.do")
      Observable<BaseEntity<RecodeWorkOrderBeasInfo>> getRecodeWorkOrderBeasInfo(@Field("jsonString")String jsonString);
      /**
+      * 保养-补录基础信息回显
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/recodeOrderInfoEcho.do")
+     Observable<BaseEntity<RecodemaintainOrderBeasInfo>> getrecodeOrderInfoEcho(@Field("jsonString")String jsonString);
+     /**
       * 维修-补录
       */
      @FormUrlEncoded
      @POST("repairWorkOrder/recodeWorkOrder.do")
      Observable<BaseEntity> recodeWorkOrder(@Field("jsonString")String jsonString);
+     /**
+      * 保养补录
+      */
+     @FormUrlEncoded
+     @POST("maintainOrder/recodeMaintainOrderEntry.do")
+     Observable<BaseEntity<Double>> recodeMaintainOrderEntry(@Field("jsonString")String jsonString);
 }

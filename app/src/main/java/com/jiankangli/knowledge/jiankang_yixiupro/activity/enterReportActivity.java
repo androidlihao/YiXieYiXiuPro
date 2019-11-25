@@ -2,16 +2,14 @@ package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.Constant.DbConstant;
 import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.enter_report.enter_report_1_fragment;
@@ -33,15 +31,14 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.GreenDaoUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
-import com.squareup.picasso.Picasso;
 
-import org.greenrobot.greendao.DbUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 
+import butterknife.BindView;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -58,6 +55,8 @@ public class enterReportActivity extends BaseActivity {
     public SingleMaintainOrderBean singleMaintainOrderBean;
     public UpkeepOrder order;
     public boolean isFrist;
+    @BindView(R.id.tv_entering_id)
+    TextView tvEnteringId;
 
     @Override
     protected int getLayoutId() {
@@ -69,6 +68,7 @@ public class enterReportActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         addMiddleTitle(this, "录入报告");
         isFrist = getIntent().getExtras().getBoolean("isFrist");
+        tvEnteringId.setVisibility(View.GONE);
         order = (UpkeepOrder) getIntent().getExtras().getSerializable("order");
         initFragment();
         ActivityUtils.getInstance().addActivity(this);
@@ -122,17 +122,17 @@ public class enterReportActivity extends BaseActivity {
         this.singleMaintainOrderBean = singleMaintainOrderBean;
     }
 
-    public void save(){
+    public void save() {
         //保存数据到本地数据库
         try {
-            GreenDaoUtil greenDaoUtil =GreenDaoUtil.getInstance(new GreenDaoContext(getApplicationContext(), DbConstant.NEW_BY_DB));
+            GreenDaoUtil greenDaoUtil = GreenDaoUtil.getInstance(new GreenDaoContext(getApplicationContext(), DbConstant.NEW_BY_DB));
             MaintainDataBean maintainDataBean = new MaintainDataBean();
             maintainDataBean.setId(Long.valueOf(order.getId()));
             maintainDataBean.setJsonObject(GsonUtil.GsonString(singleMaintainOrderBean));
             greenDaoUtil.getDaoSession().getMaintainDataBeanDao().insertOrReplace(maintainDataBean);
-            ToastUtil.showShortSafe("保存成功",this);
-        }catch (Exception e){
-            ToastUtil.showShortSafe("保存失败",this);
+            ToastUtil.showShortSafe("保存成功", this);
+        } catch (Exception e) {
+            ToastUtil.showShortSafe("保存失败", this);
         }
 
     }
@@ -202,7 +202,7 @@ public class enterReportActivity extends BaseActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
-            if (!isFrist){
+            if (!isFrist) {
                 //电子工单id
                 jsonObject.put("id", singleMaintainOrderBean.getId());
             }
@@ -255,15 +255,15 @@ public class enterReportActivity extends BaseActivity {
                             if (baseEntity.isSuccess()) {
                                 ToastUtil.showShortSafe("提交上报成功", getApplicationContext());
                                 //然后跳转到对应的服务审核界面
-                                if (isFrist){
+                                if (isFrist) {
                                     //添加，直接跳转到服务确认界面
-                                    Intent intent=new Intent(enterReportActivity.this,UpkeepServiceConfirmPageEchoActivity.class);
+                                    Intent intent = new Intent(enterReportActivity.this, UpkeepServiceConfirmPageEchoActivity.class);
                                     intent.putExtra("order", order);
                                     startActivity(intent);
-                                    finish();
-                                }else {
+                                    ActivityUtils.getInstance().finishAllActivity();
+                                } else {
                                     //跳转到正在审核界面
-                                    Intent intent=new Intent(enterReportActivity.this,UpkeepOrderDetailsActivity.class);
+                                    Intent intent = new Intent(enterReportActivity.this, UpkeepOrderDetailsActivity.class);
                                     order.setListStatus(5);
                                     intent.putExtra("order", order);
                                     startActivity(intent);
