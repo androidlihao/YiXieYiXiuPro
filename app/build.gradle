@@ -16,6 +16,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "医械医修pro" +
+                        "_${defaultConfig.versionName}" +
+                        "_${defaultConfig.versionCode}" +
+                        "_${new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))}.apk"
+            }
+        }
     }
     lintOptions {
         checkReleaseBuilds false
