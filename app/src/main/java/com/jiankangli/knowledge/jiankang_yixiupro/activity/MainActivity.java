@@ -21,9 +21,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zhouwei.library.CustomPopWindow;
 import com.jiankangli.knowledge.jiankang_yixiupro.Adapter.newMsgAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.BannerBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.ElectronOrderBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
@@ -36,6 +38,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ImageLoader;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.LogUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
@@ -56,6 +59,7 @@ import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants.PIC_URL;
@@ -86,6 +90,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     LinearLayout viewPartId;
     private CustomPopWindow popWindow;
     private newMsgAdapter newMsgAdapters;
+    private ArrayList mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,35 +113,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 //跳转
                 messagePushBean messagePushBean = newMsgAdapters.getData().get(position);
                 Intent intent = null;
-                switch (messagePushBean.getTypeString()){
+                switch (messagePushBean.getTypeString()) {
                     case "巡检":
-                        intent=new Intent(getApplication(),PollingOrderDetailsActivity.class);
+                        intent = new Intent(getApplication(), PollingOrderDetailsActivity.class);
                         PollingOrder pollingOrder = new PollingOrder();
                         pollingOrder.setListStatus(messagePushBean.getOrderStatus());
                         pollingOrder.setId(messagePushBean.getWorkOrderId());
-                        intent.putExtra("order",pollingOrder);
+                        intent.putExtra("order", pollingOrder);
                         break;
                     case "保养":
-                        intent=new Intent(getApplication(),UpkeepOrderDetailsActivity.class);
+                        intent = new Intent(getApplication(), UpkeepOrderDetailsActivity.class);
                         UpkeepOrder upkeepOrder = new UpkeepOrder();
                         upkeepOrder.setListStatus(messagePushBean.getOrderStatus());
                         upkeepOrder.setId(messagePushBean.getWorkOrderId());
-                        intent.putExtra("order",upkeepOrder);
+                        intent.putExtra("order", upkeepOrder);
                         break;
                     case "维修":
-                        intent=new Intent(getApplication(),OrderDetailsActivity.class);
+                        intent = new Intent(getApplication(), OrderDetailsActivity.class);
                         RepairOrder repairOrder = new RepairOrder();
                         repairOrder.setListStatus(messagePushBean.getOrderStatus());
                         repairOrder.setId(messagePushBean.getWorkOrderId());
-                        intent.putExtra("order",repairOrder);
+                        intent.putExtra("order", repairOrder);
                         break;
                     case "备件":
-                        intent=new Intent(getApplication(),PartDetailsActivity.class);
-                        SpareParts spareParts =new SpareParts();
+                        intent = new Intent(getApplication(), PartDetailsActivity.class);
+                        SpareParts spareParts = new SpareParts();
                         //然后执行跳转逻辑
                         spareParts.setId(messagePushBean.getWorkOrderId());
                         spareParts.setAccessoryStatus(messagePushBean.getOrderStatus());
-                        intent.putExtra("part",spareParts);
+                        intent.putExtra("part", spareParts);
                         break;
                 }
                 startActivity(intent);
@@ -161,24 +166,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 ivOnlineStatuId.setImageResource(R.mipmap.busy);
                 break;
         }
-        ArrayList mList = new ArrayList<>();
+        mList = new ArrayList<>();
         //获取图片路径
 //        RetrofitManager.create(ApiService.class)
 //                .getBannerList()
 //                .compose(RxSchedulers.<BaseEntity<List<BannerBean>>>io2main())
-//                .subscribe(new Consumer<BaseEntity<List<BannerBean>>>() {
+//                .as(AutoDispose.<BaseEntity<List<BannerBean>>>autoDisposable(
+//                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
+//                .subscribe(new RxSubscriber<BaseEntity<List<BannerBean>>>() {
 //                    @Override
-//                    public void accept(BaseEntity<List<BannerBean>> listBaseEntity) throws Exception {
-//                        ArrayList mList = new ArrayList<>();
-//                        for (BannerBean datum : listBaseEntity.data) {
-//                            mList.add(Constants.PIC_URL+datum.getBannerPath());
+//                    public void _onNext(BaseEntity<List<BannerBean>> listBaseEntity) {
+//                        if (listBaseEntity.isSuccess()){
+//                            for (BannerBean datum : listBaseEntity.data) {
+//                                mList.add(Constants.PIC_URL + datum.getBannerPath());
+//                            }
+//                            banner.setImages(mList)
+//                                    .setImageLoader(new ImageLoader())
+//                                    .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+//                                    .setBannerAnimation(Transformer.Default)
+//                                    .setDelayTime(3000)
+//                                    .start();
 //                        }
-//                        banner.setImages(mList)
-//                                .setImageLoader(new ImageLoader())
-//                                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-//                                .setBannerAnimation(Transformer.Default)
-//                                .setDelayTime(3000)
-//                                .start();
+//                    }
+//
+//                    @Override
+//                    public void _onError(Throwable e, String msg) {
+//                        LogUtil.e(msg);
 //                    }
 //                });
         mList.add(R.mipmap.scroll_pic1);
@@ -364,7 +377,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
                     @Override
                     public void onComplete() {
-                        if (swLoadMsg!=null&&swLoadMsg.isRefreshing()) {
+                        if (swLoadMsg != null && swLoadMsg.isRefreshing()) {
                             swLoadMsg.setRefreshing(false);
                         }
                         int i = newMsgAdapters.getData().size() % 20;
