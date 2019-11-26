@@ -109,7 +109,7 @@ public class OrderPdfActivity extends BaseActivity {
 
                     @Override
                     public void _onError(Throwable e, String msg) {
-                        ToastUtil.showShortSafe("获取PDF文件出错",OrderPdfActivity.this);
+                        ToastUtil.showShortSafe(msg,OrderPdfActivity.this);
                         commonLoading.dismiss();
                     }
 

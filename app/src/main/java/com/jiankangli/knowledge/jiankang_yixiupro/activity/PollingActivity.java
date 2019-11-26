@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -51,10 +52,19 @@ public class PollingActivity extends BaseActivity {
         tabLayout.setupWithViewPager(viewpagerId);
     }
 
-    @OnClick(R.id.tv_entering_id)
-    public void onViewClicked() {
-        //录入工单
-        Intent intent=new Intent(this,pollingBackTrackingActivity.class);
-        startActivity(intent);
+    @OnClick({R.id.tv_entering_id, R.id.rl_search_id})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_entering_id:
+                Intent intent = new Intent(this, repairBackTrackingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rl_search_id:
+                //跳转到搜索页面
+                Intent intent1 = new Intent(this, SearchActivity.class);
+                intent1.putExtra("type","巡检");
+                startActivity(intent1);
+                break;
+        }
     }
 }

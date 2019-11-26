@@ -96,7 +96,7 @@ public abstract class BaseActivity extends SupportActivity implements LifecycleO
     /**
      * 初始化Toolbar
      */
-    private void initToolbar() {
+    public void initToolbar() {
         toolbar = findViewById(R.id.toolbar_id);
         if (toolbar == null) {
             throw new NullPointerException("toolbar can not be null");
