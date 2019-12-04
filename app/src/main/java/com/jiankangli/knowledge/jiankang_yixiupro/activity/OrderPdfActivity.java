@@ -1,22 +1,22 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.arch.lifecycle.Lifecycle;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.util.FitPolicy;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PdfBean;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.messagePushBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.LogUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -25,9 +25,12 @@ import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.BindView;
+import io.reactivex.functions.Function;
 
 /**
  * @author lihao
@@ -40,6 +43,8 @@ public class OrderPdfActivity extends BaseActivity {
     Toolbar toolbarId;
     @BindView(R.id.pdfView)
     PDFView pdfView;
+    @BindView(R.id.tv_id)
+    TextView tvId;
     private int pdfType;
     private int workOrderId;
 
@@ -74,46 +79,58 @@ public class OrderPdfActivity extends BaseActivity {
         commonLoading.show();
         RetrofitManager.create(ApiService.class)
                 .getWorkOrderPdf(js)
-                .compose(RxSchedulers.<BaseEntity<PdfBean>>io2main())
-                .as(AutoDispose.<BaseEntity<PdfBean>>autoDisposable(
-                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
-                .subscribe(new RxSubscriber<BaseEntity<PdfBean>>() {
+                .map(new Function<BaseEntity<PdfBean>, InputStream>() {
                     @Override
-                    public void _onNext(BaseEntity<PdfBean> pdfBeanBaseEntity) {
-                        if (pdfBeanBaseEntity.isSuccess()){
-                            String pdfUrl = pdfBeanBaseEntity.data.getPdfUrl();
-
-                            pdfView.fromUri(Uri.parse(pdfUrl))
-                                    .enableSwipe(true) // allows to block changing pages using swipe
+                    public InputStream apply(BaseEntity<PdfBean> pdfBeanBaseEntity) throws Exception {
+                        InputStream stream = null;
+                        if (pdfBeanBaseEntity.isSuccess()) {
+                            URL url = new URL(pdfBeanBaseEntity.data.getPdfUrl());
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            urlConnection.setRequestMethod("GET");
+                            urlConnection.setConnectTimeout(60000);
+                            urlConnection.setReadTimeout(60000);
+                            urlConnection.connect();
+                            stream = urlConnection.getInputStream();
+                        }
+                        return stream;
+                    }
+                })
+                .compose(RxSchedulers.<InputStream>io2main())
+                .as(AutoDispose.<InputStream>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
+                .subscribe(new RxSubscriber<InputStream>() {
+                    @Override
+                    public void _onNext(InputStream stream) {
+                        if (stream != null) {
+                            pdfView.fromStream(stream)
+                                    .enableSwipe(true)
                                     .swipeHorizontal(false)
                                     .enableDoubletap(true)
                                     .defaultPage(0)
-                                    .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
+                                    .enableAnnotationRendering(false)
+                                    .enableAntialiasing(true)//改善低分辨率屏幕上的渲染
                                     .password(null)
                                     .scrollHandle(null)
-                                    .enableAntialiasing(true) // improve rendering a little bit on low-res screens
-                                    // spacing between pages in dp. To define spacing color, set view background
-                                    .spacing(0)
-                                    .autoSpacing(false) // add dynamic spacing to fit each page on its own on the screen
-                                    .pageFitPolicy(FitPolicy.WIDTH) // mode to fit pages in the view
-                                    .fitEachPage(true) // fit each page to the view, else smaller pages are scaled relative to largest page.
-                                    .pageSnap(false) // snap pages to screen boundaries
-                                    .pageFling(false) // make a fling change only a single page like ViewPager
-                                    .nightMode(false) // toggle night mode
+                                    .onPageChange(new OnPageChangeListener() { //获取当前页数以及总页数，不需要则不用调用
+                                        @Override
+                                        public void onPageChanged(int page, int pageCount) { //page : 当前展示页数， pagecount:总页数
+                                            tvId.setText((page+1)+"/"+pageCount);
+                                            LogUtil.e(page + "");
+                                        }
+                                    })
                                     .load();
-                        }else {
-                            ToastUtil.showShortSafe("获取PDF文件出错",OrderPdfActivity.this);
+                        } else {
+                            ToastUtil.showShortSafe("获取PDF文件出错", OrderPdfActivity.this);
                         }
                         commonLoading.dismiss();
                     }
 
                     @Override
                     public void _onError(Throwable e, String msg) {
-                        ToastUtil.showShortSafe(msg,OrderPdfActivity.this);
+                        ToastUtil.showShortSafe(msg, OrderPdfActivity.this);
                         commonLoading.dismiss();
                     }
 
                 });
     }
-
 }

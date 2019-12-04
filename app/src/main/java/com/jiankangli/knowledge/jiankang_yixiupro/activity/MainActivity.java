@@ -168,41 +168,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         mList = new ArrayList<>();
         //获取图片路径
-//        RetrofitManager.create(ApiService.class)
-//                .getBannerList()
-//                .compose(RxSchedulers.<BaseEntity<List<BannerBean>>>io2main())
-//                .as(AutoDispose.<BaseEntity<List<BannerBean>>>autoDisposable(
-//                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
-//                .subscribe(new RxSubscriber<BaseEntity<List<BannerBean>>>() {
-//                    @Override
-//                    public void _onNext(BaseEntity<List<BannerBean>> listBaseEntity) {
-//                        if (listBaseEntity.isSuccess()){
-//                            for (BannerBean datum : listBaseEntity.data) {
-//                                mList.add(Constants.PIC_URL + datum.getBannerPath());
-//                            }
-//                            banner.setImages(mList)
-//                                    .setImageLoader(new ImageLoader())
-//                                    .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-//                                    .setBannerAnimation(Transformer.Default)
-//                                    .setDelayTime(3000)
-//                                    .start();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void _onError(Throwable e, String msg) {
-//                        LogUtil.e(msg);
-//                    }
-//                });
-        mList.add(R.mipmap.scroll_pic1);
-        mList.add(R.mipmap.scroll_pic2);
-        mList.add(R.mipmap.scroll_pic3);
-        banner.setImages(mList)
-                .setImageLoader(new ImageLoader())
-                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                .setBannerAnimation(Transformer.Default)
-                .setDelayTime(3000)
-                .start();
+        RetrofitManager.create(ApiService.class)
+                .getBannerList()
+                .compose(RxSchedulers.<BaseEntity<List<BannerBean>>>io2main())
+                .as(AutoDispose.<BaseEntity<List<BannerBean>>>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
+                .subscribe(new RxSubscriber<BaseEntity<List<BannerBean>>>() {
+                    @Override
+                    public void _onNext(BaseEntity<List<BannerBean>> listBaseEntity) {
+                        if (listBaseEntity.isSuccess()){
+                            for (BannerBean datum : listBaseEntity.data) {
+                                mList.add(Constants.PIC_URL + "/"+datum.getBannerPath());
+                            }
+                            banner.setImages(mList)
+                                    .setImageLoader(new ImageLoader())
+                                    .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                                    .setBannerAnimation(Transformer.Default)
+                                    .setDelayTime(3000)
+                                    .start();
+                        }
+                    }
+
+                    @Override
+                    public void _onError(Throwable e, String msg) {
+                        LogUtil.e(msg);
+                    }
+                });
+//        mList.add(R.mipmap.scroll_pic1);
+//        mList.add(R.mipmap.scroll_pic2);
+//        mList.add(R.mipmap.scroll_pic3);
+//        banner.setImages(mList)
+//                .setImageLoader(new ImageLoader())
+//                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+//                .setBannerAnimation(Transformer.Default)
+//                .setDelayTime(3000)
+//                .start();
     }
 
     @Override

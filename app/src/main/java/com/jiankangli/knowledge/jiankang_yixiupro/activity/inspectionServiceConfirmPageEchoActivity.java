@@ -97,7 +97,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
                     ToastUtil.showShortSafe("手机号码不符合规则", this);
                     return;
                 }
-                sendMessage(phone);
+                sendMessage(phone,1);
                 break;
             case R.id.tv_xs_sendMsg_id:
                 String phone1 = etXsPhoneId.getText().toString();
@@ -109,7 +109,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
                     ToastUtil.showShortSafe("手机号码不符合规则", this);
                     return;
                 }
-                sendMessage(phone1);
+                sendMessage(phone1,2);
                 break;
             case R.id.btn_workOrder_Evaluation_id:
                 //工单评价查询
@@ -230,12 +230,13 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
      *
      * @param phone
      */
-    private void sendMessage(String phone) {
+    private void sendMessage(String phone,int status) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
             jsonObject.put("temporaryNum", phone);
             jsonObject.put("queryCode", tvQueryCodeId.getText().toString());
+            jsonObject.put("status", status);
         } catch (JSONException e) {
             e.printStackTrace();
         }

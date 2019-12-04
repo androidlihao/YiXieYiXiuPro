@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso;
 public  class ImageLoader extends com.youth.banner.loader.ImageLoader{
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
-        Picasso.get().load((int) path).into(imageView);
+        Picasso.get()
+                .load((String) path)
+                .into(imageView);
     }
 }
