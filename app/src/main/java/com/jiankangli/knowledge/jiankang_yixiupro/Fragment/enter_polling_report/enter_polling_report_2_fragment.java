@@ -24,6 +24,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.LogUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
@@ -107,7 +108,7 @@ public class enter_polling_report_2_fragment extends BaseFragment {
         try {
             jsonObject.put("pageNum", 1);
             jsonObject.put("pageSize", 200);
-            jsonObject.put("userId", SPUtils.get(getActivity(), "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getActivity().getApplicationContext()).getString("userId"));
             jsonObject.put("code", templateCode);
         } catch (JSONException e) {
             e.printStackTrace();

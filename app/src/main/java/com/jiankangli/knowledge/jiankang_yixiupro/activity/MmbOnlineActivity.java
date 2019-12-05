@@ -16,6 +16,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.uber.autodispose.AutoDispose;
@@ -71,7 +72,7 @@ public class MmbOnlineActivity extends BaseActivity
         //创建数据源
         datalist = new LinkedList();
         //创建适配器
-        String userId= ((String) SPUtils.get(getApplicationContext(),"userId",-1+""));
+        String userId= SPUtil.getInstance(getApplicationContext()).getString("userId");
         adapter = new Recycler_MmbOnlineAdapter(datalist,this,userId);
         //绑定适配器
         pullLoadMoreRecyclerView.setAdapter(adapter);
@@ -117,7 +118,7 @@ public class MmbOnlineActivity extends BaseActivity
     private void getData(final int code) {
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this,"userId",-1+""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("id",id);
             jsonObject.put("orderNo", orderNo);
             jsonObject.put("pageNum", currentPage);

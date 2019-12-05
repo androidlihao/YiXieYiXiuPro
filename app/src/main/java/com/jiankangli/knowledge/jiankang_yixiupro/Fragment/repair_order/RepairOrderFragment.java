@@ -129,4 +129,9 @@ public class RepairOrderFragment extends BaseFragment<RepairOrderPresenter> impl
         }
         pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
     }
+
+    @Override
+    public void stop() {
+        pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+    }
 }

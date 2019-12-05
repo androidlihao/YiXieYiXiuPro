@@ -267,7 +267,7 @@ public class PartDetailsActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     //执行提交
                     JsonObject jsonObject = new JsonObject();
-                    Object userId = SPUtils.get(getApplicationContext(), "userId", -1 + "");
+                    Object userId = SPUtil.getInstance(getApplicationContext()).getString("userId");
                     try {
                         JsonObject js = new JsonObject();
                         jsonObject.addProperty("id", spareParts.getId() + "");

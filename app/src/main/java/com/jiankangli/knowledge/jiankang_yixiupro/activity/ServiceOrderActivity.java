@@ -132,7 +132,7 @@ public class ServiceOrderActivity extends BaseActivity implements View.OnClickLi
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("workOrderId", order.getId());
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

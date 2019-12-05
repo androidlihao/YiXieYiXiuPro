@@ -6,6 +6,7 @@ package com.jiankangli.knowledge.jiankang_yixiupro.net;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BannerBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.ElectronOrderBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.LoginBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgCenter;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.MsgDetils;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.OdrerDetailsBean;
@@ -51,7 +52,7 @@ public interface ApiService {
      //登录接口
      @FormUrlEncoded
      @POST("engineer/login.do")
-     Observable<String> sendLogin(@Field("jsonString")String jsonString);
+     Observable<BaseEntity<LoginBean>> sendLogin(@Field("jsonString")String jsonString);
 
      //获取验证码接口接口
      @FormUrlEncoded

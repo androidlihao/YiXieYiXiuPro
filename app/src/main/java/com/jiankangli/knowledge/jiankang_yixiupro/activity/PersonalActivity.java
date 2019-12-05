@@ -32,6 +32,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.HeadPicUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
@@ -299,7 +300,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     private void submithead(File file) {
         try{
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("userId", SPUtils.get(this,"userId",-1+""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             String jsonString= BaseJsonUtils.Base64String(jsonObject);
             RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
             MultipartBody.Part body =

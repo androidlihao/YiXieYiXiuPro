@@ -191,7 +191,7 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", order.getId());
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("arrivalTime", arrivalTime);
             JSONArray jsonArray = new JSONArray();
             List<fixRecordBean.ServiceRecordMapArrayBean> data = recordAadpter.getData();
@@ -312,7 +312,7 @@ public class fixRecordActivity extends BaseActivity implements View.OnClickListe
         order = (RepairOrder) getIntent().getSerializableExtra("order");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", order.getId());
-        jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+        jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
         RetrofitManager.create(ApiService.class)
                 .getServiceRecodeList(BaseJsonUtils.Base64String(jsonObject))
                 .compose(RxSchedulers.<BaseEntity<fixRecordBean>>io2main())

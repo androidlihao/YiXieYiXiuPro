@@ -1,5 +1,7 @@
 package com.jiankangli.knowledge.jiankang_yixiupro.bean;
 
+import android.text.TextUtils;
+
 /**
  * @author : lihao
  * @date: 2019-05-20 14:56
@@ -12,8 +14,12 @@ public class BaseEntity<T> {
     public T data;
 
     public boolean isSuccess(){
-        if (code.contentEquals("200")||code.contentEquals("success")) {
-            return true;
+        if (code!=null){
+            if (TextUtils.equals("200",code)||TextUtils.equals("success",code)) {
+                return true;
+            }else {
+                return false;
+            }
         }else {
             return false;
         }

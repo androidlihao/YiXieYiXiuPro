@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -103,7 +104,7 @@ public abstract class CommonFragment extends Fragment implements PullLoadMoreRec
         currentPage++;
         jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(getHolding(), "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getActivity().getApplicationContext()).getString("userId"));
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("pageNum", currentPage);//默认为第一页
             jsonObject.put("page", jsonObject1);

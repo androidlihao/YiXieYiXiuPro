@@ -8,18 +8,18 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.jiankangli.knowledge.jiankang_yixiupro.Constant.Constants;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
+import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
+import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.Login;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
+import com.jiankangli.knowledge.jiankang_yixiupro.bean.LoginBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.RegexUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.view.LoadingDialog;
 import com.uber.autodispose.AutoDispose;
@@ -35,12 +35,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 //登录界面
 public class LoginActivity extends AppCompatActivity {
@@ -84,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
+//        CrashReport.testJavaCrash();
         super.onResume();
     }
 
@@ -132,65 +129,48 @@ public class LoginActivity extends AppCompatActivity {
             String loginData = BaseJsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class)
                     .sendLogin(loginData)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//回到主线程
-                    .as(AutoDispose.<String>autoDisposable(
-                            AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
-                    .subscribe(new Observer<String>() {
+                    .compose(RxSchedulers.<BaseEntity<LoginBean>>io2main())
+                    .doOnSubscribe(new Consumer<Disposable>() {
                         @Override
-                        public void onSubscribe(Disposable d) {
-                            Log.i("TAG", "onSubscribe: ");
+                        public void accept(Disposable disposable) throws Exception {
                             //开始登录动画
                             dialog.show();
                         }
-
+                    })
+                    .as(AutoDispose.<BaseEntity<LoginBean>>autoDisposable
+                            (AndroidLifecycleScopeProvider.from(LoginActivity.this, Lifecycle.Event.ON_DESTROY)))
+                    .subscribe(new RxSubscriber<BaseEntity<LoginBean>>() {
                         @Override
-                        public void onNext(final String string) {
-                            //手动解析
-                            Log.i("TAG", "onNext: " + string);//请求网络成功
-                            Observable.timer(1500, TimeUnit.MILLISECONDS)
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new Consumer<Long>() {
-                                        @Override
-                                        public void accept(Long aLong) throws Exception {
-                                            dialog.dismiss();
-                                            switch (GsonUtil.GsonCode(string)) {
-                                                case Constants.SUCCESS:
-                                                    Login login = GsonUtil.GsonToBean(string, Login.class);
-                                                    //将相关数据存到手机上
-                                                    SPUtils.put(getApplicationContext(), "userId", login.getData().getUserId());
-                                                    SPUtils.put(getApplicationContext(), "name", login.getData().getUserName());
-                                                    SPUtil.getInstance(getApplicationContext()).putString("workNumber",login.getData().getWorkNumber());
-                                                    SPUtils.put(getApplicationContext(), "phone", login.getData().getPhoneNumber());
-                                                    SPUtils.put(getApplicationContext(), "headPicUrl", login.getData().getHeadPicUrl());
-                                                    SPUtils.put(getApplicationContext(), "status", login.getData().getStatus());
-                                                    SPUtils.put(getApplicationContext(), "isLogin", true);
-                                                    //跳转到主界面
-                                                    ToastUtils.showToast(getApplicationContext(), "登录成功！");
-                                                    loginMain();
-                                                    break;
-                                                case Constants.ERRORR:
-                                                    ToastUtils.showToast(getApplicationContext(), GsonUtil.GsonMsg(string));//登录失败
-                                                    loginMain();
-                                                    break;
-                                            }
-                                        }
-                                    });
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
+                        public void _onNext(BaseEntity<LoginBean> loginBeanBaseEntity) {
                             dialog.dismiss();
-                            ToastUtils.showToast(getApplicationContext(), "服务器或网络异常！");
+                            final LoginBean loginBean = loginBeanBaseEntity.data;
+                            if (loginBeanBaseEntity.isSuccess()) {
+                                ToastUtil.showShortSafe("登录成功", getApplicationContext());
+                                Observable.timer(2000, TimeUnit.MILLISECONDS)
+                                        .subscribe(new Consumer<Long>() {
+                                            @Override
+                                            public void accept(Long aLong) throws Exception {
+                                                SPUtil.getInstance(getApplicationContext()).putString("userId", loginBean.getUserId());
+                                                SPUtils.put(getApplicationContext(), "name", loginBean.getUserName());
+                                                SPUtil.getInstance(getApplicationContext()).putString("workNumber", loginBean.getWorkNumber());
+                                                SPUtils.put(getApplicationContext(), "phone", loginBean.getPhoneNumber());
+                                                SPUtils.put(getApplicationContext(), "headPicUrl", loginBean.getHeadPicUrl());
+                                                SPUtils.put(getApplicationContext(), "status", loginBean.getStatus());
+                                                SPUtils.put(getApplicationContext(), "isLogin", true);
+                                                loginMain();
+                                            }
+                                        });
+                            } else {
+                                ToastUtil.showShortSafe("登录失败," + loginBeanBaseEntity.msg, getApplicationContext());
+                            }
                         }
 
                         @Override
-                        public void onComplete() {
-                            Log.i("TAG", "onComplete: ");
-                            //停止登录动画
+                        public void _onError(Throwable e, String msg) {
+                            dialog.dismiss();
+                            ToastUtils.showToast(getApplicationContext(), msg);
                         }
                     });
-
         } catch (Exception e) {
             e.printStackTrace();
         }

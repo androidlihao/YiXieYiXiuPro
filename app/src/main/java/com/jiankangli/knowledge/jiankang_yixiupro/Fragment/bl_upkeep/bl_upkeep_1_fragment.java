@@ -35,6 +35,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.TimeUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
@@ -176,7 +177,7 @@ public class bl_upkeep_1_fragment extends BaseFragment implements View.OnClickLi
 
     private void initBlbean() {
         blBean = new upkeepBlBean();
-        String userId = (String) SPUtils.get(getContext(), "userId", -1 + "");
+        String userId = SPUtil.getInstance(getContext().getApplicationContext()).getString("userId");
         //用户ID
         blBean.setUserId(Integer.parseInt(userId));
         //工程师姓名
@@ -319,7 +320,7 @@ public class bl_upkeep_1_fragment extends BaseFragment implements View.OnClickLi
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("deviceNo", deviceNo);
-            jsonObject.put("userId", SPUtils.get(getActivity(), "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getActivity().getApplicationContext()).getString("userId"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

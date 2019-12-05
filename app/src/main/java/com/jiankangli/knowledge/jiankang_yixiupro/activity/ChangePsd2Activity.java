@@ -12,6 +12,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.uber.autodispose.AutoDispose;
@@ -71,7 +72,7 @@ public class ChangePsd2Activity extends BaseActivity {
     private void change() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this,"userId", ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("oldPassWord",psd );
             jsonObject.put("newPassWord",newPsd);
             String jsonString = BaseJsonUtils.Base64String(jsonObject);

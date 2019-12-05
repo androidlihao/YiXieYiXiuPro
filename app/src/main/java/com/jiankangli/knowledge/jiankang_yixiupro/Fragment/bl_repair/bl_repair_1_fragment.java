@@ -180,7 +180,7 @@ public class bl_repair_1_fragment extends BaseFragment {
         blBean blBean = ((repairBackTrackingActivity) getActivity()).blBean;
         //设备序号
         blBean.setDeviceNo(etDeviceNoId.getText().toString());
-        String userId = (String) SPUtils.get(getActivity(), "userId", -1+"");
+        String userId =SPUtil.getInstance(getContext().getApplicationContext()).getString("userId");
         //用户ID
         blBean.setUserId(Integer.parseInt(userId));
         //工程师姓名
@@ -214,7 +214,7 @@ public class bl_repair_1_fragment extends BaseFragment {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("deviceNo", deviceNo);
-            jsonObject.put("userId", SPUtils.get(getActivity(), "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getActivity().getApplicationContext()).getString("userId"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

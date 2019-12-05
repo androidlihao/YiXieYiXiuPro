@@ -124,4 +124,9 @@ public class UpKeepOrderFragment extends BaseFragment<UpkeepOrderPresenter> impl
         }
         pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
     }
+
+    @Override
+    public void stop() {
+        pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+    }
 }

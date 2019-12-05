@@ -12,6 +12,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.view.AutoEdittext;
@@ -54,7 +55,7 @@ public class feedbackActivity extends BaseActivity {
         }
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", SPUtils.get(this, "userId", ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("userName", SPUtils.get(this, "userName", ""));
             jsonObject.put("hospitialName", SPUtils.get(this, "hospitialName", ""));
             jsonObject.put("phoneNumber", SPUtils.get(this, "phoneNumber", ""));

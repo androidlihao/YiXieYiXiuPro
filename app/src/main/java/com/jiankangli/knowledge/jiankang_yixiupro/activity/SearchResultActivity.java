@@ -22,6 +22,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.historyBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -274,7 +275,7 @@ public class SearchResultActivity extends BaseActivity implements PullLoadMoreRe
     public String getJson(){
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(getApplicationContext(), "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("pageNum", currentPage);
             jsonObject.put("hospitalName",historyBean.getSearchText());

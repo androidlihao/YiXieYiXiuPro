@@ -26,6 +26,10 @@ public interface UpkeepOrderContract {
          * 设置数据
          */
         void setNewData(List<UpkeepOrder> repairOrders);
+        /**
+         * 刷新加载完成
+         */
+        void stop();
     }
 
 

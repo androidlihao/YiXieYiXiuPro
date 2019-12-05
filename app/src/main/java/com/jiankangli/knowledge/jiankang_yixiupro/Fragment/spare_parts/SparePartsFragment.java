@@ -115,4 +115,9 @@ public class SparePartsFragment extends BaseFragment<SparePartsPresenter> implem
         }
         pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
     }
+
+    @Override
+    public void stop() {
+        pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+    }
 }

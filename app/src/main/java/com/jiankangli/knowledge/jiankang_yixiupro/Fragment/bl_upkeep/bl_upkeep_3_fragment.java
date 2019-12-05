@@ -24,6 +24,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.LogUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -105,7 +106,7 @@ public class bl_upkeep_3_fragment extends BaseFragment {
         try {
             jsonObject.put("pageNum", 1);
             jsonObject.put("pageSize", 200);
-            jsonObject.put("userId", SPUtils.get(getActivity(), "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getActivity().getApplicationContext()).getString("userId"));
             jsonObject.put("code", templateCode);
         } catch (JSONException e) {
             e.printStackTrace();

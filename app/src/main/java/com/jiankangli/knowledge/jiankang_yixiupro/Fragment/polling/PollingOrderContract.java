@@ -26,6 +26,10 @@ public interface PollingOrderContract {
          * 设置数据
          */
         void setNewData(List<PollingOrder> pollingOrders);
+        /**
+         * 刷新加载完成
+         */
+        void stop();
     }
 
 

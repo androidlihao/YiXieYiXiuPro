@@ -26,6 +26,10 @@ public interface SparePartsContract {
          * 设置数据
          */
         void setNewData(List<SpareParts> spareParts);
+        /**
+         * 刷新加载完成
+         */
+        void stop();
     }
 
 

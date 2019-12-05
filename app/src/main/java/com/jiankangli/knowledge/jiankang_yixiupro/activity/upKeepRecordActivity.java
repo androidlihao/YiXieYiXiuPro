@@ -186,7 +186,7 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", orderId);
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("arrivalTime", arrivalTime);
             JSONArray jsonArray = new JSONArray();
             List<maintainOrderRecordBean.ServiceRecordMapArrayBean> data = recordAadpter.getData();
@@ -306,7 +306,7 @@ public class upKeepRecordActivity extends BaseActivity implements View.OnClickLi
         orderId = getIntent().getIntExtra("orderId",-1);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", orderId);
-        jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+        jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
         RetrofitManager.create(ApiService.class)
                 .getmaintainServiceRecordList(BaseJsonUtils.Base64String(jsonObject))
                 .compose(RxSchedulers.<BaseEntity<maintainOrderRecordBean>>io2main())

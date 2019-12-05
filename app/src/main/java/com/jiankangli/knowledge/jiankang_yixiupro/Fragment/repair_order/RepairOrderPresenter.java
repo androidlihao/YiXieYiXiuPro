@@ -55,6 +55,7 @@ public class RepairOrderPresenter extends RxPresenter<RepairOrderContract.View> 
                     @Override
                     public void _onError(Throwable e, String msg) {
                         ToastUtil.showShortSafe(msg,mView.getContext());
+                        mView.stop();
                     }
                 });
 
@@ -65,7 +66,7 @@ public class RepairOrderPresenter extends RxPresenter<RepairOrderContract.View> 
     public String getJson(){
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(mView.getContext(), "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(mView.getContext().getApplicationContext()).getString("userId"));
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("pageNum", mView.getcurrentPage());
             jsonObject.put("page", jsonObject1);

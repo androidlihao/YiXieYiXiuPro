@@ -26,6 +26,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.RegexUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -127,7 +128,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
     private void serviceConfirm() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("temporaryNum", etKhPhoneId.getText().toString());
             jsonObject.put("queryCode", tvQueryCodeId.getText().toString());
             jsonObject.put("workOrderId", order.getId());
@@ -182,7 +183,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
     private void queryWorkEvaluation() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("workOrderId", order.getId());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -233,7 +234,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
     private void sendMessage(String phone,int status) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("temporaryNum", phone);
             jsonObject.put("queryCode", tvQueryCodeId.getText().toString());
             jsonObject.put("status", status);
@@ -296,7 +297,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
     private String getJson() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("workOrderId", order.getId());
         } catch (JSONException e) {
             e.printStackTrace();

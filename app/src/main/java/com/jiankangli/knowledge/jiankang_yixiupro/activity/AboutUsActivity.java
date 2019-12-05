@@ -2,11 +2,12 @@ package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
-import com.google.gson.JsonArray;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseActivity;
+import com.jiankangli.knowledge.jiankang_yixiupro.BuildConfig;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
@@ -20,18 +21,17 @@ import org.json.JSONException;
 
 import butterknife.BindView;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import me.yokeyword.fragmentation.ExtraTransaction;
-import me.yokeyword.fragmentation.SupportActivityDelegate;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public class AboutUsActivity extends BaseActivity {
 
 
     @BindView(R.id.tv_AboutUs_id)
     TextView tvAboutUsId;
+    @BindView(R.id.toolbar_id)
+    Toolbar toolbarId;
+    @BindView(R.id.textView)
+    TextView textView;
     private Object data;
 
     @Override
@@ -44,11 +44,12 @@ public class AboutUsActivity extends BaseActivity {
     private void setData(String Abouts) {
         tvAboutUsId.setText(Abouts);
         tvAboutUsId.setMovementMethod(ScrollingMovementMethod.getInstance());
+        textView.setText("版本号:v"+ BuildConfig.VERSION_NAME);
     }
 
     private void getDatas() {
-        String AboutUs= SPUtils.get(this,"aboutUs","").toString();
-        if (AboutUs.trim().isEmpty()){
+        String AboutUs = SPUtils.get(this, "aboutUs", "").toString();
+        if (AboutUs.trim().isEmpty()) {
             RetrofitManager.create(ApiService.class)
                     .getContents()
                     .compose(RxSchedulers.<String>io2main())
@@ -62,13 +63,13 @@ public class AboutUsActivity extends BaseActivity {
 
                         @Override
                         public void onNext(String s) {
-                            switch (GsonUtil.GsonCode(s)){
+                            switch (GsonUtil.GsonCode(s)) {
                                 case "success":
                                     //展示出来
                                     try {
-                                        String aboutContent=GsonUtil.GsonJsonObject(s,"data").get("content").toString();
+                                        String aboutContent = GsonUtil.GsonJsonObject(s, "data").get("content").toString();
                                         setData(aboutContent);
-                                        SPUtils.put(getApplicationContext(),"aboutUs",aboutContent);
+                                        SPUtils.put(getApplicationContext(), "aboutUs", aboutContent);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -89,7 +90,7 @@ public class AboutUsActivity extends BaseActivity {
 
                         }
                     });
-        }else{
+        } else {
             setData(AboutUs);
         }
 
@@ -99,7 +100,6 @@ public class AboutUsActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_about_us;
     }
-
 
 
 }

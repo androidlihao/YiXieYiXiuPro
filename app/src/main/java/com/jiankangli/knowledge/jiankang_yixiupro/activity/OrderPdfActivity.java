@@ -17,6 +17,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.LogUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -69,7 +70,7 @@ public class OrderPdfActivity extends BaseActivity {
     private void getPdf() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("pdfType", pdfType);
             jsonObject.put("workOrderId", workOrderId);
         } catch (JSONException e) {

@@ -284,7 +284,7 @@ public class saveOrderActivity extends BaseActivity implements View.OnClickListe
         if (electronOrderBean.getId() != 0) {
             jsonObject.addProperty("id", electronOrderBean.getId());
         }
-        String operatorId = (String) SPUtils.get(getApplicationContext(), "userId", -1 + "");
+        String operatorId = SPUtil.getInstance(getApplicationContext()).getString("userId");
         jsonObject.addProperty("userId", operatorId);
         jsonObject.addProperty("workOrderId", electronOrderBean.getWorkOrderId());
         jsonObject.addProperty("serviceReasons", electronOrderBean.getServiceReasons());

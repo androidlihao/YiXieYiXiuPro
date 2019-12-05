@@ -30,6 +30,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.DialogUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GreenDaoUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -119,7 +120,7 @@ public class enterReportActivity extends BaseActivity {
     public String getJson() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("workOrderId", order.getId());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -217,7 +218,7 @@ public class enterReportActivity extends BaseActivity {
         //开始保存数据
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             if (!isFrist) {
                 //电子工单id
                 jsonObject.put("id", singleMaintainOrderBean.getId());

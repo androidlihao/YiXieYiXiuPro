@@ -20,6 +20,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.uber.autodispose.AutoDispose;
@@ -96,7 +97,7 @@ public class MMBActivity extends BaseActivity implements
     private void loadData(final int code) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("chatId", "23");
             jsonObject.put("pageNum", currentPage);
             jsonObject.put("pageSize", "10");
@@ -186,7 +187,7 @@ public class MMBActivity extends BaseActivity implements
                         //执行清空操作
                         JSONObject jsonObject=new JSONObject();
                         try {
-                            jsonObject.put("userId", SPUtils.get(getApplicationContext(),"userId","")) ;
+                            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
                             jsonObject.put("min",datalist.get(datalist.size()-1).getId());
                         }catch (Exception e){
                             e.printStackTrace();

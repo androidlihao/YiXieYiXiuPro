@@ -25,6 +25,10 @@ public interface RepairOrderContract {
          * 设置数据
          */
         void setNewData(List<RepairOrder> repairOrders);
+        /**
+         * 刷新加载完成
+         */
+        void stop();
     }
 
 

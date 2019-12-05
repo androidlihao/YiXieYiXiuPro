@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -33,6 +34,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ActivityUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.DialogUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.luck.picture.lib.PictureSelector;
@@ -213,7 +215,7 @@ public class CreateWxOrderActivity extends BaseActivity implements View.OnClickL
             jsonObject.addProperty("id",orderId);
             jsonObject.add("orderPicVos", jsonElements);
             jsonObject.addProperty("remark",etId.getText().toString().trim());
-            jsonObject.addProperty("userId", SPUtils.get(this, "userId", -1 + "")+"");
+            jsonObject.addProperty("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             String string = BaseJsonUtils.Base64String(new JSONObject(jsonObject.toString()));
             RetrofitManager.create(ApiService.class)
                     .orderConversion(string)
@@ -326,6 +328,19 @@ public class CreateWxOrderActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onBackPressedSupport() {
+        closeDialog();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                closeDialog();
+                break;
+        }
+        return true;
+    }
+
+    private void closeDialog() {
         DialogUtil.showPositiveDialog(this, "警告", "关闭后，您填写的内容将会丢失", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -333,5 +348,4 @@ public class CreateWxOrderActivity extends BaseActivity implements View.OnClickL
             }
         });
     }
-
 }

@@ -39,6 +39,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ImageLoader;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.LogUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
@@ -299,7 +300,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void changeStatus(final String statu) {
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", SPUtils.get(getApplicationContext(), "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("status", statu);
             String string = BaseJsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class)
@@ -373,6 +374,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     @Override
                     public void _onError(Throwable e, String msg) {
                         ToastUtils.showToast(getApplicationContext(), msg);
+                        onComplete();
                     }
 
                     @Override
@@ -430,7 +432,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private String getJson() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("pageNum", pageNum);
             jsonObject1.put("pageTotal", 20);

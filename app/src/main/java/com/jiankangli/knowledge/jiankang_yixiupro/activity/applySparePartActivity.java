@@ -312,7 +312,7 @@ public class applySparePartActivity extends BaseActivity {
                             String returnNumber = etReturnNumberId.getText().toString();
                             String accRemark = etAccRemarkId.getText().toString();
                             String applyName = (String) SPUtils.get(getApplicationContext(), "name","");
-                            String operatorId= (String) SPUtils.get(getApplicationContext(), "userId", -1 + "");
+                            String operatorId=SPUtil.getInstance(getApplicationContext()).getString("userId");
                             String remark = etRemarkId.getText().toString();
                             JsonObject jsonObject = new JsonObject();
                             jsonObject.addProperty("orderNo",OrderNo);

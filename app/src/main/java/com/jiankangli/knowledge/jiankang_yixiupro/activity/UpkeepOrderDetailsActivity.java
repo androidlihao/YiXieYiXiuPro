@@ -33,6 +33,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.utils.AssetUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.DicUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.MapBeanUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -229,7 +230,7 @@ public class UpkeepOrderDetailsActivity extends BaseActivity implements View.OnC
     private String getJson() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(this, "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("workOrderId", order.getId());
         } catch (JSONException e) {
             e.printStackTrace();

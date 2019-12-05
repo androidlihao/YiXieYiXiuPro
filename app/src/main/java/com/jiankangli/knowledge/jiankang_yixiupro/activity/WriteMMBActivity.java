@@ -13,6 +13,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtil;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.view.AutoEdittext;
@@ -55,7 +56,7 @@ public class WriteMMBActivity extends BaseActivity {
         }
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId", SPUtils.get(this, "userId", ""));
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));
             jsonObject.put("name", SPUtils.get(this, "name", ""));
             jsonObject.put("chatId", getIntent().getIntExtra("ChatId",-1));
             jsonObject.put("headPicUrl", SPUtils.get(this, "headPicUrl", ""));

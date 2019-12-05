@@ -124,4 +124,9 @@ public class PollingOrderFragment extends BaseFragment<PollingOrderPresenter> im
         }
         pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
     }
+
+    @Override
+    public void stop() {
+        pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+    }
 }

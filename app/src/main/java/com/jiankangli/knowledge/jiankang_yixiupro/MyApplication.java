@@ -2,6 +2,8 @@ package com.jiankangli.knowledge.jiankang_yixiupro;
 
 import android.app.Application;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import me.yokeyword.fragmentation.Fragmentation;
 
 /**
@@ -21,5 +23,7 @@ public class MyApplication extends Application {
                 .stackViewMode(Fragmentation.BUBBLE)
                 .debug(BuildConfig.DEBUG)
                 .install();
+
+        CrashReport.initCrashReport(getApplicationContext(), "0114f0300c", false);
     }
 }

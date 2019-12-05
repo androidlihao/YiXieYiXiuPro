@@ -13,6 +13,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -54,6 +55,7 @@ public class UpkeepOrderPresenter extends RxPresenter<UpkeepOrderContract.View> 
                     @Override
                     public void _onError(Throwable e, String msg) {
                         ToastUtil.showShortSafe(msg,mView.getContext());
+                        mView.stop();
                     }
                 });
 
@@ -64,7 +66,7 @@ public class UpkeepOrderPresenter extends RxPresenter<UpkeepOrderContract.View> 
     public String getJson(){
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userId", SPUtils.get(mView.getContext(), "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(mView.getContext().getApplicationContext()).getString("userId"));
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("pageNum", mView.getcurrentPage());
             jsonObject.put("page", jsonObject1);

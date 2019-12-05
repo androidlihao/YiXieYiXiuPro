@@ -31,6 +31,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.GsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
@@ -150,7 +151,7 @@ public class bl_polling_1_fragment extends BaseFragment implements View.OnClickL
 
     private void initBlbean() {
         blBean = new pollingBlBean();
-        String userId = (String) SPUtils.get(getContext(), "userId", -1 + "");
+        String userId = SPUtil.getInstance(mView.getContext().getApplicationContext()).getString("userId");
         //用户ID
         blBean.setUserId(Integer.parseInt(userId));
 
@@ -271,7 +272,7 @@ public class bl_polling_1_fragment extends BaseFragment implements View.OnClickL
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("deviceNo", deviceNo);
-            jsonObject.put("userId", SPUtils.get(getActivity(), "userId", -1 + ""));
+            jsonObject.put("userId", SPUtil.getInstance(getContext().getApplicationContext()).getString("userId"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

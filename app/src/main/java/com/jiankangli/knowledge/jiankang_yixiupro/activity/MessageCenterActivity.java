@@ -21,6 +21,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
+import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtils;
 import com.uber.autodispose.AutoDispose;
@@ -124,7 +125,7 @@ public class MessageCenterActivity extends BaseActivity implements
         try {
             currentPage++;
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("userId", SPUtils.get(this,"userId",-1+""))  ;
+            jsonObject.put("userId", SPUtil.getInstance(getApplicationContext()).getString("userId"));  ;
             jsonObject.put("pageNum",currentPage+"");
             jsonObject.put("pageSize","10");
             RetrofitManager.create(ApiService.class)
