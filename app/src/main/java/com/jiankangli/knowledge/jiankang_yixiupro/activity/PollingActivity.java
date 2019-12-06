@@ -56,7 +56,7 @@ public class PollingActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_entering_id:
-                Intent intent = new Intent(this, repairBackTrackingActivity.class);
+                Intent intent = new Intent(this, pollingBackTrackingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.rl_search_id:

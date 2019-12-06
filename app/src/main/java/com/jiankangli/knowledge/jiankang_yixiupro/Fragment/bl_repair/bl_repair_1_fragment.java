@@ -4,13 +4,16 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.SoftKeyboardStateHelper;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
@@ -96,9 +99,27 @@ public class bl_repair_1_fragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
+        setListenerFotEditText(mView.findViewById(R.id.fl_id));
     }
+    private void setListenerFotEditText(View view){
+        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(view);
+        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+                Log.i("TAG", "onSoftKeyboardOpened: ");
 
+            }
+
+            @Override
+            public void onSoftKeyboardClosed() {
+                //如果是代码手动的
+                if (etDeviceNoId.hasFocus()){
+                    etDeviceNoId.clearFocus();
+                }
+                Log.i("TAG", "onSoftKeyboardClosed: ");
+            }
+        });
+    }
     @Override
     protected void initData() {
         tvWorkNumberId.setText(SPUtil.getInstance(getActivity()).getString("workNumber"));
@@ -112,12 +133,8 @@ public class bl_repair_1_fragment extends BaseFragment {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     handled = true;
-                    String deviceNo = v.getText().toString().trim();
-                    if (!TextUtils.isEmpty(deviceNo)){
-                        getData(deviceNo);
-                    }
                     /*隐藏软键盘*/
-                    InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (inputMethodManager.isActive()) {
                         inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                     }
@@ -125,6 +142,21 @@ public class bl_repair_1_fragment extends BaseFragment {
                 return handled;
             }
         });
+        etDeviceNoId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    search();
+                }
+            }
+        });
+    }
+
+    private void search() {
+        String deviceNo = etDeviceNoId.getText().toString().trim();
+        if (!TextUtils.isEmpty(deviceNo)){
+            getData(deviceNo);
+        }
     }
 
     public void getData(String deviceNo) {

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -21,6 +22,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.SoftKeyboardStateHelper;
 import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.TextListener;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
@@ -147,9 +149,26 @@ public class bl_upkeep_1_fragment extends BaseFragment implements View.OnClickLi
                 blBean.setSoftwareVersion(s.toString());
             }
         });
-
+        setListenerFotEditText(mView.findViewById(R.id.fl_id));
     }
+    private void setListenerFotEditText(View view){
+        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(view);
+        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+                Log.i("TAG", "onSoftKeyboardOpened: ");
 
+            }
+
+            @Override
+            public void onSoftKeyboardClosed() {
+                if (etDeviceNoId.hasFocus()){
+                    etDeviceNoId.clearFocus();
+                }
+                Log.i("TAG", "onSoftKeyboardClosed: ");
+            }
+        });
+    }
     @Override
     protected void initData() {
         Object bybl = SPUtils.get(getContext(), "bybl", "");
@@ -198,10 +217,6 @@ public class bl_upkeep_1_fragment extends BaseFragment implements View.OnClickLi
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     handled = true;
-                    String deviceNo = v.getText().toString().trim();
-                    if (!TextUtils.isEmpty(deviceNo)) {
-                        getData(deviceNo);
-                    }
                     /*隐藏软键盘*/
                     InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (inputMethodManager.isActive()) {
@@ -211,8 +226,21 @@ public class bl_upkeep_1_fragment extends BaseFragment implements View.OnClickLi
                 return handled;
             }
         });
+        etDeviceNoId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    search();
+                }
+            }
+        });
     }
-
+    private void search() {
+        String deviceNo = etDeviceNoId.getText().toString().trim();
+        if (!TextUtils.isEmpty(deviceNo)){
+            getData(deviceNo);
+        }
+    }
     public void getData(String deviceNo) {
         RetrofitManager.create(ApiService.class)
                 .getrecodeOrderInfoEcho(getJson(deviceNo))

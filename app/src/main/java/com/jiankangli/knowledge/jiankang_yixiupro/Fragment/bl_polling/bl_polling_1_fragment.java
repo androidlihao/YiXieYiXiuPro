@@ -5,6 +5,7 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.jiankangli.knowledge.jiankang_yixiupro.Base.BaseFragment;
 import com.jiankangli.knowledge.jiankang_yixiupro.Fragment.bl_upkeep.bl_upkeep_2_fragment;
+import com.jiankangli.knowledge.jiankang_yixiupro.Listeners.SoftKeyboardStateHelper;
 import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
@@ -121,9 +123,33 @@ public class bl_polling_1_fragment extends BaseFragment implements View.OnClickL
             }
         });
 
+        setListenerFotEditText(mView.findViewById(R.id.fl_id));
+    }
+    private void setListenerFotEditText(View view){
+        SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(view);
+        softKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+                Log.i("TAG", "onSoftKeyboardOpened: ");
 
+            }
+
+            @Override
+            public void onSoftKeyboardClosed() {
+                if (etDeviceNoId.hasFocus()){
+                    etDeviceNoId.clearFocus();
+                }
+                Log.i("TAG", "onSoftKeyboardClosed: ");
+            }
+        });
     }
 
+    private void search() {
+        String deviceNo = etDeviceNoId.getText().toString().trim();
+        if (!TextUtils.isEmpty(deviceNo)){
+            getData(deviceNo);
+        }
+    }
     @Override
     protected void initData() {
         Object xjbl = SPUtils.get(getContext(), "xjbl", "");
@@ -169,10 +195,6 @@ public class bl_polling_1_fragment extends BaseFragment implements View.OnClickL
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     handled = true;
-                    String deviceNo = v.getText().toString().trim();
-                    if (!TextUtils.isEmpty(deviceNo)) {
-                        getData(deviceNo);
-                    }
                     /*隐藏软键盘*/
                     InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (inputMethodManager.isActive()) {
@@ -180,6 +202,14 @@ public class bl_polling_1_fragment extends BaseFragment implements View.OnClickL
                     }
                 }
                 return handled;
+            }
+        });
+        etDeviceNoId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    search();
+                }
             }
         });
     }

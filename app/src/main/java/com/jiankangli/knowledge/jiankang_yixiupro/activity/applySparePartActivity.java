@@ -292,6 +292,8 @@ public class applySparePartActivity extends BaseActivity {
 
                     @Override
                     public void _onError(Throwable e, String msg) {
+                        commonLoading.dismiss();
+                        ToastUtil.showShortSafe("图片上传失败,"+msg,getApplicationContext());
                         JsonObject jsonObject = new JsonObject();
                         jsonObject.addProperty("picUrl","");
                         jsonElements.add(jsonObject);
@@ -325,7 +327,9 @@ public class applySparePartActivity extends BaseActivity {
                             jsonObject.addProperty("supplier",supplier);
                             jsonObject.addProperty("needTime",needTime);
                             jsonObject.addProperty("arrivalTime",arrivalTime);
-                            jsonObject.addProperty("unitPrice",unitPrice);
+                            if (!TextUtils.isEmpty(unitPrice)){
+                                jsonObject.addProperty("unitPrice",unitPrice);
+                            }
                             jsonObject.addProperty("returnNumber",returnNumber);
                             jsonObject.addProperty("operatorId",operatorId);
                             jsonObject.addProperty("accRemark",accRemark);
@@ -350,8 +354,8 @@ public class applySparePartActivity extends BaseActivity {
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {
-                            ToastUtil.showShortSafe(baseEntity.msg,getApplicationContext());
                             if (baseEntity.isSuccess()){
+                                ToastUtil.showShortSafe("申请成功",getApplicationContext());
                                 try {
                                     Thread.sleep(2000);
                                     finish();
