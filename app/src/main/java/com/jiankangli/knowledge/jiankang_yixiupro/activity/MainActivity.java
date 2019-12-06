@@ -195,15 +195,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         LogUtil.e(msg);
                     }
                 });
-//        mList.add(R.mipmap.scroll_pic1);
-//        mList.add(R.mipmap.scroll_pic2);
-//        mList.add(R.mipmap.scroll_pic3);
-//        banner.setImages(mList)
-//                .setImageLoader(new ImageLoader())
-//                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-//                .setBannerAnimation(Transformer.Default)
-//                .setDelayTime(3000)
-//                .start();
     }
 
     @Override
