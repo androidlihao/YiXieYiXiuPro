@@ -30,9 +30,8 @@ public class AboutUsActivity extends BaseActivity {
     TextView tvAboutUsId;
     @BindView(R.id.toolbar_id)
     Toolbar toolbarId;
-    @BindView(R.id.textView)
-    TextView textView;
-    private Object data;
+//    @BindView(R.id.textView)
+//    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class AboutUsActivity extends BaseActivity {
     private void setData(String Abouts) {
         tvAboutUsId.setText(Abouts);
         tvAboutUsId.setMovementMethod(ScrollingMovementMethod.getInstance());
-        textView.setText("版本号:v"+ BuildConfig.VERSION_NAME);
+//        textView.setText("版本号:v"+ BuildConfig.VERSION_NAME);
     }
 
     private void getDatas() {

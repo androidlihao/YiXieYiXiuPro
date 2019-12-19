@@ -242,6 +242,7 @@
             android:inputType="number"
             android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/px_100"
+            android:maxLength="10"
             android:padding="@dimen/px_20"/>
         <TextView
             android:layout_width="wrap_content"

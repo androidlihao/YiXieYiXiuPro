@@ -359,7 +359,7 @@ public class bl_polling_4_fragment extends BaseFragment {
             }
             //默认设置为年月日时分秒
         }).setLabel("年", "月", "日", "时", "分", "秒")
-                .setType(new boolean[]{true, true, true, true, true, true})
+                .setType(new boolean[]{true, true, true, true, true, false})
                 .isCyclic(true)
                 .build();
     }

@@ -232,11 +232,11 @@ public class enter_report_1_fragment extends BaseFragment {
                     build = new TimePickerBuilder(getActivity(), new OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
-                            tvLoadingTimeId.setText(TimeUtil.getTimeFormatParse(date));
+                            tvLoadingTimeId.setText(TimeUtil.getTimeFormat(date));
                         }
                         //默认设置为年月日时分秒
                     }).setLabel("年", "月", "日", "时", "分", "秒")
-                            .setType(new boolean[]{true, true, true, true, true, true})
+                            .setType(new boolean[]{true, true, true, false, false, false})
                             .isCyclic(true)
                             .build();
                 }

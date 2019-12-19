@@ -64,28 +64,28 @@ public class ForgetActivity extends BaseActivity {
     @OnClick(R.id.btn_next_id)
     public void onBtnNextIdClicked() {
         //比对验证码是否正确
-        String Etautocode=etAutoId.getText().toString().trim();
-        if (etNumPhoneId.getText().toString().trim().isEmpty()){
-            ToastUtils.showToast(getApplicationContext(),"请输入手机号码");
+        String Etautocode = etAutoId.getText().toString().trim();
+        if (etNumPhoneId.getText().toString().trim().isEmpty()) {
+            ToastUtils.showToast(getApplicationContext(), "请输入手机号码");
             return;
         }
-        if (Etautocode.isEmpty()){
-            ToastUtils.showToast(getApplicationContext(),"验证码不能为空");
+        if (Etautocode.isEmpty()) {
+            ToastUtils.showToast(getApplicationContext(), "验证码不能为空");
             return;
         }
-        if (Etautocode.equals(vcode)){
-            Intent intent=new Intent(this,ChangPsdActivity.class);//跳转到修改界面
-            intent.putExtra("phoneNumber",etNumPhoneId.getText().toString().trim());
-            startActivityForResult(intent,13);
+        if (Etautocode.equals(vcode)) {
+            Intent intent = new Intent(this, ChangPsdActivity.class);//跳转到修改界面
+            intent.putExtra("phoneNumber", etNumPhoneId.getText().toString().trim());
+            startActivityForResult(intent, 13);
 
-        }else{
-            ToastUtils.showToast(getApplicationContext(),"请仔细检查验证码");
+        } else {
+            ToastUtils.showToast(getApplicationContext(), "请仔细检查验证码");
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==13&&requestCode==resultCode){
+        if (requestCode == 13 && requestCode == resultCode) {
             //结束当前页面，并将数据传回上一个界面
             setResult(12);
             finish();
@@ -96,29 +96,31 @@ public class ForgetActivity extends BaseActivity {
     @OnClick(R.id.btn_AutoCode_id)
     public void onBtnAutoCodeIdClicked() {
         //获取手机号码
-        final String numberphone=etNumPhoneId.getText().toString().trim();
-        if (numberphone.isEmpty()){
-            ToastUtils.showToast(this,"请输入手机号以后再获取验证码");
+        final String numberphone = etNumPhoneId.getText().toString().trim();
+        if (numberphone.isEmpty()) {
+            ToastUtils.showToast(this, "请输入手机号以后再获取验证码");
             return;
         }
-        if (!RegexUtil.isMobileNumber(numberphone)){
-            ToastUtils.showToast(this,"手机号码格式不正确");
+        if (!RegexUtil.isMobileNumber(numberphone)) {
+            ToastUtils.showToast(this, "手机号码格式不正确");
             return;
         }
         //开始获取手机验证码
-        Observable.interval(0,1, TimeUnit.SECONDS)
+        Observable.interval(0, 1, TimeUnit.SECONDS)
                 .take(60)
                 .observeOn(AndroidSchedulers.mainThread())//最后回到主线程
                 .doOnSubscribe(new Consumer<Disposable>() {//开始异步操作之前的准备工作
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void accept(Disposable disposable) throws Exception {
-                Log.i("TAG", "accept: ");
-                   btnAutoCodeId.setEnabled(false);
-                   btnAutoCodeId.setBackgroundColor(R.color.colorgray);
+                    @SuppressLint("ResourceAsColor")
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        Log.i("TAG", "accept: ");
+                        btnAutoCodeId.setEnabled(false);
+                        btnAutoCodeId.setBackgroundColor(R.color.colorgray);
 
-            }
-        })
+                    }
+                })
+                .as(AutoDispose.<Long>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -129,18 +131,18 @@ public class ForgetActivity extends BaseActivity {
                     @Override
                     public void onNext(Long aLong) {
                         //消除当前界面的时候，依旧在执行，当最后执行的时候发现这个控件没有了
-                        Log.i("TAG", "Long: "+aLong);
-                        btnAutoCodeId.setText("重新获取"+(59-aLong)+"s");
+                        Log.i("TAG", "Long: " + aLong);
+                        btnAutoCodeId.setText("重新获取" + (59 - aLong) + "s");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.showToast(getApplicationContext(),"服务器或网络异常!");
+                        ToastUtils.showToast(getApplicationContext(), "服务器或网络异常!");
                     }
 
                     @SuppressLint("ResourceAsColor")
                     @Override
-                    public void onComplete(){
+                    public void onComplete() {
                         btnAutoCodeId.setBackgroundColor(Color.parseColor("#A5D452"));
                         btnAutoCodeId.setEnabled(true);//从新变得可以点击
                         btnAutoCodeId.setText("重新获取");
@@ -151,10 +153,10 @@ public class ForgetActivity extends BaseActivity {
 
     private void getCheckCode(String numberphone) {
         try {
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put("phoneNumber",numberphone);
-            jsonObject.put("type","3");
-             String string = BaseJsonUtils.Base64String(jsonObject);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("phoneNumber", numberphone);
+            jsonObject.put("type", "3");
+            String string = BaseJsonUtils.Base64String(jsonObject);
             RetrofitManager.create(ApiService.class).getCode(string)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -168,23 +170,23 @@ public class ForgetActivity extends BaseActivity {
 
                         @Override
                         public void onNext(String s) {
-                            Log.i("TAG", "onNext: "+s);
-                         //获取数据成功
-                            switch (GsonUtil.GsonCode(s)){
+                            Log.i("TAG", "onNext: " + s);
+                            //获取数据成功
+                            switch (GsonUtil.GsonCode(s)) {
                                 case "success":
-                                    ToastUtils.showToast(getApplicationContext(),"验证码获取成功");//登录失败
-                                    AutoCode autoCode=GsonUtil.GsonToBean(s, AutoCode.class);
+                                    ToastUtils.showToast(getApplicationContext(), "验证码获取成功");//登录失败
+                                    AutoCode autoCode = GsonUtil.GsonToBean(s, AutoCode.class);
                                     vcode = autoCode.data.vcode;//得到验证码
                                     break;
                                 case "error":
-                                    ToastUtils.showToast(getApplicationContext(),GsonUtil.GsonMsg(s));//获取失败
+                                    ToastUtils.showToast(getApplicationContext(), GsonUtil.GsonMsg(s));//获取失败
                                     break;
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            ToastUtils.showToast(getApplicationContext(),"服务器或网络异常！");
+                            ToastUtils.showToast(getApplicationContext(), "服务器或网络异常！");
                         }
 
                         @Override

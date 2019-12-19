@@ -201,11 +201,11 @@ public class applySparePartActivity extends BaseActivity {
         pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                ((TextView) v).setText(TimeUtil.getTimeFormatParse(date));
+                ((TextView) v).setText(TimeUtil.getTimeFormat(date));
             }
             //默认设置为年月日时分秒
         }).setLabel("年","月","日","时","分","秒")
-                .setType(new boolean[]{true, true, true, true, true, true})
+                .setType(new boolean[]{true, true, true, false, false, false})
                 .isCyclic(true)
                 .build();
     }

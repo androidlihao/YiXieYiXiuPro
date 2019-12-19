@@ -123,11 +123,11 @@ public class saveOrderActivity extends BaseActivity implements View.OnClickListe
         pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                tvSelectDateId.setText(TimeUtil.getTimeFormatParse(date));
+                tvSelectDateId.setText(TimeUtil.getTimeFormatParseMinute(date));
             }
             //默认设置为年月日时分秒
         }).setLabel("年", "月", "日", "时", "分", "秒")
-                .setType(new boolean[]{true, true, true, true, true, true})
+                .setType(new boolean[]{true, true, true, true, true, false})
                 .isCyclic(true)
                 .build();
     }

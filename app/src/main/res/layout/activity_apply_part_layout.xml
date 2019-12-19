@@ -171,6 +171,7 @@
                     android:hint="请输入"
                     android:inputType="number"
                     android:background="@null"
+                    android:maxLength="5"
                     android:layout_marginLeft="@dimen/px_100"
                     android:padding="@dimen/px_20"/>
             </LinearLayout>

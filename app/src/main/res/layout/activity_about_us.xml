@@ -27,6 +27,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="28dp"
             android:gravity="center"
+            android:visibility="gone"
             android:background="#fff"/>
     </RelativeLayout>
     <TextView

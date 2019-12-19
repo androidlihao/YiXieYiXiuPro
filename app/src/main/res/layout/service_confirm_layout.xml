@@ -54,7 +54,7 @@
             />
         <EditText
             android:id="@+id/et_kh_phone_id"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/px_400"
             android:layout_height="wrap_content"
             android:textSize="@dimen/px_60"
             android:inputType="phone"
@@ -65,10 +65,12 @@
             android:padding="@dimen/px_10"/>
         <TextView
             android:id="@+id/tv_kh_sendMsg_id"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/px_300"
             android:layout_height="wrap_content"
-            android:padding="@dimen/px_10"
             android:textSize="@dimen/px_60"
+            android:paddingTop="@dimen/px_10"
+            android:paddingBottom="@dimen/px_10"
+            android:gravity="center"
             android:background="@drawable/background_button_w"
             android:text="发送短信"
             android:textColor="#333333"
@@ -90,7 +92,7 @@
             />
         <EditText
             android:id="@+id/et_xs_phone_id"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/px_400"
             android:layout_height="wrap_content"
             android:textSize="@dimen/px_60"
             android:inputType="phone"
@@ -101,12 +103,14 @@
             android:padding="@dimen/px_10"/>
         <TextView
             android:id="@+id/tv_xs_sendMsg_id"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/px_300"
             android:layout_height="wrap_content"
-            android:padding="@dimen/px_10"
             android:textSize="@dimen/px_60"
+            android:paddingTop="@dimen/px_10"
+            android:paddingBottom="@dimen/px_10"
             android:background="@drawable/background_button_w"
             android:text="发送短信"
+            android:gravity="center"
             android:textColor="#333333"
             android:layout_marginLeft="@dimen/px_30"/>
     </LinearLayout>>

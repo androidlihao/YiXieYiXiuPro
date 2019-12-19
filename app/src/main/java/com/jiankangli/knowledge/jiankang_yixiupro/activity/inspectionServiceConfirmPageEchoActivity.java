@@ -2,6 +2,7 @@ package com.jiankangli.knowledge.jiankang_yixiupro.activity;
 
 import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,9 +18,7 @@ import com.jiankangli.knowledge.jiankang_yixiupro.R;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSchedulers;
 import com.jiankangli.knowledge.jiankang_yixiupro.RxHelper.RxSubscriber;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.BaseEntity;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.PicUrlBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.PollingOrder;
-import com.jiankangli.knowledge.jiankang_yixiupro.bean.UpkeepOrder;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.serviceConfirmBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.bean.workEvaluationBean;
 import com.jiankangli.knowledge.jiankang_yixiupro.net.ApiService;
@@ -27,7 +26,6 @@ import com.jiankangli.knowledge.jiankang_yixiupro.net.RetrofitManager;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.BaseJsonUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.RegexUtil;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtil;
-import com.jiankangli.knowledge.jiankang_yixiupro.utils.SPUtils;
 import com.jiankangli.knowledge.jiankang_yixiupro.utils.ToastUtil;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
@@ -40,7 +38,11 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * @author lihao
@@ -98,7 +100,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
                     ToastUtil.showShortSafe("手机号码不符合规则", this);
                     return;
                 }
-                sendMessage(phone,1);
+                sendMessage(phone,1,view);
                 break;
             case R.id.tv_xs_sendMsg_id:
                 String phone1 = etXsPhoneId.getText().toString();
@@ -110,7 +112,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
                     ToastUtil.showShortSafe("手机号码不符合规则", this);
                     return;
                 }
-                sendMessage(phone1,2);
+                sendMessage(phone1,2,view);
                 break;
             case R.id.btn_workOrder_Evaluation_id:
                 //工单评价查询
@@ -176,7 +178,50 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
                     }
                 });
     }
+    private void countDown(final View view) {
+        final int count = 120;
+        Observable.interval(0,1,TimeUnit.SECONDS)
+                .take(count)
+                .map(new Function<Long, Long>() {
+                    @Override
+                    public Long apply(Long aLong) throws Exception {
+                        return count - aLong;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        ((TextView) view).setTextColor(Color.parseColor("#BDBBBB"));
+                        view.setEnabled(false);
+                    }
+                })
+                .as(AutoDispose.<Long>autoDisposable(
+                        AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        ((TextView) view).setText(aLong + "s");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        view.setEnabled(true);
+                        ((TextView) view).setTextColor(getResources().getColor(R.color.black));
+                        ((TextView) view).setText("发送短信");
+                    }
+                });
+    }
     /**
      * 工单评价查询
      */
@@ -230,8 +275,9 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
      * 发送手机号码
      *
      * @param phone
+     * @param view
      */
-    private void sendMessage(String phone,int status) {
+    private void sendMessage(String phone, int status, final View view) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userId",SPUtil.getInstance(getApplicationContext()).getString("userId"));
@@ -251,6 +297,7 @@ public class inspectionServiceConfirmPageEchoActivity extends BaseActivity {
                     @Override
                     public void _onNext(BaseEntity baseEntity) {
                         ToastUtil.showShortSafe(baseEntity.msg, getApplicationContext());
+                        countDown(view);
                     }
 
                     @Override
