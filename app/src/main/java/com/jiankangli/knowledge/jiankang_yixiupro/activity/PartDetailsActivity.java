@@ -201,7 +201,7 @@ public class PartDetailsActivity extends BaseActivity implements View.OnClickLis
                             List<HashMap<String, String>> list = new LinkedList<>();
                             for (String key : displayBean.getDisplayBean()) {
                                 HashMap<String, String> hashMap = new HashMap<>();
-                                if (key.contentEquals("workNumber")){
+                                if (key.contentEquals("workNumber")) {
                                     map.put(key, SPUtil.getInstance(getApplicationContext()).getString("workNumber"));
                                 }
                                 hashMap.put(DicUtil.getKeyOrValue(key, getApplicationContext()), map.get(key) == null ? "" : map.get(key).toString());
@@ -227,8 +227,11 @@ public class PartDetailsActivity extends BaseActivity implements View.OnClickLis
                                 accessoryPicVos = new ArrayList<>();
                             }
                             recycler_imagleAdapter.setNewData(accessoryPicVos);
-                            if (spareParts.getAccessoryStatus()==4){
-                                tvPartfinishStatusId.setText(baseEntity.data.getAccBackInfo().toString());
+                            if (spareParts.getAccessoryStatus() == 4) {
+                                String accBackInfo = baseEntity.data.getAccBackInfo();
+                                if (TextUtils.isEmpty(accBackInfo)) {
+                                    tvPartfinishStatusId.setText(accBackInfo);
+                                }
                             }
                         }
                     }

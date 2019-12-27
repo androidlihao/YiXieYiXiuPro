@@ -56,6 +56,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -134,7 +135,7 @@ public class applySparePartActivity extends BaseActivity {
 
     private void initView() {
         tvWorkNumberId.setText(SPUtil.getInstance(getApplicationContext()).getString("workNumber"));
-        if (getIntent().getExtras()!=null) {
+        if (getIntent().getExtras() != null) {
             String orderNo = getIntent().getExtras().getString("orderNo");
             etOrderNoId.setText(orderNo);
         }
@@ -196,6 +197,7 @@ public class applySparePartActivity extends BaseActivity {
                 break;
         }
     }
+
     private void initDialog() {
         //时间选择器
         pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
@@ -204,11 +206,12 @@ public class applySparePartActivity extends BaseActivity {
                 ((TextView) v).setText(TimeUtil.getTimeFormat(date));
             }
             //默认设置为年月日时分秒
-        }).setLabel("年","月","日","时","分","秒")
+        }).setLabel("年", "月", "日", "时", "分", "秒")
                 .setType(new boolean[]{true, true, true, false, false, false})
                 .isCyclic(true)
                 .build();
     }
+
     public void selectphoto() {
         PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofImage())
@@ -239,22 +242,22 @@ public class applySparePartActivity extends BaseActivity {
         //提交申请
         final String OrderNo = etOrderNoId.getText().toString();
         if (TextUtils.isEmpty(OrderNo)) {
-            ToastUtil.showShortSafe("请输入申请单号",this);
+            ToastUtil.showShortSafe("请输入申请单号", this);
             return;
         }
         final String accessoryName = etAccessoryNameId.getText().toString();
         if (TextUtils.isEmpty(accessoryName)) {
-            ToastUtil.showShortSafe("请输入备件名称",this);
+            ToastUtil.showShortSafe("请输入备件名称", this);
             return;
         }
         final String number = etNumberId.getText().toString();
         if (TextUtils.isEmpty(number)) {
-            ToastUtil.showShortSafe("请输入数量",this);
+            ToastUtil.showShortSafe("请输入数量", this);
             return;
         }
         String remark = etRemarkId.getText().toString();
         if (TextUtils.isEmpty(remark)) {
-            ToastUtil.showShortSafe("请输入故障描述",this);
+            ToastUtil.showShortSafe("请输入故障描述", this);
             return;
         }
         commonLoading.show();
@@ -269,10 +272,10 @@ public class applySparePartActivity extends BaseActivity {
                 }).flatMap(new Function<File, ObservableSource<BaseEntity<PicUrlBean>>>() {
             @Override
             public ObservableSource<BaseEntity<PicUrlBean>> apply(File file) throws Exception {
-                RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
+                RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
                 MultipartBody.Part body =
-                        MultipartBody.Part.createFormData("data",file.getName()+".png",requestBody);
-                return  RetrofitManager.create(ApiService.class)
+                        MultipartBody.Part.createFormData("data", file.getName() + ".png", requestBody);
+                return RetrofitManager.create(ApiService.class)
                         .uploadImage(body);
             }
         }).compose(RxSchedulers.<BaseEntity<PicUrlBean>>io2main())
@@ -282,10 +285,10 @@ public class applySparePartActivity extends BaseActivity {
                     @Override
                     public void _onNext(BaseEntity<PicUrlBean> picUrlBeanBaseEntity) {
                         JsonObject jsonObject = new JsonObject();
-                        if (picUrlBeanBaseEntity.isSuccess()){
-                            jsonObject.addProperty("picUrl",picUrlBeanBaseEntity.data.getUrl());
-                        }else {
-                            jsonObject.addProperty("picUrl","");
+                        if (picUrlBeanBaseEntity.isSuccess()) {
+                            jsonObject.addProperty("picUrl", picUrlBeanBaseEntity.data.getUrl());
+                        } else {
+                            jsonObject.addProperty("picUrl", "");
                         }
                         jsonElements.add(jsonObject);
                     }
@@ -293,17 +296,17 @@ public class applySparePartActivity extends BaseActivity {
                     @Override
                     public void _onError(Throwable e, String msg) {
                         commonLoading.dismiss();
-                        ToastUtil.showShortSafe("图片上传失败,"+msg,getApplicationContext());
+                        ToastUtil.showShortSafe("图片上传失败," + msg, getApplicationContext());
                         JsonObject jsonObject = new JsonObject();
-                        jsonObject.addProperty("picUrl","");
+                        jsonObject.addProperty("picUrl", "");
                         jsonElements.add(jsonObject);
                     }
 
                     @Override
                     public void onComplete() {
-                        if (jsonElements.size()==data.size()){
+                        if (jsonElements.size() == data.size()) {
                             //图片上传完成，开始执行下一步
-                            String accessoryNo=etAccessoryNoId.getText().toString();
+                            String accessoryNo = etAccessoryNoId.getText().toString();
                             String serialNum = etSerialNumId.getText().toString();
                             String foreignAid = cbForeignAidId.isChecked() ? "1" : "0";
                             String commodityLink = etCommodityLinkId.getText().toString();
@@ -313,28 +316,28 @@ public class applySparePartActivity extends BaseActivity {
                             String unitPrice = etUnitPriceId.getText().toString();
                             String returnNumber = etReturnNumberId.getText().toString();
                             String accRemark = etAccRemarkId.getText().toString();
-                            String applyName = (String) SPUtils.get(getApplicationContext(), "name","");
-                            String operatorId=SPUtil.getInstance(getApplicationContext()).getString("userId");
+                            String applyName = (String) SPUtils.get(getApplicationContext(), "name", "");
+                            String operatorId = SPUtil.getInstance(getApplicationContext()).getString("userId");
                             String remark = etRemarkId.getText().toString();
                             JsonObject jsonObject = new JsonObject();
-                            jsonObject.addProperty("orderNo",OrderNo);
-                            jsonObject.addProperty("accessoryName",accessoryName);
-                            jsonObject.addProperty("accessoryNo",accessoryNo);
-                            jsonObject.addProperty("serialNum",serialNum);
-                            jsonObject.addProperty("number",number);
-                            jsonObject.addProperty("foreignAid",foreignAid);
-                            jsonObject.addProperty("commodityLink",commodityLink);
-                            jsonObject.addProperty("supplier",supplier);
-                            jsonObject.addProperty("needTime",needTime);
-                            jsonObject.addProperty("arrivalTime",arrivalTime);
-                            if (!TextUtils.isEmpty(unitPrice)){
-                                jsonObject.addProperty("unitPrice",unitPrice);
+                            jsonObject.addProperty("orderNo", OrderNo);
+                            jsonObject.addProperty("accessoryName", accessoryName);
+                            jsonObject.addProperty("accessoryNo", accessoryNo);
+                            jsonObject.addProperty("serialNum", serialNum);
+                            jsonObject.addProperty("number", number);
+                            jsonObject.addProperty("foreignAid", foreignAid);
+                            jsonObject.addProperty("commodityLink", commodityLink);
+                            jsonObject.addProperty("supplier", supplier);
+                            jsonObject.addProperty("needTime", needTime);
+                            jsonObject.addProperty("arrivalTime", arrivalTime);
+                            if (!TextUtils.isEmpty(unitPrice)) {
+                                jsonObject.addProperty("unitPrice", unitPrice);
                             }
-                            jsonObject.addProperty("returnNumber",returnNumber);
-                            jsonObject.addProperty("operatorId",operatorId);
-                            jsonObject.addProperty("accRemark",accRemark);
-                            jsonObject.addProperty("remark",remark);
-                            jsonObject.addProperty("applyName",applyName);
+                            jsonObject.addProperty("returnNumber", returnNumber);
+                            jsonObject.addProperty("operatorId", operatorId);
+                            jsonObject.addProperty("accRemark", accRemark);
+                            jsonObject.addProperty("remark", remark);
+                            jsonObject.addProperty("applyName", applyName);
                             jsonObject.add("accessoryPicVos", jsonElements);
                             addSparePart(jsonObject);
                         }
@@ -354,20 +357,23 @@ public class applySparePartActivity extends BaseActivity {
                     .subscribe(new RxSubscriber<BaseEntity>() {
                         @Override
                         public void _onNext(BaseEntity baseEntity) {
-                            if (baseEntity.isSuccess()){
-                                ToastUtil.showShortSafe("申请成功",getApplicationContext());
-                                try {
-                                    Thread.sleep(2000);
-                                    finish();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                            if (baseEntity.isSuccess()) {
+                                ToastUtil.showShortSafe("申请成功", getApplicationContext());
+                                Observable.timer(2000, TimeUnit.MILLISECONDS)
+                                        .subscribe(new Consumer<Long>() {
+                                            @Override
+                                            public void accept(Long aLong) throws Exception {
+                                                finish();
+                                            }
+                                        });
+                            }else {
+                                ToastUtil.showShortSafe(baseEntity.msg, getApplicationContext());
                             }
                         }
 
                         @Override
                         public void _onError(Throwable e, String msg) {
-                            ToastUtil.showShortSafe(msg,getApplicationContext());
+                            ToastUtil.showShortSafe(msg, getApplicationContext());
                         }
 
                         @Override
@@ -380,6 +386,7 @@ public class applySparePartActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -389,6 +396,7 @@ public class applySparePartActivity extends BaseActivity {
         }
         return true;
     }
+
     private void closeDialog() {
         DialogUtil.showPositiveDialog(this, "警告", "关闭后，您填写的内容将会丢失", new DialogInterface.OnClickListener() {
             @Override
@@ -397,6 +405,7 @@ public class applySparePartActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     public void onBackPressedSupport() {
         closeDialog();

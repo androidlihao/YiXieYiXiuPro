@@ -93,8 +93,15 @@ public class enter_polling_report_3_fragment extends BaseFragment {
     protected void initData() {
         singleMaintainOrderBean = ((enterPollingReportActivity) getActivity()).getSingleMaintainOrderBean();
         tvSelectDateId.setText(singleMaintainOrderBean.getLeaveTime());
-        etGoId.setText(singleMaintainOrderBean.getTravelToTime() + "");
-        etBackId.setText(singleMaintainOrderBean.getTravelBackTime() + "");
+
+        String travelToTime = singleMaintainOrderBean.getTravelToTime() + "";
+        if (!TextUtils.isEmpty(travelToTime)&&Double.parseDouble(travelToTime)!=0) {
+            etGoId.setText(travelToTime);
+        }
+        String traveBackTime = singleMaintainOrderBean.getTravelBackTime() + "";
+        if (!TextUtils.isEmpty(traveBackTime)&&Double.parseDouble(traveBackTime)!=0) {
+            etBackId.setText(traveBackTime);
+        }
 
         if (singleMaintainOrderBean.getOrderPicVo() != null) {
             String picUrl = singleMaintainOrderBean.getOrderPicVo().getPicUrl();
@@ -207,13 +214,13 @@ public class enter_polling_report_3_fragment extends BaseFragment {
         pvTime1 = new TimePickerBuilder(getActivity(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                tvSelectDateId.setText(TimeUtil.getTimeFormatParse(date));
+                tvSelectDateId.setText(TimeUtil.getTimeFormatParseMinute(date));
                 //设置离开场地时间
-                singleMaintainOrderBean.setLeaveTime(TimeUtil.getTimeFormat(date));
+                singleMaintainOrderBean.setLeaveTime(TimeUtil.getTimeFormatParseMinute(date));
             }
             //默认设置为年月日时分秒
         }).setLabel("年", "月", "日", "时", "分", "秒")
-                .setType(new boolean[]{true, true, true, true, true, true})
+                .setType(new boolean[]{true, true, true, true, true, false})
                 .isCyclic(true)
                 .build();
     }

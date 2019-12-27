@@ -110,8 +110,15 @@ public class bl_polling_4_fragment extends BaseFragment {
     protected void initData() {
         blBean = ((pollingBackTrackingActivity) getActivity()).blBean;
         tvSelectDateId.setText(blBean.getLeaveTime());
-        etGoId.setText(blBean.getTravelToTime() + "");
-        etBackId.setText(blBean.getTravelBackTime() + "");
+        String travelToTime = blBean.getTravelToTime() + "";
+        if (!TextUtils.isEmpty(travelToTime)&&Double.parseDouble(travelToTime)!=0) {
+            etGoId.setText(travelToTime);
+        }
+        String traveBackTime = blBean.getTravelBackTime() + "";
+        if (!TextUtils.isEmpty(traveBackTime)&&Double.parseDouble(traveBackTime)!=0) {
+            etBackId.setText(traveBackTime);
+        }
+
         if (blBean.getOrderPicVo() != null) {
             String picUrl = blBean.getOrderPicVo().getPicUrl();
             if (picUrl.startsWith("http://")) {

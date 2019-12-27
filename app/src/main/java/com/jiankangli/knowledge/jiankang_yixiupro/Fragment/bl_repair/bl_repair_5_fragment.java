@@ -181,12 +181,12 @@ public class bl_repair_5_fragment extends BaseFragment {
         pvTime = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                tvSelectDateId.setText(TimeUtil.getTimeFormatParse(date));
+                tvSelectDateId.setText(TimeUtil.getTimeFormatParseMinute(date));
                 blBean.setLeaveTime(tvSelectDateId.getText().toString());
             }
             //默认设置为年月日时分秒
         }).setLabel("年", "月", "日", "时", "分", "秒")
-                .setType(new boolean[]{true, true, true, true, true, true})
+                .setType(new boolean[]{true, true, true, true, true, false})
                 .isCyclic(true)
                 .build();
     }
@@ -215,11 +215,11 @@ public class bl_repair_5_fragment extends BaseFragment {
             tvSelectDateId.setText(leaveTime);
         }
         String travelToTime = blBean.getElectronOrderVos().getTravelToTime() + "";
-        if (!TextUtils.isEmpty(travelToTime)) {
+        if (!TextUtils.isEmpty(travelToTime)&&Double.parseDouble(travelToTime)!=0) {
             etGoId.setText(travelToTime);
         }
         String traveBackTime = blBean.getElectronOrderVos().getTravelBackTime() + "";
-        if (!TextUtils.isEmpty(traveBackTime)) {
+        if (!TextUtils.isEmpty(traveBackTime)&&Double.parseDouble(traveBackTime)!=0) {
             etBackId.setText(traveBackTime);
         }
         if (blBean.getElectronOrderVos().getOrderPicVos() != null) {
